@@ -63,11 +63,11 @@ const DarkModeSwitcher = () => {
     const classes = useStyles();
 
     const darkTheme = useAppSelector((state) => state.darkTheme);
+    const logoAnimated = useAppSelector((state) => state.logoAnimated);
     const dispatch = useAppDispatch();
 
     const handleToggleTheme = () => {
         dispatch(toggleTheme());
-        // localStorage.setItem('darkTheme', JSON.stringify(!darkTheme));
     };
 
     return (
@@ -85,7 +85,11 @@ const DarkModeSwitcher = () => {
                 />
             }
             label={<Brightness4Icon className={classes.iconDarkMode} />}
-            className={classes.switchPosition2}
+            className={
+                logoAnimated === true
+                    ? classes.switchPosition1
+                    : classes.switchPosition2
+            }
         />
     );
 };

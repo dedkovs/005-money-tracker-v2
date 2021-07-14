@@ -8,7 +8,7 @@ import Category from './Category';
 import Subcategory from './Subcategory';
 import ArrowBetweenWallets from './ArrowBetweenWallets';
 import Sum from './Sum';
-import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { useAppSelector } from '../../redux/hooks';
 import revealRecordCommentFunc from './Comment/revealRecordCommentFunc';
 import commentRevealOrHide from './Comment/commentRevealOrHide';
 import Comment from './Comment/Comment';
@@ -35,70 +35,30 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
     record: Transaction;
-    // showComments: boolean;
 }
 
-const Record = ({
-    record: { id, sum, wallet, comment },
-    record,
-}: // showComments,
-Props) => {
+const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
     const classes = useStyles();
 
     let showComments = useAppSelector((state) => state.showComments);
-    // let showComment: boolean;
-    // let localStorage_transactions = localStorage.getItem('transactions');
-    // if (localStorage_transactions && localStorage_transactions.length > 0) {
-    //     if ('show' in record) {
-    //         showComment = record.show!;
-    //     } else showComment = showComments;
-    // console.log(showComment);
-    // }
-
-    // const mountedRef = useRef<boolean>();
-    // const [value, setValue] = useState(false);
-
-    // useEffect(() => {
-    //     if (mountedRef.current) {
-    //         // ← the trick
-    //         commentRevealOrHide(id, showComments, wrapperRef, show, setShow);
-    //         console.log('trick: changed');
-    //     }
-    // }, [value]);
-
-    // useEffect(() => {
-    //     console.log('rendered');
-    //     mountedRef.current = true;
-    //     // update the state after some time
-    //     // setTimeout(setValue, 1000, true);
-    // }, []);
-
-    const dispatch = useAppDispatch();
 
     const { backgroundExpenses, backgroundIncome, backgroundBetween } = classes;
 
     let x: number, y: number;
 
-    let jsonTransactions = JSON.parse(localStorage.transactions);
-    const [show, setShow] = useState(
-        jsonTransactions.indexOf(record).show || showComments
-    );
-    // console.log(id, show);
+    const [show, setShow] = useState(showComments);
 
     const wrapperRef = useRef<HTMLAnchorElement>(null);
     const recordMenuButtonRef = useRef<HTMLAnchorElement>(null);
 
     const f = () => {
         revealRecordCommentFunc(
-            id,
             x,
             y,
             wrapperRef,
             recordMenuButtonRef,
             show,
-            setShow,
-            dispatch,
-            record
+            setShow
         );
     };
 
@@ -122,18 +82,8 @@ Props) => {
         }
     });
 
-    // useEffect(() => {
-    // let localStorage_transactions = localStorage.getItem('transactions');
-    // if (localStorage_transactions && localStorage_transactions.length > 0) {
-    //     let jsonTransactions = JSON.parse(localStorage_transactions);
-    //     jsonTransactions[id - 1].show = show;
-    //     localStorage.transactions = JSON.stringify(jsonTransactions);
-    // }
-    // }, [show]);
-
     useEffect(() => {
-        // console.log('showComments changed');
-        commentRevealOrHide(id, showComments, wrapperRef, show, setShow);
+        commentRevealOrHide(showComments, wrapperRef, setShow);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showComments]);
 

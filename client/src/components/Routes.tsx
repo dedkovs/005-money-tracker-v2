@@ -18,8 +18,6 @@ interface Props {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     errorRegister: string;
     setErrorRegister: React.Dispatch<React.SetStateAction<string>>;
-    // showComments: boolean;
-    // prevShowComments: boolean;
 }
 
 const Routes = (props: Props) => {
@@ -44,10 +42,7 @@ const Routes = (props: Props) => {
                             ) : isAuth ? (
                                 <>
                                     <Header />
-                                    <SecretPage
-                                    // showComments={props.showComments}
-                                    // prevShowComments={props.prevShowComments}
-                                    />
+                                    <SecretPage />
                                 </>
                             ) : (
                                 <Redirect to="/login" />

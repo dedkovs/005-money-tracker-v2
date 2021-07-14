@@ -13,7 +13,7 @@ export const showCents = createSlice({
     reducers: {
         toggleShowCents: (state: boolean) => {
             state = !state;
-            // localStorage.setItem('showCents', JSON.stringify(state));
+            localStorage.setItem('showCents', JSON.stringify(state));
             return state;
         },
         setShowCents: (
@@ -21,7 +21,7 @@ export const showCents = createSlice({
             action: { payload: boolean; type: string }
         ) => {
             state = action.payload;
-            // localStorage.setItem('showCents', JSON.stringify(action.payload));
+            localStorage.setItem('showCents', JSON.stringify(action.payload));
             return state;
         },
     },

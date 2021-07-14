@@ -1,13 +1,9 @@
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Link } from 'react-router-dom';
 import DrawerSwitchTheme from './DrawerSwitchTheme';
-// import DrawerSwitchComments from './DrawerSwitchComments';
-// import DrawerSwitchCents from './DrawerSwitchCents';
 import DrawerCommentsCheckbox from './DrawerCommentsCheckbox';
 import DrawerCentsCheckbox from './DrawerCentsCheckbox';
 import axios from 'axios';
@@ -15,6 +11,8 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { setAllTransactions } from '../../redux/slices/transactions';
 import { setOpenDrawer } from '../../redux/slices/openDrawer';
 import { setIsAuth } from '../../redux/slices/isAuth';
+import { setLogoAnimated } from '../../redux/slices/logoAnimated';
+import { setLogoLoaded } from '../../redux/slices/logoLoaded';
 
 const useStyles = makeStyles((theme) => ({
     toolbarMargin: {
@@ -36,21 +34,17 @@ const Drawer1 = () => {
     const openDrawer = useAppSelector((state) => state.openDrawer);
     const dispatch = useAppDispatch();
 
-    // const [loading, setLoading] = React.useState(false);
-
     const logOut = () => {
-        // setLoading(true);
-
         dispatch(setOpenDrawer(false));
+        dispatch(setLogoAnimated(true));
+        dispatch(setLogoLoaded(false));
         axios
             .get('/logout')
             .then((res) => {
-                // setLoading(false);
                 dispatch(setIsAuth(res.data.isAuth));
                 dispatch(setAllTransactions([]));
             })
             .catch((err) => {
-                // setLoading(false);
                 console.log(
                     'Something went wrong. Try to reload the page.',
                     err
@@ -69,20 +63,20 @@ const Drawer1 = () => {
                 <DrawerSwitchTheme />
                 <DrawerCommentsCheckbox />
                 <DrawerCentsCheckbox />
-                <ListItem
+                {/* <ListItem
                     onClick={() => {
                         dispatch(setOpenDrawer(false));
                     }}
                     divider
                     button
-                    component={Link}
-                    to="/data"
+                    // component={Link}
+                    // to="/data"
                 >
                     <ListItemText>Charts</ListItemText>
-                </ListItem>
+                </ListItem> */}
                 {/* <DrawerSwitchComments /> */}
                 {/* <DrawerSwitchCents /> */}
-                <ListItem
+                {/* <ListItem
                     onClick={() => {
                         // store.setOpenDialogRenameWallet(false);
                         dispatch(setOpenDrawer(false));
@@ -90,18 +84,12 @@ const Drawer1 = () => {
                     }}
                     divider
                     button
-                    component={Link}
-                    to="/data/edit-wallets"
+                    // component={Link}
+                    // to="/data/edit-wallets"
                 >
                     <ListItemText>Edit wallets</ListItemText>
-                </ListItem>
-                <ListItem
-                    onClick={logOut}
-                    divider
-                    button
-                    component={Link}
-                    to="/"
-                >
+                </ListItem> */}
+                <ListItem onClick={logOut} divider button>
                     <ListItemText>Log out</ListItemText>
                 </ListItem>
             </List>

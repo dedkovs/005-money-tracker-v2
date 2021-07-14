@@ -37,7 +37,6 @@ const MenuButton1 = () => {
                 className={classes.button}
                 onClick={() => {
                     dispatch(setOpenDrawer(!openDrawer));
-                    // store.setAnchorEl(null);
                 }}
             >
                 <MenuIcon className={classes.menuIcon} />

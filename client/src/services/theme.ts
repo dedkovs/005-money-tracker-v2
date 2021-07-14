@@ -95,10 +95,6 @@ export const light: Theme = createMuiTheme({
         appBarBackgroundColor: BLUE_5,
 
         dividerColor: TRANSPARENT_BLACK_1,
-
-        // blueSwitchChecked: BLUE_5,
-        // blueSwitchTrack: BLUE_5,
-        // blueSwitchHover: BLUE_10,
     },
 });
 
@@ -154,9 +150,5 @@ export const dark: Theme = createMuiTheme({
         appBarBackgroundColor: BLUE_6,
 
         dividerColor: TRANSPARENT_WHITE_1,
-
-        // blueSwitchChecked: BLUE_5,
-        // blueSwitchTrack: BLUE_5,
-        // blueSwitchHover: BLUE_10,
     },
 });

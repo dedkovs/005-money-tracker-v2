@@ -3,10 +3,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import {
-    // setShowComments,
-    toggleShowComments,
-} from '../../redux/slices/showComments';
+import { toggleShowComments } from '../../redux/slices/showComments';
 
 const useStyles = makeStyles((theme) => ({
     showComments: {

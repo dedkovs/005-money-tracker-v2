@@ -5,8 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AddTransactionButton from './AddTransactionButton';
 import Drawer from './Drawer';
-// import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-// import Slide from '@material-ui/core/Slide';
 
 const useStyles = makeStyles((theme) => ({
     toolbarMargin: {
@@ -44,22 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-interface Props {
-    children?: React.ReactElement;
-}
-
-// function HideOnScroll(props: Props) {
-//     const { children } = props;
-//     const trigger = useScrollTrigger();
-
-//     return (
-//         <Slide appear={false} direction="down" in={!trigger}>
-//             {children}
-//         </Slide>
-//     );
-// }
-
-const Header = (props: Props) => {
+const Header = () => {
     const classes = useStyles();
 
     const matches = useMediaQuery('(min-width:600px)');
@@ -71,7 +54,6 @@ const Header = (props: Props) => {
 
     return (
         <div style={{ position: 'relative', minWidth: 360 }}>
-            {/* <HideOnScroll {...props}> */}
             <AppBar className={classes.appbar}>
                 <div className={matches ? classes.tabs1 : classes.tabs2}>
                     <Toolbar className={`${getToolbarClassName()}`}>
@@ -82,7 +64,6 @@ const Header = (props: Props) => {
                     </Toolbar>
                 </div>
             </AppBar>
-            {/* </HideOnScroll> */}
         </div>
     );
 };

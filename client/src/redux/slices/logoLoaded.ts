@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState: boolean = false;
+let initialState: boolean = false;
 
-export const isAuth = createSlice({
-    name: 'isAuth',
+export const logoLoaded = createSlice({
+    name: 'logoLoaded',
     initialState,
     reducers: {
-        setIsAuth: (
+        setLogoLoaded: (
             state: boolean,
             action: { payload: boolean; type: string }
         ) => {
@@ -16,5 +16,5 @@ export const isAuth = createSlice({
     },
 });
 
-export const { setIsAuth } = isAuth.actions;
-export default isAuth.reducer;
+export const { setLogoLoaded } = logoLoaded.actions;
+export default logoLoaded.reducer;

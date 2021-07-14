@@ -8,9 +8,13 @@ import TextLink from '../TextLink';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { setIsAuth } from '../../redux/slices/isAuth';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 
 const useStyles = makeStyles(() => ({
+    '@keyframes animation1': {
+        from: { opacity: 0 },
+        to: { opacity: 1 },
+    },
     form: {
         margin: '0 auto',
         paddingTop: 20,
@@ -21,12 +25,25 @@ const useStyles = makeStyles(() => ({
         maxWidth: '300px',
         margin: '0 auto',
     },
+    container2: {
+        opacity: 0,
+        animationName: '$animation1',
+        animationDuration: '2s',
+        animationDelay: '0.3s',
+        animationIterationCount: 1,
+        animationFillMode: 'forwards',
+    },
+    container: {
+        opacity: 1,
+    },
 }));
 
 const Login = () => {
     const classes = useStyles();
 
     const dispatch = useAppDispatch();
+    const logoAnimated = useAppSelector((state) => state.logoAnimated);
+    const logoLoaded = useAppSelector((state) => state.logoLoaded);
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -68,8 +85,12 @@ const Login = () => {
             });
     };
 
-    return (
-        <div>
+    return logoLoaded === true ? (
+        <div
+            className={
+                logoAnimated === true ? classes.container2 : classes.container
+            }
+        >
             <form className={classes.form}>
                 <EmailInput
                     email={email}
@@ -111,7 +132,7 @@ const Login = () => {
                 <TextLink text={'Register'} to={'/register'} />
             </form>
         </div>
-    );
+    ) : null;
 };
 
 export default Login;

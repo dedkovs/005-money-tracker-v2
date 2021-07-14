@@ -38,8 +38,6 @@ const AddTransactionButton1 = () => {
                     dispatch(setOpenDrawer(false));
                     dispatch(addTransaction(Math.floor(Math.random() * 10000)));
                 }}
-                // component={Link}
-                // to="/data/add-transaction"
             >
                 <AddIcon className={classes.addIcon} />
             </Button>

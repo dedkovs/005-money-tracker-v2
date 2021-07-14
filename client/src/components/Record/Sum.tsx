@@ -60,7 +60,6 @@ const Sum = ({ record: { sum, wallet } }: Props) => {
                     prefix={sum > 0 && wallet ? '+' : ''}
                     decimalSeparator={'.'}
                     decimalScale={showCents ? 2 : 0}
-                    // decimalScale={2}
                     fixedDecimalScale={true}
                 />
             </Typography>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { light, dark } from '../services/theme';
 import Layout from './Layout';
@@ -7,22 +7,14 @@ import Routes from './Routes';
 import { setAllTransactions } from '../redux/slices/transactions';
 import { setIsAuth } from '../redux/slices/isAuth';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-// import SecretPage from './SecretPage';
-// import Spinner from './Spinner';
-// import Header from './Header/Header';
-// import AddTransactionButton from './Header/AddTransactionButton';
 
 const App = () => {
     const isAuth = useAppSelector((state) => state.isAuth);
     const darkTheme = useAppSelector((state) => state.darkTheme);
-    // const transactions = useAppSelector((state) => state.transactions);
-    // const showComments = useAppSelector((state) => state.showComments);
-    // const prevShowComments = showComments;
-    // let sc = !!showComments;
+
     const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(false);
-
     const [error, setError] = useState(false);
 
     const onError = (err: Error) => {
@@ -32,11 +24,9 @@ const App = () => {
         console.log('error: ', error);
     };
 
-    const [errorRegister, setErrorRegister] = React.useState('');
+    const [errorRegister, setErrorRegister] = useState('');
 
-    React.useEffect(() => {
-        // console.log('isAuth changed: ', isAuth);
-        // dispatch(fetchAuth);
+    useEffect(() => {
         setLoading(true);
         axios
             .get('/isauth')
@@ -64,23 +54,14 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuth]);
 
-    // useEffect(() => {
-    //     console.log('showComments changed: ', showComments);
-    // }, [showComments]);
-
     return (
         <ThemeProvider theme={darkTheme ? dark : light}>
             <Layout>
-                {/* <Header /> */}
-                {/* <AddTransactionButton /> */}
-                {/* <SecretPage /> */}
                 <Routes
                     loading={loading}
                     setLoading={setLoading}
                     errorRegister={errorRegister}
                     setErrorRegister={setErrorRegister}
-                    // showComments={showComments}
-                    // prevShowComments={prevShowComments}
                 />
             </Layout>
         </ThemeProvider>

@@ -1,10 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
-// import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { setOpenDrawer } from '../../redux/slices/openDrawer';
-// import { mockTransactions } from '../../services/mockTransactions';
 import { addTransaction } from '../../redux/slices/transactions';
 
 const useStyles = makeStyles(() => ({
@@ -31,11 +29,7 @@ const AddTransactionButton2 = () => {
             onClick={() => {
                 dispatch(setOpenDrawer(false));
                 dispatch(addTransaction(Math.floor(Math.random() * 10000)));
-                // store.setAnchorEl(null);
-                // store.setOpenTransactionForm(true);
             }}
-            // component={Link}
-            // to="/data/add-transaction"
         >
             <AddIcon className={classes.addIcon} />
         </IconButton>

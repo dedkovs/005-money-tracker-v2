@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
     },
     expensesSubcategoryText: {
         color: theme.palette.recordSubcategoryTextColorExpenses,
-        // opacity: 0.6,
     },
     incomeSubcategoryText: {
         color: theme.palette.recordSubcategoryTextColorIncome,

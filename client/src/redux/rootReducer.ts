@@ -5,6 +5,8 @@ import openDrawer from './slices/openDrawer';
 import isAuth from './slices/isAuth';
 import showComments from './slices/showComments';
 import showCents from './slices/showCents';
+import logoAnimated from './slices/logoAnimated';
+import logoLoaded from './slices/logoLoaded';
 
 const rootReducer = combineReducers({
     transactions,
@@ -13,6 +15,8 @@ const rootReducer = combineReducers({
     isAuth,
     showComments,
     showCents,
+    logoAnimated,
+    logoLoaded,
 });
 
 export default rootReducer;

@@ -15,12 +15,7 @@ export interface Transaction {
     wallet_to: string | null;
 }
 
-let initialState: Transaction[];
-
-let localStorage_transactions = localStorage.getItem('transactions');
-if (localStorage_transactions) {
-    initialState = JSON.parse(localStorage_transactions);
-} else initialState = [];
+export let initialState: Transaction[] = [];
 
 export const transactions = createSlice({
     name: 'transactions',
@@ -44,19 +39,7 @@ export const transactions = createSlice({
                 wallet_to: null,
             };
 
-            let jsonTransactions = JSON.parse(localStorage.transactions);
-            let newJsonTransactions = [...jsonTransactions, newTrx];
-            localStorage.transactions = JSON.stringify(newJsonTransactions);
             state.push(newTrx);
-
-            // let localStorage_transactions =
-            //     localStorage.getItem('transactions');
-            // if (localStorage_transactions) {
-            //     let jsonTransactions = JSON.parse(localStorage_transactions);
-            //     let newJsonTransactions = [...jsonTransactions, action.payload];
-            //     localStorage.transactions = JSON.stringify(newJsonTransactions);
-            //     state = newJsonTransactions;
-            // }
 
             return state;
         },
@@ -65,7 +48,6 @@ export const transactions = createSlice({
             action: PayloadAction<Transaction[]>
         ) => {
             state = action.payload;
-            localStorage.setItem('transactions', JSON.stringify(state));
             return state;
         },
     },
