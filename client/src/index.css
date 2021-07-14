@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'Circe';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Circe'), url('./fonts/CRC55.woff') format('woff');
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+        'Helvetica Neue', sans-serif;
+    /* font-family: Roboto;
+    text-size-adjust: 100%; */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+#root {
+    height: 100%;
+}

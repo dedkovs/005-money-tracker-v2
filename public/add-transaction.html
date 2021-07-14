@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .form-label {
+        display: flex;
+        flex-direction: column;
+        margin-right: 20px;
+        font-size: small;
+        line-height: 25px;
+    }
+
+    input {
+        height: 22px;
+    }
+</style>
+
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;box-sizing: border-box;">
+    <form method="POST" action="/add-transaction-expense" style="display: flex;margin-bottom: 50px;">
+        <div class="form-label">
+            <label for="sum">Сумма:</label>
+            <input type="number" step=".01" min="0" name="sum">
+        </div>
+        <div class="form-label">
+            <label for="wallet">Кошелёк:</label>
+            <input type="text" name="wallet">
+        </div>
+        <div class="form-label">
+            <label for="expenses_category">Категория расходов:</label>
+            <input type="text" name="expenses_category">
+        </div>
+        <div class="form-label">
+            <label for="expenses_subcategory">Подкатегория расходов:</label>
+            <input type="text" name="expenses_subcategory">
+        </div>
+        <div class="form-label">
+            <label for="date">Дата:</label>
+            <input type="date" name="date" style="padding: 1px 2px;">
+        </div>
+        <div class="form-label">
+            <label for="comment">Комментарий:</label>
+            <input type="text" name="comment">
+        </div>
+        <div style="display: flex; flex-direction: column;justify-content: flex-end; margin-right: 20px;">
+            <button type="submit" style="height: 28px;width: 150px;">Добавить расход</button>
+        </div>
+    </form>
+
+    <form method="POST" action="/add-transaction-income" style="display: flex;">
+        <div class="form-label">
+            <label for="sum">Сумма:</label>
+            <input type="number" step=".01" min="0" name="sum">
+        </div>
+        <div class="form-label">
+            <label for="wallet">Кошелёк:</label>
+            <input type="text" name="wallet">
+        </div>
+        <div class="form-label">
+            <label for="expenses_category">Категория доходов:</label>
+            <input type="text" name="income_category">
+        </div>
+        <div class="form-label">
+            <label for="income_subcategory">Подкатегория доходов:</label>
+            <input type="text" name="income_subcategory">
+        </div>
+        <div class="form-label">
+            <label for="date">Дата:</label>
+            <input type="date" name="date" style="padding: 1px 2px;">
+        </div>
+        <div class="form-label">
+            <label for="comment">Комментарий:</label>
+            <input type="text" name="comment">
+        </div>
+        <div style="display: flex; flex-direction: column;justify-content: flex-end; margin-right: 20px;">
+            <button type="submit" style="height: 28px;width: 150px;">Добавить доход</button>
+        </div>
+    </form>
+</body>
+
+</html>
