@@ -36,7 +36,7 @@ const AddTransactionButton1 = () => {
                 className={classes.button}
                 onClick={() => {
                     dispatch(setOpenDrawer(false));
-                    dispatch(addTransaction(Math.floor(Math.random() * 10000)));
+                    dispatch(addTransaction());
                 }}
             >
                 <AddIcon className={classes.addIcon} />

@@ -53,11 +53,11 @@ const User = sequelize.define(
             type: DataTypes.STRING,
             allowNull: true,
         },
-        config: {
-            type: DataTypes.JSON,
-            allowNull: false,
-            defaultValue: { cents: true, theme: true, comments: true },
-        },
+        // config: {
+        //     type: DataTypes.JSON,
+        //     allowNull: false,
+        //     defaultValue: { cents: true, theme: true, comments: true },
+        // },
     },
     {
         timestamps: true,
@@ -65,8 +65,17 @@ const User = sequelize.define(
     }
 );
 
+const sequelize_transactions = new Sequelize({
+    host: mode === 'dev' ? 'localhost' : process.env.HOST,
+    port: mode === 'dev' ? 3306 : process.env.PORT,
+    username: mode === 'dev' ? 'root' : process.env.USER,
+    password: mode === 'dev' ? '1234' : process.env.PASSWORD,
+    database: mode === 'dev' ? 'transactions' : process.env.TRANSACTIONS,
+    dialect: 'mysql',
+});
+
 const createNewTransactionsTable = async (userId) => {
-    const Transactions = sequelize.define(
+    const Transactions = sequelize_transactions.define(
         `t_${userId}`,
         {
             id: {
@@ -366,8 +375,8 @@ app.post('/register', async (req, res) => {
 app.get('/getdata/:id', async (req, res) => {
     if (req.isAuthenticated) {
         try {
-            const trx = await sequelize.query(
-                'SELECT * FROM `money-tracker`.t_?',
+            const trx = await sequelize_transactions.query(
+                'SELECT * FROM t_?',
                 {
                     replacements: [+req.params.id],
                     type: QueryTypes.SELECT,

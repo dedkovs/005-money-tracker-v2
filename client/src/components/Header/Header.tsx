@@ -58,7 +58,7 @@ const Header = () => {
                 <div className={matches ? classes.tabs1 : classes.tabs2}>
                     <Toolbar className={`${getToolbarClassName()}`}>
                         <MenuButton />
-                        <div>TOP WALLETS</div>
+                        <div>DEMO</div>
                         <AddTransactionButton />
                         <Drawer />
                     </Toolbar>
