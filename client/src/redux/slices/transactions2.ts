@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { setPageNumber } from './pageNumber';
 
 export interface Transaction {
     comment: string | null;
@@ -158,21 +157,50 @@ const getCategoryAndSubcategory = (obj: any) => {
 
 const getDate = () => {
     const year = 2020;
-    const month = Math.round(Math.random() * (12 - 1) + 1);
+    let month: number | string = Math.round(Math.random() * (12 - 1) + 1);
     const day = Math.round(Math.random() * (30 - 1) + 1);
+    if (month < 10) month = `0${month}`;
     return `${year}-${month}-${day}`;
 };
 
-export let initialState: Transaction[] = [];
+interface Transactions2 {
+    transactions: Transaction[];
+    pageNumber: number;
+}
 
-export const transactions = createSlice({
-    name: 'transactions',
+let initialPageNumber: number;
+
+let localStorage_pageNumber = localStorage.getItem('pageNumber');
+if (localStorage_pageNumber) {
+    initialPageNumber = +JSON.parse(localStorage_pageNumber);
+} else initialPageNumber = 1;
+
+export let initialState: Transactions2 = {
+    transactions: [],
+    pageNumber: initialPageNumber,
+};
+
+export const transactions2 = createSlice({
+    name: 'transactions2',
     initialState,
     reducers: {
         addTransaction: (
-            state: Transaction[]
+            state: Transactions2
             // action: PayloadAction<number>
         ) => {
+            const getNewPageNumber = (month: number) => {
+                let newPageNumber: number = 1;
+                let monthsArray: number[] = [];
+                state.transactions.forEach((el) => {
+                    monthsArray.push(+el.date.substr(5, 2));
+                });
+                let uniqueMonthsArray: number[] = Array.from(
+                    new Set(monthsArray)
+                ).sort((a, b) => b - a);
+                // console.log(uniqueMonthsArray);
+                newPageNumber = uniqueMonthsArray.indexOf(month) + 1;
+                return newPageNumber;
+            };
             let newTrx: Transaction = {
                 comment: comments[Math.floor(Math.random() * comments.length)],
                 date: getDate(),
@@ -203,19 +231,38 @@ export const transactions = createSlice({
                 newTrx.expenses_subcategory = null;
             }
 
-            state.push(newTrx);
+            state.transactions.push(newTrx);
+
+            const monthFromNewTrx = +newTrx.date.substr(5, 2);
+            // console.log(monthFromNewTrx);
+            // getNewPageNumber(monthFromNewTrx);
+            // const trx = state.transactions;
+            // console.log(newTrx);
+            // console.log(JSON.parse(JSON.stringify(trx)));
+            let newPageNumber = getNewPageNumber(monthFromNewTrx);
+            state.pageNumber = newPageNumber;
+            localStorage.setItem('pageNumber', JSON.stringify(newPageNumber));
 
             return state;
         },
         setAllTransactions: (
-            state: Transaction[],
+            state: Transactions2,
             action: PayloadAction<Transaction[]>
         ) => {
-            state = action.payload;
+            state.transactions = action.payload;
+            return state;
+        },
+        setPageNumber: (
+            state: Transactions2,
+            action: { payload: number; type: string }
+        ) => {
+            state.pageNumber = action.payload;
+            localStorage.setItem('pageNumber', JSON.stringify(action.payload));
             return state;
         },
     },
 });
 
-export const { addTransaction, setAllTransactions } = transactions.actions;
-export default transactions.reducer;
+export const { addTransaction, setAllTransactions, setPageNumber } =
+    transactions2.actions;
+export default transactions2.reducer;

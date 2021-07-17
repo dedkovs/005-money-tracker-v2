@@ -15,6 +15,8 @@ declare module '@material-ui/core/styles/createPalette' {
     interface PaletteOptions {
         text1?: string;
         text2?: string;
+        text3?: string;
+        text4?: string;
         recordArrowDownColor?: string;
         recordWalletTextColorExpenses?: string;
         recordWalletTextColorIncome?: string;
@@ -36,6 +38,9 @@ declare module '@material-ui/core/styles/createPalette' {
         inputLabelColor?: string;
         appBarBackgroundColor?: string;
         dividerColor?: string;
+        recordHeaderSumTextColorExpenses?: string;
+        recordHeaderSumTextColorIncome?: string;
+        recordHeaderSumTextColorBetween?: string;
     }
 
     interface Palette extends PaletteOptions {

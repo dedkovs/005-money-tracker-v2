@@ -40,29 +40,28 @@ interface Props {
 const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
     const classes = useStyles();
 
-    let showComments = useAppSelector((state) => state.showComments);
-
-    const { backgroundExpenses, backgroundIncome, backgroundBetween } = classes;
-
     let x: number, y: number;
-
+    let showComments = useAppSelector((state) => state.showComments);
     const [show, setShow] = useState(showComments);
 
     const wrapperRef = useRef<HTMLAnchorElement>(null);
     const recordMenuButtonRef = useRef<HTMLAnchorElement>(null);
 
-    const f = () => {
-        revealRecordCommentFunc(
-            x,
-            y,
-            wrapperRef,
-            recordMenuButtonRef,
-            show,
-            setShow
-        );
-    };
+    const { backgroundExpenses, backgroundIncome, backgroundBetween } = classes;
+
+    // const f = () => {
+    //     revealRecordCommentFunc(
+    //         x,
+    //         y,
+    //         wrapperRef,
+    //         recordMenuButtonRef,
+    //         show,
+    //         setShow
+    //     );
+    // };
 
     useEffect(() => {
+        let f: () => void;
         const wrapperRefCurrent = wrapperRef.current;
         if (comment) {
             if (wrapperRefCurrent) {
@@ -70,7 +69,19 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
                     'mousedown',
                     getMouseCoordinates
                 );
-                wrapperRefCurrent.addEventListener('mouseup', f);
+                wrapperRefCurrent.addEventListener(
+                    'mouseup',
+                    (f = function () {
+                        revealRecordCommentFunc(
+                            x,
+                            y,
+                            wrapperRef,
+                            recordMenuButtonRef,
+                            show,
+                            setShow
+                        );
+                    })
+                );
                 return () => {
                     wrapperRefCurrent.removeEventListener(
                         'mousedown',

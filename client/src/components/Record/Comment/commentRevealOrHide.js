@@ -1,5 +1,5 @@
 const commentRevealOrHide = (showComments, wrapperRef, setShow) => {
-    if (!showComments) {
+    if (showComments === false) {
         setShow(false);
 
         if (
@@ -10,7 +10,7 @@ const commentRevealOrHide = (showComments, wrapperRef, setShow) => {
         }
     }
 
-    if (showComments) {
+    if (showComments === true) {
         setShow(true);
 
         if (wrapperRef.current.nextSibling) {

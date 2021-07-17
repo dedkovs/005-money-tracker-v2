@@ -4,8 +4,11 @@ import { light, dark } from '../services/theme';
 import Layout from './Layout';
 import axios from 'axios';
 import Routes from './Routes';
-import { setAllTransactions } from '../redux/slices/transactions';
+// import { setAllTransactions } from '../redux/slices/transactions';
+// import { setAllTransactions } from '../redux/slices/transactions2';
 import { setIsAuth } from '../redux/slices/isAuth';
+// import { setWalletsTopOrder } from '../redux/slices/walletsTopOrder';
+// import { setWallets } from '../redux/slices/wallets';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const App = () => {
@@ -31,21 +34,27 @@ const App = () => {
         axios
             .get('/isauth')
             .then((res) => {
+                setLoading(false);
                 dispatch(setIsAuth(res.data.isAuth));
-                if (isAuth) {
-                    axios
-                        .get(`/getdata/${res.data.userId}`)
-                        .then((res) => {
-                            setLoading(false);
-                            dispatch(setAllTransactions(res.data));
-                        })
-                        .catch((err) => {
-                            setLoading(false);
-                            console.log(err);
-                        });
-                } else {
-                    setLoading(false);
-                }
+                // if (isAuth) {
+                // axios
+                // .get(`/getdata/${res.data.userId}`)
+                // .then((res) => {
+                // console.log(res.data);
+                // setLoading(false);
+                // dispatch(setAllTransactions(res.data.transactions));
+                // dispatch(
+                //     setWalletsTopOrder(res.data.wallets_top_order)
+                // );
+                // dispatch(setWallets(res.data.wallets));
+                // })
+                // .catch((err) => {
+                // setLoading(false);
+                // console.log(err);
+                // });
+                // } else {
+                // setLoading(false);
+                // }
             })
             .catch((err) => {
                 setLoading(false);

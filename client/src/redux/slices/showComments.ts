@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-let initialState: boolean = false;
+let initialState: boolean;
 
 let localStorage_showComments = localStorage.getItem('showComments');
 if (localStorage_showComments) {

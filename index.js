@@ -10,9 +10,9 @@ const LocalStrategy = require('passport-local').Strategy;
 const MySQLStore = require('express-mysql-session')(session);
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-const mode = 'dev';
-const public = mode === 'dev' ? '/client/public' : '/static';
-const port = mode === 'dev' ? 5000 : 80;
+const mode = process.env.MODE;
+const public = mode === 'DEV' ? '/client/public' : '/static';
+const port = mode === 'DEV' ? 4000 : 80;
 
 const app = express();
 
@@ -21,11 +21,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + public));
 
 const sequelizeOptions = {
-    host: mode === 'dev' ? 'localhost' : process.env.HOST,
-    port: mode === 'dev' ? 3306 : process.env.PORT,
-    username: mode === 'dev' ? 'root' : process.env.USER,
-    password: mode === 'dev' ? '1234' : process.env.PASSWORD,
-    database: mode === 'dev' ? 'money-tracker' : process.env.DATABASE,
+    host: mode === 'DEV' ? 'localhost' : process.env.HOST,
+    port: mode === 'DEV' ? 3306 : process.env.PORT,
+    username: mode === 'DEV' ? 'root' : process.env.USER,
+    password: mode === 'DEV' ? '1234' : process.env.PASSWORD,
+    database: mode === 'DEV' ? 'money-tracker' : process.env.DATABASE,
     dialect: 'mysql',
 };
 
@@ -66,11 +66,11 @@ const User = sequelize.define(
 );
 
 const sequelize_transactions = new Sequelize({
-    host: mode === 'dev' ? 'localhost' : process.env.HOST,
-    port: mode === 'dev' ? 3306 : process.env.PORT,
-    username: mode === 'dev' ? 'root' : process.env.USER,
-    password: mode === 'dev' ? '1234' : process.env.PASSWORD,
-    database: mode === 'dev' ? 'transactions' : process.env.TRANSACTIONS,
+    host: mode === 'DEV' ? 'localhost' : process.env.HOST,
+    port: mode === 'DEV' ? 3306 : process.env.PORT,
+    username: mode === 'DEV' ? 'root' : process.env.USER,
+    password: mode === 'DEV' ? '1234' : process.env.PASSWORD,
+    database: mode === 'DEV' ? 'transactions' : process.env.TRANSACTIONS,
     dialect: 'mysql',
 });
 
@@ -132,6 +132,15 @@ const createNewTransactionsTable = async (userId) => {
     );
 
     await Transactions.sync();
+    await sequelize.query(
+        `INSERT INTO wallets_top_order VALUES (${userId}, '[]')`,
+        {
+            type: QueryTypes.INSERT,
+        }
+    );
+    await sequelize.query(`INSERT INTO wallets VALUES (${userId}, '{}')`, {
+        type: QueryTypes.INSERT,
+    });
 };
 
 let localStrategy = new LocalStrategy(
@@ -168,7 +177,7 @@ passport.use(
             clientID: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
             callbackURL:
-                mode === 'dev'
+                mode === 'DEV'
                     ? 'http://localhost:3000/auth/google/callback'
                     : 'https://money-tracker.ru/auth/google/callback',
             userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
@@ -215,11 +224,11 @@ passport.deserializeUser(async (id, done) => {
 });
 
 const mySqlStoreOptions = {
-    host: mode === 'dev' ? 'localhost' : process.env.HOST,
-    port: mode === 'dev' ? 3306 : process.env.PORT,
-    user: mode === 'dev' ? 'root' : process.env.USER,
-    password: mode === 'dev' ? '1234' : process.env.PASSWORD,
-    database: mode === 'dev' ? 'money-tracker' : process.env.DATABASE,
+    host: mode === 'DEV' ? 'localhost' : process.env.HOST,
+    port: mode === 'DEV' ? 3306 : process.env.PORT,
+    user: mode === 'DEV' ? 'root' : process.env.USER,
+    password: mode === 'DEV' ? '1234' : process.env.PASSWORD,
+    database: mode === 'DEV' ? 'money-tracker' : process.env.DATABASE,
 };
 
 const sessionStore = new MySQLStore(mySqlStoreOptions);
@@ -375,14 +384,35 @@ app.post('/register', async (req, res) => {
 app.get('/getdata/:id', async (req, res) => {
     if (req.isAuthenticated) {
         try {
-            const trx = await sequelize_transactions.query(
+            const transactions = await sequelize_transactions.query(
                 'SELECT * FROM t_?',
                 {
                     replacements: [+req.params.id],
                     type: QueryTypes.SELECT,
                 }
             );
-            res.send(trx);
+            const wallets_top_order = await sequelize.query(
+                'SELECT * FROM wallets_top_order WHERE user_id = ? LIMIT 1',
+                {
+                    replacements: [+req.params.id],
+                    type: QueryTypes.SELECT,
+                }
+                // 'INSERT INTO wallets_top_order (user_id, data) VALUES (?, []) RETURNING data',
+                // {
+                //     replacements: [+req.params.id],
+                //     type: QueryTypes.SELECT,
+                // }
+            );
+            const wallets = await sequelize.query(
+                'SELECT * FROM wallets WHERE user_id = ? LIMIT 1',
+                { replacements: [+req.params.id], type: QueryTypes.SELECT }
+            );
+            const userData = {
+                transactions,
+                wallets_top_order: wallets_top_order[0].data,
+                wallets: wallets[0].data,
+            };
+            res.send(userData);
         } catch (err) {
             console.log(err);
         }

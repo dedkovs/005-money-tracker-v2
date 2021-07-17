@@ -53,7 +53,9 @@ const useStyles = makeStyles((theme) => ({
 const SecretPage = () => {
     const classes = useStyles();
 
-    const transactions = useAppSelector((state) => state.transactions);
+    const transactions = useAppSelector(
+        (state) => state.transactions2.transactions
+    );
 
     return (
         <>

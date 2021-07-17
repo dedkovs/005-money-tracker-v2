@@ -3,7 +3,10 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import { useAppDispatch } from '../../redux/hooks';
 import { setOpenDrawer } from '../../redux/slices/openDrawer';
-import { addTransaction } from '../../redux/slices/transactions';
+// import { addTransaction } from '../../redux/slices/transactions';
+import { addTransaction } from '../../redux/slices/transactions2';
+// import { setOpenTransactionForm } from '../../redux/slices/openTransactionForm';
+// import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
     tooltip: {
@@ -29,7 +32,10 @@ const AddTransactionButton2 = () => {
             onClick={() => {
                 dispatch(setOpenDrawer(false));
                 dispatch(addTransaction());
+                // dispatch(setOpenTransactionForm(true));
             }}
+            // component={Link}
+            // to="/data/add-transaction"
         >
             <AddIcon className={classes.addIcon} />
         </IconButton>

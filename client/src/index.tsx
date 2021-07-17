@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './fonts/CRC25.woff';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+// import './fonts/CRC25.woff';
 import './index.css';
 import App from './components/App';
 // import reportWebVitals from './reportWebVitals';
@@ -10,6 +11,7 @@ import store from './redux/store';
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
+            {/* <CssBaseline /> */}
             <App />
         </Provider>
     </React.StrictMode>,

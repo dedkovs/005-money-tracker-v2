@@ -1,6 +1,7 @@
 import { Theme } from '@material-ui/core/styles';
 import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core';
 const WHITE = '#ffffff';
+const BLACK = '#000000';
 
 const TRANSPARENT_WHITE_1 = 'rgba(255,255,255,0.12)';
 const TRANSPARENT_BLACK_1 = 'rgba(0,0,0,0.12)';
@@ -33,6 +34,7 @@ const BLUE_7 = 'rgba(43,63,79,0.7)';
 const BLUE_8 = 'rgb(43,63,79)';
 const BLUE_9 = 'rgb(14,32,46)';
 const BLUE_10 = 'rgba(0,103,163,0.08)';
+const BLUE_11 = 'rgb(77,135,189)';
 
 const GREEN_1 = '#def0d5';
 const GREEN_2 = '#6a875d';
@@ -60,6 +62,7 @@ export const light: Theme = createMuiTheme({
 
         text1: GREY_11,
         text2: GREY_5,
+        text3: BLACK,
 
         background: {
             paper: WHITE,
@@ -92,9 +95,13 @@ export const light: Theme = createMuiTheme({
 
         inputLabelColor: GREY_7,
 
-        appBarBackgroundColor: BLUE_5,
+        appBarBackgroundColor: BLUE_11,
 
         dividerColor: TRANSPARENT_BLACK_1,
+
+        recordHeaderSumTextColorExpenses: BLUE_8,
+        recordHeaderSumTextColorIncome: GREEN_8,
+        recordHeaderSumTextColorBetween: GREY_8,
     },
 });
 
@@ -114,6 +121,7 @@ export const dark: Theme = createMuiTheme({
 
         text1: GREY_13,
         text2: WHITE,
+        text3: WHITE,
 
         background: {
             paper: GREY_5,
@@ -150,5 +158,9 @@ export const dark: Theme = createMuiTheme({
         appBarBackgroundColor: BLUE_6,
 
         dividerColor: TRANSPARENT_WHITE_1,
+
+        recordHeaderSumTextColorExpenses: BLUE_1,
+        recordHeaderSumTextColorIncome: GREEN_1,
+        recordHeaderSumTextColorBetween: GREY_1,
     },
 });
