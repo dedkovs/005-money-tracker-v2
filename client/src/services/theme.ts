@@ -102,6 +102,8 @@ export const light: Theme = createMuiTheme({
         recordHeaderSumTextColorExpenses: BLUE_8,
         recordHeaderSumTextColorIncome: GREEN_8,
         recordHeaderSumTextColorBetween: GREY_8,
+
+        tabsIndicatorColor: BLUE_11,
     },
 });
 
@@ -162,5 +164,7 @@ export const dark: Theme = createMuiTheme({
         recordHeaderSumTextColorExpenses: BLUE_1,
         recordHeaderSumTextColorIncome: GREEN_1,
         recordHeaderSumTextColorBetween: GREY_1,
+
+        tabsIndicatorColor: GREY_13,
     },
 });

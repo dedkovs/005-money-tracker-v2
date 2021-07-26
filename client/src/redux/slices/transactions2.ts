@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
+// import { useHistory } from 'react-router-dom';
+// import getGroups from '../../components/Data/getGroups';
 export interface Transaction {
     comment: string | null;
     date: string;
@@ -180,6 +181,8 @@ export let initialState: Transactions2 = {
     pageNumber: initialPageNumber,
 };
 
+// let history = useHistory();
+
 export const transactions2 = createSlice({
     name: 'transactions2',
     initialState,
@@ -243,6 +246,10 @@ export const transactions2 = createSlice({
             state.pageNumber = newPageNumber;
             localStorage.setItem('pageNumber', JSON.stringify(newPageNumber));
 
+            // history.push(
+            //     `/${getGroups(state.transactions)[newPageNumber - 1].month}`
+            // );
+
             return state;
         },
         setAllTransactions: (
@@ -260,9 +267,19 @@ export const transactions2 = createSlice({
             localStorage.setItem('pageNumber', JSON.stringify(action.payload));
             return state;
         },
+        deleteTransaction: (state, action) => {
+            state.transactions = state.transactions.filter(
+                (trx) => trx.id !== action.payload
+            );
+            return state;
+        },
     },
 });
 
-export const { addTransaction, setAllTransactions, setPageNumber } =
-    transactions2.actions;
+export const {
+    addTransaction,
+    setAllTransactions,
+    setPageNumber,
+    deleteTransaction,
+} = transactions2.actions;
 export default transactions2.reducer;

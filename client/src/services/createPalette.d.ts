@@ -41,6 +41,7 @@ declare module '@material-ui/core/styles/createPalette' {
         recordHeaderSumTextColorExpenses?: string;
         recordHeaderSumTextColorIncome?: string;
         recordHeaderSumTextColorBetween?: string;
+        tabsIndicatorColor?: string;
     }
 
     interface Palette extends PaletteOptions {

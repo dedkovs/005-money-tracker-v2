@@ -27,7 +27,7 @@ const MenuButton1 = () => {
 
     return (
         <Tooltip
-            title={'Меню'}
+            title={'Menu'}
             placement="bottom"
             classes={{ tooltip: classes.tooltip }}
             arrow

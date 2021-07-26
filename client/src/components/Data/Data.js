@@ -68,7 +68,6 @@ const Data = () => {
         (state) => state.transactions2.pageNumber
     );
     const dispatch = useAppDispatch();
-    // const [page, setPage] = React.useState(1);
     const theme = useTheme();
     const transactions = useAppSelector(
         (state) => state.transactions2.transactions

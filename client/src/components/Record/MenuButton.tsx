@@ -24,15 +24,28 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const MenuButton = React.forwardRef<HTMLAnchorElement>((props, ref) => {
+interface Props {
+    handleClick: (e: any) => void;
+    id: string;
+    // ref: Ref<React.RefObject<HTMLAnchorElement>> | undefined;
+    // ref: any;
+}
+
+// interface Ref {
+//     ref: React.RefObject<HTMLButtonElement>;
+// }
+
+// const MenuButton = React.forwardRef<React.RefObject<HTMLAnchorElement>, Props>(
+const MenuButton = React.forwardRef<any, Props>((props, ref) => {
     const classes = useStyles();
 
     return (
         <Button
-            // id={props.id}
-            ref={ref as any}
+            id={props.id}
+            ref={ref}
             className={classes.menuButton}
-            // onClick={props.handleClick}
+            onClick={props.handleClick}
+            // component={() => <div>HELLO</div>}
         >
             <MoreVertIcon className={classes.menuIcon} />
         </Button>

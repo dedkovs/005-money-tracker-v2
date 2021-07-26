@@ -12,6 +12,9 @@ import walletsTopOrder from './slices/walletsTopOrder';
 import wallets from './slices/wallets';
 import openTransactionForm from './slices/openTransactionForm';
 import pageNumber from './slices/pageNumber';
+import anchors from './slices/anchors';
+import recordToEdit from './slices/recordToEdit';
+import dialogs from './slices/dialogs';
 
 const rootReducer = combineReducers({
     transactions,
@@ -27,6 +30,9 @@ const rootReducer = combineReducers({
     wallets,
     openTransactionForm,
     pageNumber,
+    anchors,
+    recordToEdit,
+    dialogs,
 });
 
 export default rootReducer;

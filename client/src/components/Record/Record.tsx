@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { Transaction } from '../../redux/slices/transactions';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +12,9 @@ import { useAppSelector } from '../../redux/hooks';
 import revealRecordCommentFunc from './Comment/revealRecordCommentFunc';
 import commentRevealOrHide from './Comment/commentRevealOrHide';
 import Comment from './Comment/Comment';
+import { useAppDispatch } from '../../redux/hooks';
+import { setRecordMenuButtonAnchor } from '../../redux/slices/anchors';
+import { setRecordToEdit } from '../../redux/slices/recordToEdit';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -39,29 +42,29 @@ interface Props {
 
 const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
     const classes = useStyles();
+    const dispatch = useAppDispatch();
 
     let x: number, y: number;
     let showComments = useAppSelector((state) => state.showComments);
     const [show, setShow] = useState(showComments);
 
     const wrapperRef = useRef<HTMLAnchorElement>(null);
-    const recordMenuButtonRef = useRef<HTMLAnchorElement>(null);
-
+    // const recordMenuButtonRef = useRef<HTMLAnchorElement>(null);
+    const recordMenuButtonRef = useRef<HTMLButtonElement>(null);
+    // const recordToEdit = useAppSelector((state) => state.recordToEdit);
     const { backgroundExpenses, backgroundIncome, backgroundBetween } = classes;
 
-    // const f = () => {
-    //     revealRecordCommentFunc(
-    //         x,
-    //         y,
-    //         wrapperRef,
-    //         recordMenuButtonRef,
-    //         show,
-    //         setShow
-    //     );
-    // };
-
     useEffect(() => {
-        let f: () => void;
+        const f = () => {
+            revealRecordCommentFunc(
+                x,
+                y,
+                wrapperRef,
+                recordMenuButtonRef,
+                show,
+                setShow
+            );
+        };
         const wrapperRefCurrent = wrapperRef.current;
         if (comment) {
             if (wrapperRefCurrent) {
@@ -69,19 +72,7 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
                     'mousedown',
                     getMouseCoordinates
                 );
-                wrapperRefCurrent.addEventListener(
-                    'mouseup',
-                    (f = function () {
-                        revealRecordCommentFunc(
-                            x,
-                            y,
-                            wrapperRef,
-                            recordMenuButtonRef,
-                            show,
-                            setShow
-                        );
-                    })
-                );
+                wrapperRefCurrent.addEventListener('mouseup', f);
                 return () => {
                     wrapperRefCurrent.removeEventListener(
                         'mousedown',
@@ -120,11 +111,18 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
                 className={`${classes.paper} ${getPaperColor()}`}
             >
                 <MenuButton
-                    // handleClick={(e) => {
-                    // 	setAnchorEl(e.currentTarget);
-                    // 	setRecordToEdit(record);
-                    // }}
+                    handleClick={(e) => {
+                        // setAnchorEl(e.currentTarget);
+                        dispatch(
+                            setRecordMenuButtonAnchor(`recordMenuButton_${id}`)
+                        );
+                        dispatch(setRecordToEdit(record));
+                        // console.log(recordToEdit);
+                        // console.log(e.currentTarget);
+                        // console.log(id);
+                    }}
                     ref={recordMenuButtonRef}
+                    id={`recordMenuButton_${id}`}
                 />
                 <WalletContainer record={record} />
                 <ArrowBetweenWallets record={record} />
