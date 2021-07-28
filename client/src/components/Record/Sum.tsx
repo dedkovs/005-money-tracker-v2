@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 10,
     },
     sumText: {
-        // fontFamily: 'Quicksand',
         fontFamily: 'Circe',
         fontSize: '1.5rem',
         lineHeight: '1em',
