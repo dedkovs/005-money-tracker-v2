@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { useHistory } from 'react-router-dom';
 import getGroups from '../../components/Data/getGroups';
 export interface Transaction {
     comment: string | null;
@@ -10,7 +9,6 @@ export interface Transaction {
     income_category?: string | null;
     income_subcategory?: string | null;
     sum: number;
-    // show?: boolean;
     wallet: string;
     wallet_from: string | null;
     wallet_to: string | null;
@@ -49,6 +47,7 @@ const comments = [
     'Challenge everything',
     'What happens here, stays here',
 ];
+
 const expenses_categories = {
     Auto: [
         'Auto parts',
@@ -138,6 +137,7 @@ const projects = [
     'Project #4',
     'Project #5',
 ];
+
 const income_categories = {
     Design: projects,
     'Video filming': projects,
@@ -145,6 +145,7 @@ const income_categories = {
     DJ: projects,
     Programming: projects,
 };
+
 const wallets = [
     'Cash',
     'Tinkoff',
@@ -162,8 +163,6 @@ const getCategoryAndSubcategory = (obj: any) => {
     category = keys[Math.floor(Math.random() * keys.length)];
     key = obj[category];
     subcategory = key[Math.floor(Math.random() * key.length)];
-    // return;
-    // return obj[keys[(keys.length * Math.random()) << 0]];
 };
 
 const getDate = () => {
@@ -193,16 +192,11 @@ export let initialState: Transactions2 = {
     groupsByMonth: [],
 };
 
-// let history = useHistory();
-
 export const transactions2 = createSlice({
     name: 'transactions2',
     initialState,
     reducers: {
-        addTransaction: (
-            state: Transactions2
-            // action: PayloadAction<number>
-        ) => {
+        addTransaction: (state: Transactions2) => {
             let transactions = [...state.transactions];
             const getNewPageNumber = (month: number) => {
                 let newPageNumber: number;
@@ -213,17 +207,13 @@ export const transactions2 = createSlice({
                 let uniqueMonthsArray: number[] = Array.from(
                     new Set(monthsArray)
                 ).sort((a, b) => b - a);
-                // console.log(uniqueMonthsArray);
                 newPageNumber = uniqueMonthsArray.indexOf(month);
                 return newPageNumber;
             };
             let newTrx: Transaction = {
                 comment: comments[Math.floor(Math.random() * comments.length)],
                 date: getDate(),
-                // expenses_subcategory: expenses_categories.Auto[0],
                 id: Math.floor(Math.random() * 10 ** 10) + 1,
-                // income_category: null,
-                // income_subcategory: null,
                 sum: 0,
                 wallet: wallets[Math.floor(Math.random() * wallets.length)],
                 wallet_from: null,
@@ -247,29 +237,12 @@ export const transactions2 = createSlice({
                 newTrx.expenses_subcategory = null;
             }
 
-            // console.log('-----------------------------');
-            // console.log(JSON.parse(JSON.stringify(state.transactions)));
             transactions.push(newTrx);
-            // console.log('push to array');
-            // console.log(JSON.parse(JSON.stringify(state.transactions)));
-            // console.log('-----------------------------');
             const monthFromNewTrx = +newTrx.date.substr(5, 2);
-            // console.log(monthFromNewTrx);
-            // getNewPageNumber(monthFromNewTrx);
-            // const trx = state.transactions;
-            // console.log(newTrx);
-            // console.log(JSON.parse(JSON.stringify(trx)));
             let pageNumber = getNewPageNumber(monthFromNewTrx);
-            // state.pageNumber = newPageNumber;
             localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
 
-            // history.push(
-            //     `/${getGroups(state.transactions)[newPageNumber - 1].month}`
-            // );
-
             const groupsByMonth = getGroups(transactions);
-
-            // console.log(Date.now());
 
             return { groupsByMonth, transactions, pageNumber };
         },
@@ -294,10 +267,17 @@ export const transactions2 = createSlice({
                 (trx) => trx.id !== action.payload
             );
             const groupsByMonth = getGroups(transactions);
-            // state.transactions = state.transactions.filter(
-            //     (trx) => trx.id !== action.payload
-            // );
-            return { ...state, transactions, groupsByMonth };
+            let pageNumber: number;
+            if (groupsByMonth[state.pageNumber]) {
+                pageNumber = state.pageNumber;
+            } else {
+                if (state.pageNumber > 0) {
+                    pageNumber = state.pageNumber - 1;
+                } else {
+                    pageNumber = 0;
+                }
+            }
+            return { pageNumber, transactions, groupsByMonth };
         },
     },
 });
