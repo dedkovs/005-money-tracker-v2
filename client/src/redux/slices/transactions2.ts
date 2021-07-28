@@ -185,7 +185,7 @@ let initialPageNumber: number;
 let localStorage_pageNumber = localStorage.getItem('pageNumber');
 if (localStorage_pageNumber) {
     initialPageNumber = +JSON.parse(localStorage_pageNumber);
-} else initialPageNumber = 1;
+} else initialPageNumber = 0;
 
 export let initialState: Transactions2 = {
     transactions: [],
@@ -205,7 +205,7 @@ export const transactions2 = createSlice({
         ) => {
             let transactions = [...state.transactions];
             const getNewPageNumber = (month: number) => {
-                let newPageNumber: number = 1;
+                let newPageNumber: number;
                 let monthsArray: number[] = [];
                 transactions.forEach((el) => {
                     monthsArray.push(+el.date.substr(5, 2));
@@ -214,7 +214,7 @@ export const transactions2 = createSlice({
                     new Set(monthsArray)
                 ).sort((a, b) => b - a);
                 // console.log(uniqueMonthsArray);
-                newPageNumber = uniqueMonthsArray.indexOf(month) + 1;
+                newPageNumber = uniqueMonthsArray.indexOf(month);
                 return newPageNumber;
             };
             let newTrx: Transaction = {

@@ -40,10 +40,12 @@ const useStyles = makeStyles((theme) => ({
     },
     recordsContainer2: {
         display: 'block',
+        margin: '0 auto',
         maxWidth: 500,
         minWidth: 320,
-        width: '95%',
-        margin: '30px 0',
+        width: 'calc(100% - 20px)',
+        marginTop: 30,
+        marginBottom: 30,
     },
     pagination: {
         marginTop: 90,
@@ -77,6 +79,9 @@ const Routes = (props: Props) => {
     const transactions = useAppSelector(
         (state) => state.transactions2.transactions
     );
+    const pageNumber = useAppSelector(
+        (state) => state.transactions2.pageNumber
+    );
     const groupsByMonth = useAppSelector(
         (state) => state.transactions2.groupsByMonth
     );
@@ -105,7 +110,40 @@ const Routes = (props: Props) => {
                             <Spinner />
                         ) : isAuth ? (
                             <>
+                                <Header />
                                 <DataTabs />
+                                {transactions.length > 0 ? (
+                                    <div className={classes.recordsContainer2}>
+                                        {groupsByMonth[pageNumber].records.map(
+                                            (group) => {
+                                                return (
+                                                    <div
+                                                        key={group.day}
+                                                        className={
+                                                            classes.recordsGroupDate
+                                                        }
+                                                    >
+                                                        <RecordsByDayHeader
+                                                            group={group}
+                                                        />
+
+                                                        {getRecordsBetween(
+                                                            group.records
+                                                        )}
+
+                                                        {getRecordsIncome(
+                                                            group.records
+                                                        )}
+
+                                                        {getRecordsExpences(
+                                                            group.records
+                                                        )}
+                                                    </div>
+                                                );
+                                            }
+                                        )}
+                                    </div>
+                                ) : null}
                             </>
                         ) : (
                             <Redirect to="/login" />
