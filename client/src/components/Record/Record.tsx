@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { Transaction } from '../../redux/slices/transactions';
 import { makeStyles } from '@material-ui/core/styles';
@@ -49,9 +49,7 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
     const [show, setShow] = useState(showComments);
 
     const wrapperRef = useRef<HTMLAnchorElement>(null);
-    // const recordMenuButtonRef = useRef<HTMLAnchorElement>(null);
     const recordMenuButtonRef = useRef<HTMLButtonElement>(null);
-    // const recordToEdit = useAppSelector((state) => state.recordToEdit);
     const { backgroundExpenses, backgroundIncome, backgroundBetween } = classes;
 
     useEffect(() => {
@@ -112,14 +110,10 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
             >
                 <MenuButton
                     handleClick={(e) => {
-                        // setAnchorEl(e.currentTarget);
                         dispatch(
                             setRecordMenuButtonAnchor(`recordMenuButton_${id}`)
                         );
                         dispatch(setRecordToEdit(record));
-                        // console.log(recordToEdit);
-                        // console.log(e.currentTarget);
-                        // console.log(id);
                     }}
                     ref={recordMenuButtonRef}
                     id={`recordMenuButton_${id}`}

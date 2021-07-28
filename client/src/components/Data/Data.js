@@ -1,10 +1,5 @@
-import React from 'react';
 import Header from '../Header/Header';
 import Pagination from '@material-ui/lab/Pagination';
-// import WalletMenu from '../Header/WalletMenu';
-// import Menu from '../Record/Menu';
-// import DialogRemoveRecord from '../Record/DialogRemoveRecord/DialogRemoveRecord';
-import getGroups from './getGroups';
 import getRecordsBetween from './getRecordsBetween';
 import getRecordsIncome from './getRecordsIncome';
 import getRecordsExpences from './getRecordsExpences';
@@ -15,7 +10,6 @@ import {
     ThemeProvider,
 } from '@material-ui/core/styles';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-// import { setPageNumber } from '../../redux/slices/pageNumber';
 import { setPageNumber } from '../../redux/slices/transactions2';
 import grey from '@material-ui/core/colors/grey';
 import { useTheme } from '@material-ui/styles';
@@ -72,9 +66,12 @@ const Data = () => {
     const transactions = useAppSelector(
         (state) => state.transactions2.transactions
     );
+    const groupsByMonth = useAppSelector(
+        (state) => state.transactions2.groupsByMonth
+    );
 
-    const headerMonth = getGroups(transactions)[pageNumber - 1]
-        ? getGroups(transactions)[pageNumber - 1].month
+    const headerMonth = groupsByMonth[pageNumber - 1]
+        ? groupsByMonth[pageNumber - 1].month
         : null;
 
     const classes = useStyles();
@@ -99,9 +96,6 @@ const Data = () => {
 
     return (
         <div style={{ minWidth: 360 }}>
-            {/* <Menu /> */}
-            {/* <WalletMenu /> */}
-            {/* <DialogRemoveRecord /> */}
             <Header />
 
             <div className={classes.recordsContainer1}>
@@ -110,7 +104,7 @@ const Data = () => {
                         <ThemeProvider theme={paginationTheme}>
                             <Pagination
                                 className={classes.pagination}
-                                count={getGroups(transactions).length}
+                                count={groupsByMonth.length}
                                 page={pageNumber}
                                 onChange={(e, p) => dispatch(setPageNumber(p))}
                                 color={'primary'}
@@ -120,31 +114,35 @@ const Data = () => {
                         <div className={classes.headerMonth}>{headerMonth}</div>
 
                         <div className={classes.recordsContainer2}>
-                            {getGroups(transactions)[pageNumber - 1]
-                                ? getGroups(transactions)[
-                                      pageNumber - 1
-                                  ].records.map((group) => {
-                                      return (
-                                          <div
-                                              key={group.day}
-                                              className={
-                                                  classes.recordsGroupDate
-                                              }
-                                          >
-                                              <RecordsByDayHeader
-                                                  group={group}
-                                              />
+                            {groupsByMonth[pageNumber - 1]
+                                ? groupsByMonth[pageNumber - 1].records.map(
+                                      (group) => {
+                                          return (
+                                              <div
+                                                  key={group.day}
+                                                  className={
+                                                      classes.recordsGroupDate
+                                                  }
+                                              >
+                                                  <RecordsByDayHeader
+                                                      group={group}
+                                                  />
 
-                                              {getRecordsBetween(group.records)}
+                                                  {getRecordsBetween(
+                                                      group.records
+                                                  )}
 
-                                              {getRecordsIncome(group.records)}
+                                                  {getRecordsIncome(
+                                                      group.records
+                                                  )}
 
-                                              {getRecordsExpences(
-                                                  group.records
-                                              )}
-                                          </div>
-                                      );
-                                  })
+                                                  {getRecordsExpences(
+                                                      group.records
+                                                  )}
+                                              </div>
+                                          );
+                                      }
+                                  )
                                 : dispatch(
                                       setPageNumber(
                                           (pageNumber) => pageNumber - 1

@@ -4,31 +4,23 @@ import {
     Route,
     Switch,
     Redirect,
-    // Link,
 } from 'react-router-dom';
 import Header from './Header/Header';
-// import { useHistory } from 'react-router-dom';
-
 import Login from './Login/Login';
 import Register from './Register';
 import StartHeader from './StartHeader/StartHeader';
-// import SecretPage from './SecretPage';
 import Spinner from './Spinner';
-// import Header from './Header/Header';
 import TransactionForm from './TransactionForm/TransactionForm';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { setOpenDrawer } from '../redux/slices/openDrawer';
 import { setOpenTransactionForm } from '../redux/slices/openTransactionForm';
 import Data from './Data/Data';
 import DataTabs from './Data/DataTabs';
-import getGroups from './Data/getGroups';
 import RecordsByDayHeader from './Data/RecordsByDayHeader';
 import { makeStyles } from '@material-ui/core/styles';
 import getRecordsBetween from './Data/getRecordsBetween';
 import getRecordsIncome from './Data/getRecordsIncome';
 import getRecordsExpences from './Data/getRecordsExpences';
-// import Tabs from '@material-ui/core/Tabs';
-// import Tab from '@material-ui/core/Tab';
 
 interface Props {
     loading: boolean;
@@ -45,8 +37,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        // marginTop: 75,
-        // maxWidth: 500,
     },
     recordsContainer2: {
         display: 'block',
@@ -87,18 +77,14 @@ const Routes = (props: Props) => {
     const transactions = useAppSelector(
         (state) => state.transactions2.transactions
     );
-    // const pageNumber = useAppSelector(
-    //     (state) => state.transactions2.pageNumber
-    // );
-    // const history = useHistory();
+    const groupsByMonth = useAppSelector(
+        (state) => state.transactions2.groupsByMonth
+    );
 
     const classes = useStyles();
 
     const getGroup = (month: string) => {
-        // console.log(
-        //     getGroups(transactions).filter((group) => group.month === month)
-        // );
-        return getGroups(transactions).filter((group) => group.month === month);
+        return groupsByMonth.filter((group) => group.month === month);
     };
 
     return (
@@ -119,10 +105,7 @@ const Routes = (props: Props) => {
                             <Spinner />
                         ) : isAuth ? (
                             <>
-                                {/* <Data /> */}
                                 <DataTabs />
-                                {/* <Header /> */}
-                                {/* <SecretPage /> */}
                             </>
                         ) : (
                             <Redirect to="/login" />
@@ -169,8 +152,6 @@ const Routes = (props: Props) => {
                         dispatch(setOpenTransactionForm(true));
                         return isAuth ? (
                             <>
-                                {/* <Header /> */}
-                                {/* <SecretPage /> */}
                                 <Data />
                                 <TransactionForm />
                             </>
@@ -180,40 +161,31 @@ const Routes = (props: Props) => {
                     }}
                 />
                 <Route
+                    exact
                     path="/:month"
-                    render={(params) => {
+                    render={({ match }) => {
+                        const { month } = match.params;
+
                         return (
                             <>
                                 <Header />
                                 {transactions.length > 0 &&
                                 isAuth &&
                                 getGroup(
-                                    params.location.pathname
-                                        .slice(1)
-                                        .slice(0, -4)
-                                        .concat(' ')
-                                        .concat(
-                                            params.location.pathname.slice(-4)
-                                        )
+                                    `${month.slice(0, -4)} ${month.slice(-4)}`
                                 )[0] ? (
                                     <div className={classes.recordsContainer1}>
                                         <DataTabs />
-                                        {/* <div>{params.location.pathname.slice(1)}</div> */}
                                         <div
                                             className={
                                                 classes.recordsContainer2
                                             }
                                         >
                                             {getGroup(
-                                                params.location.pathname
-                                                    .slice(1)
-                                                    .slice(0, -4)
-                                                    .concat(' ')
-                                                    .concat(
-                                                        params.location.pathname.slice(
-                                                            -4
-                                                        )
-                                                    )
+                                                `${month.slice(
+                                                    0,
+                                                    -4
+                                                )} ${month.slice(-4)}`
                                             )[0].records.map((group: any) => {
                                                 return (
                                                     <div

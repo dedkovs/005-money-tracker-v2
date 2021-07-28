@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Button,
     Dialog,
@@ -7,7 +6,6 @@ import {
     DialogContentText,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-// import getData from './getData';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { setOpenDialogRemoveRecord } from '../../../redux/slices/dialogs';
 import { deleteTransaction } from '../../../redux/slices/transactions2';
@@ -28,7 +26,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const DialogRemoveRecord = () => {
-    // const { openDialogRemoveRecord: open, setOpenDialogRemoveRecord } = store;
     const classes = useStyles();
 
     const openDialogRemoveRecord = useAppSelector(
@@ -42,9 +39,6 @@ const DialogRemoveRecord = () => {
     return (
         <Dialog
             classes={{
-                // root: classes.dialogRoot,
-                // paperFullWidth: classes.paperFullWidth,
-                // paperWidthSm: classes.paperWidthSm,
                 paper: classes.dialog,
             }}
             open={openDialogRemoveRecord}
@@ -73,10 +67,7 @@ const DialogRemoveRecord = () => {
                     className={classes.button}
                     variant={'outlined'}
                     onClick={() => {
-                        // console.log(getData())
-                        // store.deleteTrx(getData(store));
                         dispatch(deleteTransaction(recordToEdit.id));
-                        // console.log(recordToEdit);
                         dispatch(setOpenDialogRemoveRecord(false));
                     }}
                 >

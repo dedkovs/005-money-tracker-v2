@@ -8,7 +8,6 @@ import DrawerCommentsCheckbox from './DrawerCommentsCheckbox';
 import DrawerCentsCheckbox from './DrawerCentsCheckbox';
 import axios from 'axios';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-// import { setAllTransactions } from '../../redux/slices/transactions';
 import { setAllTransactions } from '../../redux/slices/transactions2';
 import { setOpenDrawer } from '../../redux/slices/openDrawer';
 import { setIsAuth } from '../../redux/slices/isAuth';
@@ -75,8 +74,6 @@ const Drawer1 = () => {
                 >
                     <ListItemText>Charts</ListItemText>
                 </ListItem> */}
-                {/* <DrawerSwitchComments /> */}
-                {/* <DrawerSwitchCents /> */}
                 {/* <ListItem
                     onClick={() => {
                         // store.setOpenDialogRenameWallet(false);

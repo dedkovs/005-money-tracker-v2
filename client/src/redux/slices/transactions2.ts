@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // import { useHistory } from 'react-router-dom';
-// import getGroups from '../../components/Data/getGroups';
+import getGroups from '../../components/Data/getGroups';
 export interface Transaction {
     comment: string | null;
     date: string;
@@ -14,6 +14,16 @@ export interface Transaction {
     wallet: string;
     wallet_from: string | null;
     wallet_to: string | null;
+}
+
+interface GroupByDay {
+    day: string;
+    sum: number;
+    records: Transaction[];
+}
+interface GroupByMonth {
+    month: string;
+    records: GroupByDay[];
 }
 
 const comments = [
@@ -167,6 +177,7 @@ const getDate = () => {
 interface Transactions2 {
     transactions: Transaction[];
     pageNumber: number;
+    groupsByMonth: GroupByMonth[];
 }
 
 let initialPageNumber: number;
@@ -179,6 +190,7 @@ if (localStorage_pageNumber) {
 export let initialState: Transactions2 = {
     transactions: [],
     pageNumber: initialPageNumber,
+    groupsByMonth: [],
 };
 
 // let history = useHistory();
@@ -191,10 +203,11 @@ export const transactions2 = createSlice({
             state: Transactions2
             // action: PayloadAction<number>
         ) => {
+            let transactions = [...state.transactions];
             const getNewPageNumber = (month: number) => {
                 let newPageNumber: number = 1;
                 let monthsArray: number[] = [];
-                state.transactions.forEach((el) => {
+                transactions.forEach((el) => {
                     monthsArray.push(+el.date.substr(5, 2));
                 });
                 let uniqueMonthsArray: number[] = Array.from(
@@ -234,23 +247,31 @@ export const transactions2 = createSlice({
                 newTrx.expenses_subcategory = null;
             }
 
-            state.transactions.push(newTrx);
-
+            // console.log('-----------------------------');
+            // console.log(JSON.parse(JSON.stringify(state.transactions)));
+            transactions.push(newTrx);
+            // console.log('push to array');
+            // console.log(JSON.parse(JSON.stringify(state.transactions)));
+            // console.log('-----------------------------');
             const monthFromNewTrx = +newTrx.date.substr(5, 2);
             // console.log(monthFromNewTrx);
             // getNewPageNumber(monthFromNewTrx);
             // const trx = state.transactions;
             // console.log(newTrx);
             // console.log(JSON.parse(JSON.stringify(trx)));
-            let newPageNumber = getNewPageNumber(monthFromNewTrx);
-            state.pageNumber = newPageNumber;
-            localStorage.setItem('pageNumber', JSON.stringify(newPageNumber));
+            let pageNumber = getNewPageNumber(monthFromNewTrx);
+            // state.pageNumber = newPageNumber;
+            localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
 
             // history.push(
             //     `/${getGroups(state.transactions)[newPageNumber - 1].month}`
             // );
 
-            return state;
+            const groupsByMonth = getGroups(transactions);
+
+            // console.log(Date.now());
+
+            return { groupsByMonth, transactions, pageNumber };
         },
         setAllTransactions: (
             state: Transactions2,
@@ -268,10 +289,15 @@ export const transactions2 = createSlice({
             return state;
         },
         deleteTransaction: (state, action) => {
-            state.transactions = state.transactions.filter(
+            let transactions = [...state.transactions];
+            transactions = state.transactions.filter(
                 (trx) => trx.id !== action.payload
             );
-            return state;
+            const groupsByMonth = getGroups(transactions);
+            // state.transactions = state.transactions.filter(
+            //     (trx) => trx.id !== action.payload
+            // );
+            return { ...state, transactions, groupsByMonth };
         },
     },
 });

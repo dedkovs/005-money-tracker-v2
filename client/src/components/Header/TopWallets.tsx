@@ -16,8 +16,6 @@ const useStyles = makeStyles(() => ({
         overflowX: 'auto',
     },
     walletContainer: {
-        // fontFamily: 'Circe Light',
-        // fontWeight: 100,
         padding: '0 10px',
         margin: '0 10px',
         display: 'flex',
@@ -50,7 +48,6 @@ const TopWallets = () => {
     return (
         <div className={classes.topWalletsContainer}>
             <Tabs
-                // style={{ display: 'flex' }}
                 value={false}
                 variant="scrollable"
                 scrollButtons="auto"
@@ -61,8 +58,6 @@ const TopWallets = () => {
                         : classes.scrollButtonsDesktop2,
                 }}
             >
-                {/* {store.user.wallets_top_order.map((wallet) => { */}
-
                 {Object.keys(wallets).length > 0 &&
                     walletsTopOrder
                         .filter((wallet) => wallets[wallet][1] === 'show')
@@ -71,10 +66,6 @@ const TopWallets = () => {
                                 <Tab
                                     onClick={(event) => {
                                         dispatch(setOpenDrawer(false));
-                                        // store.setAnchorEl(null);
-                                        // store.setAnchorEl2(event.currentTarget);
-                                        // store.setWalletToEdit(wallet);
-                                        // console.log(store.walletToEdit);
                                     }}
                                     key={wallet}
                                     className={classes.walletContainer}
@@ -82,7 +73,6 @@ const TopWallets = () => {
                                         <div>
                                             <Typography
                                                 style={{
-                                                    // fontFamily: 'Circe Light',
                                                     fontFamily: 'Roboto',
                                                     fontWeight: 300,
                                                     fontSize: '0.8rem',
@@ -95,10 +85,6 @@ const TopWallets = () => {
                                             <Typography
                                                 style={{
                                                     fontFamily: 'Circe Light',
-                                                    // fontWeight: 100,
-                                                    // fontFamily: 'Roboto',
-                                                    // fontWeight: 300,
-                                                    // fontSize: '0.8rem',
                                                 }}
                                                 variant={'body2'}
                                                 align={'center'}

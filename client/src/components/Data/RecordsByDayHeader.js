@@ -1,11 +1,8 @@
-// import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import NumberFormat from 'react-number-format';
 import transformDate from './transformDate';
-// import getDaySumColor from './getDaySumColor';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector } from '../../redux/hooks';
-// import { useTheme } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
     dayHeader: {
@@ -15,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
     },
     dayValue: {
         color: theme.palette.text3,
-        // fontFamily: 'Circe LIght',
         fontWeight: 300,
         opacity: 0.8,
     },
@@ -33,14 +29,10 @@ const useStyles = makeStyles((theme) => ({
     recordHeaderSumTextColorBetween: {
         color: theme.palette.recordHeaderSumTextColorBetween,
     },
-    // text3: {
-    //     color: theme.palette.text3,
-    // },
 }));
 
 const RecordsByDayHeader = ({ group }) => {
     const classes = useStyles();
-    // const theme = useTheme();
 
     const showCents = useAppSelector((state) => state.showCents);
 
@@ -56,7 +48,6 @@ const RecordsByDayHeader = ({ group }) => {
                 {transformDate(group.day)}
             </Typography>
             <Typography
-                // className={`${classes.daySum}`}
                 className={`${classes.daySum} ${classes[getDaySumColor()]}
                 `}
                 variant={'body1'}
