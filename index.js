@@ -366,7 +366,7 @@ app.post('/register', async (req, res) => {
             await newUser.save();
             await createNewTransactionsTable(newUser.id);
             passport.authenticate('local')(req, res, () => {
-                res.send({ isAuth: true, error: '' });
+                res.send({ isAuth: true, userId: newUser.id, error: '' });
             });
         } catch (err) {
             res.send({ isAuth: false, error: err });

@@ -81,8 +81,10 @@ const Register = () => {
                 token,
             });
             if (response.data.isAuth === true) {
+                console.log('response.data:');
+                console.log(response.data);
                 setLoading(false);
-                dispatch(setIsAuth(response.data.isAuth));
+                dispatch(setIsAuth(true));
                 setError('');
             }
             if (response.data.error.length > 0) {

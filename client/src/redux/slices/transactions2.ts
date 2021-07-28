@@ -14,6 +14,10 @@ export interface Transaction {
     wallet_to: string | null;
 }
 
+interface Wallets {
+    [key: string]: [number, string, number];
+}
+
 interface GroupByDay {
     day: string;
     sum: number;
@@ -177,6 +181,8 @@ interface Transactions2 {
     transactions: Transaction[];
     pageNumber: number;
     groupsByMonth: GroupByMonth[];
+    walletsTopOrder: string[];
+    wallets: Wallets;
 }
 
 let initialPageNumber: number;
@@ -190,6 +196,8 @@ export let initialState: Transactions2 = {
     transactions: [],
     pageNumber: initialPageNumber,
     groupsByMonth: [],
+    walletsTopOrder: [],
+    wallets: {},
 };
 
 export const transactions2 = createSlice({
@@ -244,22 +252,40 @@ export const transactions2 = createSlice({
 
             const groupsByMonth = getGroups(transactions);
 
-            return { groupsByMonth, transactions, pageNumber };
+            return { ...state, groupsByMonth, transactions, pageNumber };
         },
         setAllTransactions: (
             state: Transactions2,
             action: PayloadAction<Transaction[]>
         ) => {
-            state.transactions = action.payload;
-            return state;
+            let transactions = action.payload;
+            const groupsByMonth = getGroups(transactions);
+            // state.transactions = action.payload;
+            let pageNumber: number;
+            if (!groupsByMonth[state.pageNumber]) {
+                pageNumber = 0;
+                localStorage.setItem('pageNumber', '0');
+            } else {
+                pageNumber = state.pageNumber;
+            }
+            return { ...state, pageNumber, transactions, groupsByMonth };
+        },
+        setWalletsTopOrder: (state, action) => {
+            let walletsTopOrder: string[] = action.payload;
+            return { ...state, walletsTopOrder };
+        },
+        setWallets: (state, action) => {
+            let wallets: Wallets = action.payload;
+            return { ...state, wallets };
         },
         setPageNumber: (
             state: Transactions2,
             action: { payload: number; type: string }
         ) => {
-            state.pageNumber = action.payload;
-            localStorage.setItem('pageNumber', JSON.stringify(action.payload));
-            return state;
+            let pageNumber = action.payload;
+            // state.pageNumber = action.payload;
+            localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
+            return { ...state, pageNumber };
         },
         deleteTransaction: (state, action) => {
             let transactions = [...state.transactions];
@@ -277,7 +303,7 @@ export const transactions2 = createSlice({
                     pageNumber = 0;
                 }
             }
-            return { pageNumber, transactions, groupsByMonth };
+            return { ...state, pageNumber, transactions, groupsByMonth };
         },
     },
 });
@@ -285,6 +311,8 @@ export const transactions2 = createSlice({
 export const {
     addTransaction,
     setAllTransactions,
+    setWalletsTopOrder,
+    setWallets,
     setPageNumber,
     deleteTransaction,
 } = transactions2.actions;

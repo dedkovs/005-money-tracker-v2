@@ -42,8 +42,10 @@ const TopWallets = () => {
 
     const dispatch = useAppDispatch();
     const showCents = useAppSelector((state) => state.showCents);
-    const walletsTopOrder = useAppSelector((state) => state.walletsTopOrder);
-    const wallets = useAppSelector((state) => state.wallets);
+    const walletsTopOrder = useAppSelector(
+        (state) => state.transactions2.walletsTopOrder
+    );
+    const wallets = useAppSelector((state) => state.transactions2.wallets);
 
     return (
         <div className={classes.topWalletsContainer}>

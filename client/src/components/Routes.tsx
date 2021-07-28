@@ -21,7 +21,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import getRecordsBetween from './Data/getRecordsBetween';
 import getRecordsIncome from './Data/getRecordsIncome';
 import getRecordsExpences from './Data/getRecordsExpences';
-
+import Records from './Data/Records';
 interface Props {
     loading: boolean;
     setLoading: Dispatch<SetStateAction<boolean>>;
@@ -79,9 +79,7 @@ const Routes = (props: Props) => {
     const transactions = useAppSelector(
         (state) => state.transactions2.transactions
     );
-    const pageNumber = useAppSelector(
-        (state) => state.transactions2.pageNumber
-    );
+
     const groupsByMonth = useAppSelector(
         (state) => state.transactions2.groupsByMonth
     );
@@ -112,38 +110,7 @@ const Routes = (props: Props) => {
                             <>
                                 <Header />
                                 <DataTabs />
-                                {transactions.length > 0 ? (
-                                    <div className={classes.recordsContainer2}>
-                                        {groupsByMonth[pageNumber].records.map(
-                                            (group) => {
-                                                return (
-                                                    <div
-                                                        key={group.day}
-                                                        className={
-                                                            classes.recordsGroupDate
-                                                        }
-                                                    >
-                                                        <RecordsByDayHeader
-                                                            group={group}
-                                                        />
-
-                                                        {getRecordsBetween(
-                                                            group.records
-                                                        )}
-
-                                                        {getRecordsIncome(
-                                                            group.records
-                                                        )}
-
-                                                        {getRecordsExpences(
-                                                            group.records
-                                                        )}
-                                                    </div>
-                                                );
-                                            }
-                                        )}
-                                    </div>
-                                ) : null}
+                                <Records />
                             </>
                         ) : (
                             <Redirect to="/login" />
@@ -195,67 +162,6 @@ const Routes = (props: Props) => {
                             </>
                         ) : (
                             <Redirect to="/" />
-                        );
-                    }}
-                />
-                <Route
-                    exact
-                    path="/:month"
-                    render={({ match }) => {
-                        const { month } = match.params;
-
-                        return (
-                            <>
-                                <Header />
-                                {transactions.length > 0 &&
-                                isAuth &&
-                                getGroup(
-                                    `${month.slice(0, -4)} ${month.slice(-4)}`
-                                )[0] ? (
-                                    <div className={classes.recordsContainer1}>
-                                        <DataTabs />
-                                        <div
-                                            className={
-                                                classes.recordsContainer2
-                                            }
-                                        >
-                                            {getGroup(
-                                                `${month.slice(
-                                                    0,
-                                                    -4
-                                                )} ${month.slice(-4)}`
-                                            )[0].records.map((group: any) => {
-                                                return (
-                                                    <div
-                                                        key={group.day}
-                                                        className={
-                                                            classes.recordsGroupDate
-                                                        }
-                                                    >
-                                                        <RecordsByDayHeader
-                                                            group={group}
-                                                        />
-
-                                                        {getRecordsBetween(
-                                                            group.records
-                                                        )}
-
-                                                        {getRecordsIncome(
-                                                            group.records
-                                                        )}
-
-                                                        {getRecordsExpences(
-                                                            group.records
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <Redirect to="/" />
-                                )}
-                            </>
                         );
                     }}
                 />

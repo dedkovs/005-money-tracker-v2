@@ -27,14 +27,14 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingLeft: 8,
-        paddingRight: 8,
+        // paddingLeft: 8,
+        // paddingRight: 8,
     },
     tabs1: {
         width: '100%',
         position: 'relative',
         margin: '0 auto',
-        maxWidth: 520,
+        maxWidth: 548,
         minWidth: 300,
     },
     tabs2: {
@@ -49,6 +49,7 @@ const Header = () => {
     const classes = useStyles();
 
     const matches = useMediaQuery('(max-width:360px)');
+    const matches2 = useMediaQuery('(min-width:500px)');
 
     const trigger = useScrollTrigger({
         disableHysteresis: true,
@@ -57,7 +58,8 @@ const Header = () => {
 
     return (
         <AppBar elevation={trigger ? 4 : 0} className={classes.appbar}>
-            <div className={matches ? classes.tabs1 : classes.tabs2}>
+            {/* <div className={matches ? classes.tabs1 : classes.tabs2}> */}
+            <div className={`${matches2 ? classes.tabs1 : null}`}>
                 <Toolbar
                     className={matches ? classes.toolbar1 : classes.toolbar2}
                 >

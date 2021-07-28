@@ -8,11 +8,16 @@ import DrawerCommentsCheckbox from './DrawerCommentsCheckbox';
 import DrawerCentsCheckbox from './DrawerCentsCheckbox';
 import axios from 'axios';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { setAllTransactions } from '../../redux/slices/transactions2';
+import {
+    setAllTransactions,
+    setWalletsTopOrder,
+    setWallets,
+} from '../../redux/slices/transactions2';
 import { setOpenDrawer } from '../../redux/slices/openDrawer';
 import { setIsAuth } from '../../redux/slices/isAuth';
 import { setLogoAnimated } from '../../redux/slices/logoAnimated';
 import { setLogoLoaded } from '../../redux/slices/logoLoaded';
+import { setPageNumber } from '../../redux/slices/transactions2';
 
 const useStyles = makeStyles((theme) => ({
     toolbarMargin: {
@@ -32,7 +37,11 @@ const Drawer1 = () => {
     const classes = useStyles();
 
     const openDrawer = useAppSelector((state) => state.openDrawer);
+    const pageNumber = useAppSelector(
+        (state) => state.transactions2.pageNumber
+    );
     const dispatch = useAppDispatch();
+    const local_pageNumber = pageNumber;
 
     const logOut = () => {
         dispatch(setOpenDrawer(false));
@@ -41,8 +50,11 @@ const Drawer1 = () => {
         axios
             .get('/logout')
             .then((res) => {
-                dispatch(setIsAuth(res.data.isAuth));
+                dispatch(setIsAuth(false));
                 dispatch(setAllTransactions([]));
+                dispatch(setWalletsTopOrder([]));
+                dispatch(setWallets({}));
+                dispatch(setPageNumber(local_pageNumber));
             })
             .catch((err) => {
                 console.log(
