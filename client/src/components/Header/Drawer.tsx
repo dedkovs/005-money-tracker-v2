@@ -10,14 +10,24 @@ import axios from 'axios';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import {
     setAllTransactions,
-    setWalletsTopOrder,
     setWallets,
-} from '../../redux/slices/transactions2';
-import { setOpenDrawer } from '../../redux/slices/openDrawer';
-import { setIsAuth } from '../../redux/slices/isAuth';
-import { setLogoAnimated } from '../../redux/slices/logoAnimated';
-import { setLogoLoaded } from '../../redux/slices/logoLoaded';
-import { setPageNumber } from '../../redux/slices/transactions2';
+    setWalletsTopOrder,
+    setWalletsOrder,
+} from '../../redux/slices/user';
+import { setOpenDrawer } from '../../redux/slices/open';
+import { setIsAuth } from '../../redux/slices/user';
+import {
+    setLogoAnimated,
+    setLogoLoaded,
+    setFormType,
+} from '../../redux/slices/ui';
+import { setPageNumber } from '../../redux/slices/user';
+import {
+    setExpensesSum,
+    setIncomeSum,
+} from '../../redux/slices/transactionForm';
+import { setRecordMenuButtonAnchor } from '../../redux/slices/anchors';
+import { setRecordToEdit } from '../../redux/slices/recordToEdit';
 
 const useStyles = makeStyles((theme) => ({
     toolbarMargin: {
@@ -36,10 +46,8 @@ const useStyles = makeStyles((theme) => ({
 const Drawer1 = () => {
     const classes = useStyles();
 
-    const openDrawer = useAppSelector((state) => state.openDrawer);
-    const pageNumber = useAppSelector(
-        (state) => state.transactions2.pageNumber
-    );
+    const openDrawer = useAppSelector((state) => state.open.openDrawer);
+    const pageNumber = useAppSelector((state) => state.user.pageNumber);
     const dispatch = useAppDispatch();
     const local_pageNumber = pageNumber;
 
@@ -52,9 +60,15 @@ const Drawer1 = () => {
             .then((res) => {
                 dispatch(setIsAuth(false));
                 dispatch(setAllTransactions([]));
-                dispatch(setWalletsTopOrder([]));
                 dispatch(setWallets({}));
+                dispatch(setWalletsTopOrder([]));
+                dispatch(setWalletsOrder([]));
+                dispatch(setExpensesSum(''));
+                dispatch(setIncomeSum(''));
                 dispatch(setPageNumber(local_pageNumber));
+                dispatch(setFormType('expenses'));
+                dispatch(setRecordMenuButtonAnchor(null));
+                dispatch(setRecordToEdit(null));
             })
             .catch((err) => {
                 console.log(

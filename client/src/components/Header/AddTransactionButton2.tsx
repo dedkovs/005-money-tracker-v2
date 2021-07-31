@@ -2,8 +2,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import { useAppDispatch } from '../../redux/hooks';
-import { setOpenDrawer } from '../../redux/slices/openDrawer';
-import { addTransaction } from '../../redux/slices/transactions2';
+import { setOpenDrawer } from '../../redux/slices/open';
+import { addTransaction } from '../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({
     tooltip: {

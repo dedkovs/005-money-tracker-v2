@@ -1,25 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { Anchors } from '../../services/types';
 
-export interface Anchors {
-    recordMenuButtonAnchor: null | string;
-}
-
-export let initialState: Anchors = {
-    recordMenuButtonAnchor: null,
+const initialState: Anchors = {
+	recordMenuButtonAnchor: null,
 };
 
 export const anchors = createSlice({
-    name: 'anchors',
-    initialState,
-    reducers: {
-        setRecordMenuButtonAnchor: (
-            state,
-            action: PayloadAction<null | string>
-        ) => {
-            state.recordMenuButtonAnchor = action.payload;
-            return state;
-        },
-    },
+	name: 'anchors',
+	initialState,
+	reducers: {
+		setRecordMenuButtonAnchor: (state, action: { payload: null | string }) => {
+			let recordMenuButtonAnchor = action.payload;
+			return { ...state, recordMenuButtonAnchor };
+		},
+	},
 });
 
 export const { setRecordMenuButtonAnchor } = anchors.actions;

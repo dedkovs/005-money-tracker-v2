@@ -1,26 +1,14 @@
-import { Transaction } from './transactions2';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { RecordToEdit } from '../../services/types';
 
-let initialState: Transaction = {
-    comment: '',
-    date: '',
-    expenses_category: '',
-    expenses_subcategory: '',
-    id: -1,
-    income_category: '',
-    income_subcategory: '',
-    sum: 0,
-    wallet: '',
-    wallet_from: '',
-    wallet_to: '',
-};
+let initialState: RecordToEdit = null;
+
 export const recordToEdit = createSlice({
     name: 'recordToEdit',
     initialState,
     reducers: {
-        setRecordToEdit: (state, action: PayloadAction<Transaction>) => {
-            state = action.payload;
-            return state;
+        setRecordToEdit: (state, action) => {
+            return action.payload;
         },
     },
 });

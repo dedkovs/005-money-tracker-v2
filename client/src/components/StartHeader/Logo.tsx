@@ -1,8 +1,8 @@
 import { makeStyles, Theme } from '@material-ui/core';
 import LogoSrc from '../../images/money-tracker-logo.svg';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { setLogoAnimated } from '../../redux/slices/logoAnimated';
-import { setLogoLoaded } from '../../redux/slices/logoLoaded';
+import { setLogoAnimated } from '../../redux/slices/ui';
+import { setLogoLoaded } from '../../redux/slices/ui';
 
 const useStyles = makeStyles((theme: Theme) => ({
     '@keyframes animation1': {
@@ -50,8 +50,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Logo = () => {
     const classes = useStyles();
 
-    const logoAnimated = useAppSelector((state) => state.logoAnimated);
-    const logoLoaded = useAppSelector((state) => state.logoLoaded);
+    const logoAnimated = useAppSelector((state) => state.ui.logoAnimated);
+    const logoLoaded = useAppSelector((state) => state.ui.logoLoaded);
     const dispatch = useAppDispatch();
 
     const getLogoClassName = () => {

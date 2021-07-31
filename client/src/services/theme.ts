@@ -29,6 +29,8 @@ const BLUE_2 = 'rgb(98,127,148)';
 const BLUE_3 = 'rgba(144,202,249,0.6)';
 const BLUE_4 = 'rgb(144,202,249)';
 const BLUE_5 = 'rgb(0,103,163)';
+// #40a7e2
+// #59af35
 const BLUE_6 = 'rgb(20,64,90)';
 const BLUE_7 = 'rgba(43,63,79,0.7)';
 const BLUE_8 = 'rgb(43,63,79)';
@@ -104,6 +106,8 @@ export const light: Theme = createMuiTheme({
         recordHeaderSumTextColorBetween: GREY_8,
 
         tabsIndicatorColor: BLUE_11,
+
+        transactionFormColor: GREY_11,
     },
 });
 
@@ -166,5 +170,7 @@ export const dark: Theme = createMuiTheme({
         recordHeaderSumTextColorBetween: GREY_1,
 
         tabsIndicatorColor: GREY_13,
+
+        transactionFormColor: WHITE,
     },
 });

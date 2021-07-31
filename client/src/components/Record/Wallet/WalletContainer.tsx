@@ -1,4 +1,4 @@
-import { Transaction } from '../../../redux/slices/transactions';
+import { Transaction } from '../../../services/types';
 import Wallet from './Wallet';
 
 interface Props {

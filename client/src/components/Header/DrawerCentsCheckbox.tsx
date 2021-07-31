@@ -3,7 +3,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { setShowCents } from '../../redux/slices/showCents';
+import { toggleShowCents } from '../../redux/slices/ui';
 
 const useStyles = makeStyles((theme) => ({
     showCents: {
@@ -25,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DrawerCentsCheckbox = () => {
-    const showCents = useAppSelector((state) => state.showCents);
+    const showCents = useAppSelector((state) => state.ui.showCents);
     const dispatch = useAppDispatch();
 
     const switchCents = () => {
-        dispatch(setShowCents(!showCents));
+        dispatch(toggleShowCents());
     };
 
     const classes = useStyles();

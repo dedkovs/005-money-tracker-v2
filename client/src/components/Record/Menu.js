@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { setRecordMenuButtonAnchor } from '../../redux/slices/anchors';
-import { setOpenDialogRemoveRecord } from '../../redux/slices/dialogs';
+import { setOpenDialogRemoveRecord } from '../../redux/slices/open';
+import { setRecordToEdit } from '../../redux/slices/recordToEdit';
 
 const useStyles = makeStyles(() => ({
     menuItem: {
@@ -29,7 +30,10 @@ const Menu1 = () => {
         <Menu
             anchorEl={ref}
             open={Boolean(recordMenuButtonAnchor)}
-            onClose={() => dispatch(setRecordMenuButtonAnchor(null))}
+            onClose={() => {
+                dispatch(setRecordToEdit(null));
+                dispatch(setRecordMenuButtonAnchor(null));
+            }}
             PaperProps={{
                 style: {
                     boxShadow: '0px 0px 10px rgba(0,0,0,0.2)',

@@ -4,8 +4,8 @@ import { useAppSelector } from '../../redux/hooks';
 import Spinner from '../Spinner';
 
 const StartHeader = () => {
-    const logoAnimated = useAppSelector((state) => state.logoAnimated);
-    const logoLoaded = useAppSelector((state) => state.logoLoaded);
+    const logoAnimated = useAppSelector((state) => state.ui.logoAnimated);
+    const logoLoaded = useAppSelector((state) => state.ui.logoLoaded);
 
     return (
         <div>

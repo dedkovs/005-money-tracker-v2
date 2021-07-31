@@ -3,7 +3,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { setOpenDrawer } from '../../redux/slices/openDrawer';
+import { setOpenDrawer } from '../../redux/slices/open';
 
 const useStyles = makeStyles(() => ({
     tooltip: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 const MenuButton1 = () => {
     const classes = useStyles();
 
-    const openDrawer = useAppSelector((state) => state.openDrawer);
+    const openDrawer = useAppSelector((state) => state.open.openDrawer);
     const dispatch = useAppDispatch();
 
     return (

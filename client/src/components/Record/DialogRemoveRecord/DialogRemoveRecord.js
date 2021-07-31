@@ -7,8 +7,8 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { setOpenDialogRemoveRecord } from '../../../redux/slices/dialogs';
-import { deleteTransaction } from '../../../redux/slices/transactions2';
+import { setOpenDialogRemoveRecord } from '../../../redux/slices/open';
+import { deleteTransaction } from '../../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({
     dialog: {
@@ -29,7 +29,7 @@ const DialogRemoveRecord = () => {
     const classes = useStyles();
 
     const openDialogRemoveRecord = useAppSelector(
-        (state) => state.dialogs.openDialogRemoveRecord
+        (state) => state.open.openDialogRemoveRecord
     );
 
     const recordToEdit = useAppSelector((state) => state.recordToEdit);

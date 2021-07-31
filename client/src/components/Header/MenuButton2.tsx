@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { setOpenDrawer } from '../../redux/slices/openDrawer';
+import { setOpenDrawer } from '../../redux/slices/open';
 
 const useStyles = makeStyles(() => ({
     menuIcon: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
 const MenuButton2 = () => {
     const classes = useStyles();
 
-    const openDrawer = useAppSelector((state) => state.openDrawer);
+    const openDrawer = useAppSelector((state) => state.open.openDrawer);
     const dispatch = useAppDispatch();
 
     return (

@@ -2,7 +2,7 @@ import { useAppSelector } from '../../redux/hooks';
 import RecordsByDayHeader from './RecordsByDayHeader';
 import getRecordsBetween from './getRecordsBetween';
 import getRecordsIncome from './getRecordsIncome';
-import getRecordsExpences from './getRecordsExpences';
+import getRecordsExpenses from './getRecordsExpenses';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,16 +52,10 @@ const useStyles = makeStyles((theme) => ({
 const Records = () => {
     const classes = useStyles();
 
-    const transactions = useAppSelector(
-        (state) => state.transactions2.transactions
-    );
+    const transactions = useAppSelector((state) => state.user.transactions);
 
-    const groupsByMonth = useAppSelector(
-        (state) => state.transactions2.groupsByMonth
-    );
-    const pageNumber = useAppSelector(
-        (state) => state.transactions2.pageNumber
-    );
+    const groupsByMonth = useAppSelector((state) => state.user.groupsByMonth);
+    const pageNumber = useAppSelector((state) => state.user.pageNumber);
 
     return transactions.length > 0 ? (
         <div className={classes.recordsContainer2}>
@@ -74,7 +68,7 @@ const Records = () => {
 
                         {getRecordsIncome(group.records)}
 
-                        {getRecordsExpences(group.records)}
+                        {getRecordsExpenses(group.records)}
                     </div>
                 );
             })}

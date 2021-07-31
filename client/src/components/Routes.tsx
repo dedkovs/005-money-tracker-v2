@@ -12,15 +12,10 @@ import StartHeader from './StartHeader/StartHeader';
 import Spinner from './Spinner';
 import TransactionForm from './TransactionForm/TransactionForm';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { setOpenDrawer } from '../redux/slices/openDrawer';
-import { setOpenTransactionForm } from '../redux/slices/openTransactionForm';
+import { setOpenDrawer } from '../redux/slices/open';
+import { setOpenTransactionForm } from '../redux/slices/open';
 import Data from './Data/Data';
 import DataTabs from './Data/DataTabs';
-import RecordsByDayHeader from './Data/RecordsByDayHeader';
-import { makeStyles } from '@material-ui/core/styles';
-import getRecordsBetween from './Data/getRecordsBetween';
-import getRecordsIncome from './Data/getRecordsIncome';
-import getRecordsExpences from './Data/getRecordsExpences';
 import Records from './Data/Records';
 interface Props {
     loading: boolean;
@@ -29,66 +24,9 @@ interface Props {
     setErrorRegister: Dispatch<SetStateAction<string>>;
 }
 
-const useStyles = makeStyles((theme) => ({
-    toolbarMargin: {
-        ...theme.mixins.toolbar,
-    },
-    recordsContainer1: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    recordsContainer2: {
-        display: 'block',
-        margin: '0 auto',
-        maxWidth: 500,
-        minWidth: 320,
-        width: 'calc(100% - 20px)',
-        marginTop: 30,
-        marginBottom: 30,
-    },
-    pagination: {
-        marginTop: 90,
-        '& > ul': {
-            justifyContent: 'center',
-        },
-    },
-    headerMonth: {
-        fontSize: '1.5em',
-        fontWeight: 300,
-        opacity: 0.7,
-        margin: '0 auto',
-        marginTop: 15,
-        maxWidth: '500px',
-        textAlign: 'center',
-        color: theme.palette.text1,
-    },
-    recordsGroupDate: {
-        '& > :last-child': {
-            marginBottom: 50,
-        },
-    },
-    paginationColor: {
-        color: theme.palette.common.blueSwitch,
-    },
-}));
-
 const Routes = (props: Props) => {
-    const isAuth = useAppSelector((state) => state.isAuth);
+    const isAuth = useAppSelector((state) => state.user.isAuth);
     const dispatch = useAppDispatch();
-    const transactions = useAppSelector(
-        (state) => state.transactions2.transactions
-    );
-
-    const groupsByMonth = useAppSelector(
-        (state) => state.transactions2.groupsByMonth
-    );
-
-    const classes = useStyles();
-
-    const getGroup = (month: string) => {
-        return groupsByMonth.filter((group) => group.month === month);
-    };
 
     return (
         <Router>
@@ -111,6 +49,7 @@ const Routes = (props: Props) => {
                                 <Header />
                                 <DataTabs />
                                 <Records />
+                                <TransactionForm />
                             </>
                         ) : (
                             <Redirect to="/login" />

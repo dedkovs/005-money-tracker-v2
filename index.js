@@ -302,6 +302,18 @@ app.get('/demo', (req, res) => {
     res.sendFile(__dirname + '/demo/index.html');
 });
 
+// SYNTH
+
+app.get('/synth', (req, res) => {
+    res.sendFile(__dirname + '/synth/index.html');
+});
+
+// CURRENCY CONVERTER
+
+app.get('/currency-converter', (req, res) => {
+    res.sendFile(__dirname + '/currency-converter/index.html');
+});
+
 // LOGIN
 
 app.post(
@@ -391,26 +403,30 @@ app.get('/getdata/:id', async (req, res) => {
                     type: QueryTypes.SELECT,
                 }
             );
+            const wallets = await sequelize.query(
+                'SELECT * FROM wallets WHERE user_id = ? LIMIT 1',
+                { replacements: [+req.params.id], type: QueryTypes.SELECT }
+            );
             const wallets_top_order = await sequelize.query(
                 'SELECT * FROM wallets_top_order WHERE user_id = ? LIMIT 1',
                 {
                     replacements: [+req.params.id],
                     type: QueryTypes.SELECT,
                 }
-                // 'INSERT INTO wallets_top_order (user_id, data) VALUES (?, []) RETURNING data',
-                // {
-                //     replacements: [+req.params.id],
-                //     type: QueryTypes.SELECT,
-                // }
             );
-            const wallets = await sequelize.query(
-                'SELECT * FROM wallets WHERE user_id = ? LIMIT 1',
-                { replacements: [+req.params.id], type: QueryTypes.SELECT }
+            const wallets_order = await sequelize.query(
+                'SELECT * FROM wallets_order WHERE user_id = ? LIMIT 1',
+                {
+                    replacements: [+req.params.id],
+                    type: QueryTypes.SELECT,
+                }
             );
+
             const userData = {
                 transactions,
-                wallets_top_order: wallets_top_order[0].data,
                 wallets: wallets[0].data,
+                wallets_top_order: wallets_top_order[0].data,
+                wallets_order: wallets_order[0].data,
             };
             res.send(userData);
         } catch (err) {

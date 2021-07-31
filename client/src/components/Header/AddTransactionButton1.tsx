@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import { useAppDispatch } from '../../redux/hooks';
-import { setOpenDrawer } from '../../redux/slices/openDrawer';
-import { addTransaction } from '../../redux/slices/transactions2';
+import { setOpenDrawer } from '../../redux/slices/open';
+// import { addTransaction } from '../../redux/slices/transactions2';
+import { setOpenTransactionForm } from '../../redux/slices/open';
 
 const useStyles = makeStyles(() => ({
     tooltip: {
@@ -36,8 +37,8 @@ const AddTransactionButton1 = () => {
                 className={classes.button}
                 onClick={() => {
                     dispatch(setOpenDrawer(false));
-                    dispatch(addTransaction());
-                    // dispatch(setOpenTransactionForm(true));
+                    // dispatch(addTransaction());
+                    dispatch(setOpenTransactionForm(true));
                 }}
                 // component={Link}
                 // to="/data/add-transaction"

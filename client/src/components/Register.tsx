@@ -7,7 +7,7 @@ import TextLink from './TextLink';
 import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Typography from '@material-ui/core/Typography';
-import { setIsAuth } from '../redux/slices/isAuth';
+import { setIsAuth } from '../redux/slices/user';
 import { useAppDispatch } from '../redux/hooks';
 
 const useStyles = makeStyles(() => ({

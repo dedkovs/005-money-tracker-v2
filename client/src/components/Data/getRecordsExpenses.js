@@ -1,6 +1,6 @@
 import Record from '../Record/Record';
 
-const getRecordsExpences = (records) => {
+const getRecordsExpenses = (records) => {
     return records
         .filter((record) => record.wallet !== null && record.sum < 0)
         .sort(function (a, b) {
@@ -11,4 +11,4 @@ const getRecordsExpences = (records) => {
         });
 };
 
-export default getRecordsExpences;
+export default getRecordsExpenses;

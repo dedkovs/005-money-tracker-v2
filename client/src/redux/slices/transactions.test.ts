@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import transactions, { initialState, addTransaction } from './transactions';
+import transactions, { initialState, addTransaction } from './user';
 import { mockTransactions } from '../../services/mockTransactions';
 
 describe('transactions reducer', () => {

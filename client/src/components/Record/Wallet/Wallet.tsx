@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Transaction } from '../../../redux/slices/transactions';
+import { Transaction } from '../../../services/types';
 
 const useStyles = makeStyles((theme) => ({
     walletText: {

@@ -3,7 +3,7 @@ import Tab from '@material-ui/core/Tab';
 import Menu from '../Record/Menu';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { setPageNumber } from '../../redux/slices/transactions2';
+import { setPageNumber } from '../../redux/slices/user';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import DialogRemoveRecord from '../Record/DialogRemoveRecord/DialogRemoveRecord';
 
@@ -65,15 +65,9 @@ const useStyles = makeStyles((theme) => ({
 const DataTabs = () => {
     const dispatch = useAppDispatch();
 
-    const transactions = useAppSelector(
-        (state) => state.transactions2.transactions
-    );
-    const pageNumber = useAppSelector(
-        (state) => state.transactions2.pageNumber
-    );
-    const groupsByMonth = useAppSelector(
-        (state) => state.transactions2.groupsByMonth
-    );
+    const transactions = useAppSelector((state) => state.user.transactions);
+    const pageNumber = useAppSelector((state) => state.user.pageNumber);
+    const groupsByMonth = useAppSelector((state) => state.user.groupsByMonth);
 
     const matches = useMediaQuery('(max-width:360px)');
     const matches2 = useMediaQuery('(min-width:500px)');

@@ -1,15 +1,26 @@
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    ThemeProvider,
+    createTheme,
+    makeStyles,
+} from '@material-ui/core/styles';
 // import {
 //     useHistory,
 //     BrowserRouter
 // } from 'react-router-dom';
-import { setOpenTransactionForm } from '../../redux/slices/openTransactionForm';
+import { setOpenTransactionForm } from '../../redux/slices/open';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import Header from './Header';
+import Sum from './Sum';
+import Wallet from './Wallet';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        color: theme.palette.transactionFormColor,
+        backgroundColor: theme.palette.background.paper,
+    },
     paperFullWidth: {
         width: '100%',
     },
@@ -35,10 +46,10 @@ const useStyles = makeStyles(() => ({
         position: 'absolute',
         top: 80,
         margin: 0,
-        borderRadius: 20,
+        borderRadius: 23,
     },
     paper2: {
-        borderRadius: 20,
+        borderRadius: 23,
     },
 }));
 
@@ -47,34 +58,58 @@ const TransactionForm = () => {
     const matches = useMediaQuery('(max-width:360px)');
     // const history = useHistory();
     const openTransactionForm = useAppSelector(
-        (state) => state.openTransactionForm
+        (state) => state.open.openTransactionForm
     );
+    const formType = useAppSelector((state) => state.ui.formType);
+
     const dispatch = useAppDispatch();
+
+    const darkTheme = useAppSelector((state) => state.ui.darkTheme);
+
+    const theme = createTheme({
+        palette: {
+            type: darkTheme ? 'dark' : 'light',
+            primary: {
+                main: formType === 'expenses' ? '#40a7e2' : '#59af35',
+            },
+        },
+    });
 
     return (
         // <BrowserRouter>
-        <Dialog
-            style={{ zIndex: 1302 }}
-            open={openTransactionForm}
-            onClose={() => {
-                dispatch(setOpenTransactionForm(false));
-                // history.push('/');
-            }}
-            classes={{
-                root: classes.dialogRoot,
-                paperFullWidth: classes.paperFullWidth,
-                paperWidthSm: classes.paperWidthSm,
-                paper: `${matches ? classes.paper2 : classes.paper1}`,
-            }}
-            fullWidth
-            maxWidth="sm"
-        >
-            <DialogContent
-                className={`${
-                    matches ? classes.dialogContent2 : classes.dialogContent1
-                }`}
-            ></DialogContent>
-        </Dialog>
+        <ThemeProvider theme={theme}>
+            <Dialog
+                style={{ zIndex: 1302 }}
+                open={openTransactionForm}
+                onClose={() => {
+                    dispatch(setOpenTransactionForm(false));
+                    // history.push('/');
+                }}
+                classes={{
+                    // root: classes.dialogRoot,
+                    paperFullWidth: classes.paperFullWidth,
+                    paperWidthSm: classes.paperWidthSm,
+                    paper: `${matches ? classes.paper2 : classes.paper1} ${
+                        classes.paper
+                    }`,
+                }}
+                fullWidth
+                maxWidth="sm"
+            >
+                <DialogContent
+                    className={`${
+                        matches
+                            ? classes.dialogContent2
+                            : classes.dialogContent1
+                    }`}
+                >
+                    <Header />
+                    <Sum />
+                    <Wallet />
+                </DialogContent>
+            </Dialog>
+        </ThemeProvider>
+
         // </BrowserRouter>
     );
 };

@@ -2,7 +2,7 @@ import Header from '../Header/Header';
 import Pagination from '@material-ui/lab/Pagination';
 import getRecordsBetween from './getRecordsBetween';
 import getRecordsIncome from './getRecordsIncome';
-import getRecordsExpences from './getRecordsExpences';
+import getRecordsExpenses from './getRecordsExpenses';
 import RecordsByDayHeader from './RecordsByDayHeader';
 import {
     createTheme,
@@ -10,7 +10,7 @@ import {
     ThemeProvider,
 } from '@material-ui/core/styles';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { setPageNumber } from '../../redux/slices/transactions2';
+import { setPageNumber } from '../../redux/slices/user';
 import grey from '@material-ui/core/colors/grey';
 import { useTheme } from '@material-ui/styles';
 import { light } from '../../services/theme';
@@ -58,17 +58,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Data = () => {
-    const pageNumber = useAppSelector(
-        (state) => state.transactions2.pageNumber
-    );
+    const pageNumber = useAppSelector((state) => state.user.pageNumber);
     const dispatch = useAppDispatch();
     const theme = useTheme();
-    const transactions = useAppSelector(
-        (state) => state.transactions2.transactions
-    );
-    const groupsByMonth = useAppSelector(
-        (state) => state.transactions2.groupsByMonth
-    );
+    const transactions = useAppSelector((state) => state.user.transactions);
+    const groupsByMonth = useAppSelector((state) => state.user.groupsByMonth);
 
     const headerMonth = groupsByMonth[pageNumber - 1]
         ? groupsByMonth[pageNumber - 1].month
@@ -136,7 +130,7 @@ const Data = () => {
                                                       group.records
                                                   )}
 
-                                                  {getRecordsExpences(
+                                                  {getRecordsExpenses(
                                                       group.records
                                                   )}
                                               </div>

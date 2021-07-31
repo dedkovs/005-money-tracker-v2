@@ -4,7 +4,7 @@ import Switch from '@material-ui/core/Switch';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { toggleTheme } from '../../redux/slices/darkTheme';
+import { toggleTheme } from '../../redux/slices/ui';
 
 const useStyles = makeStyles((theme) => ({
     switchBase: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const DrawerSwitchTheme = () => {
     const classes = useStyles();
 
-    const darkTheme = useAppSelector((state) => state.darkTheme);
+    const darkTheme = useAppSelector((state) => state.ui.darkTheme);
     const dispatch = useAppDispatch();
 
     const switchDark = () => {

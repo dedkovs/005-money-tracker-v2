@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { Transaction } from '../../redux/slices/transactions';
+import { Transaction } from '../../services/types';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuButton from './MenuButton';
 import WalletContainer from './Wallet/WalletContainer';
@@ -45,7 +45,7 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
     const dispatch = useAppDispatch();
 
     let x: number, y: number;
-    let showComments = useAppSelector((state) => state.showComments);
+    let showComments = useAppSelector((state) => state.ui.showComments);
     const [show, setShow] = useState(showComments);
 
     const wrapperRef = useRef<HTMLAnchorElement>(null);

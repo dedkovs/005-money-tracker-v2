@@ -7,7 +7,7 @@ import ButtonSigninWithGoogle from './ButtonSigninWithGoogle';
 import TextLink from '../TextLink';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
-import { setIsAuth } from '../../redux/slices/isAuth';
+import { setIsAuth } from '../../redux/slices/user';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 
 const useStyles = makeStyles(() => ({
@@ -42,8 +42,8 @@ const Login = () => {
     const classes = useStyles();
 
     const dispatch = useAppDispatch();
-    const logoAnimated = useAppSelector((state) => state.logoAnimated);
-    const logoLoaded = useAppSelector((state) => state.logoLoaded);
+    const logoAnimated = useAppSelector((state) => state.ui.logoAnimated);
+    const logoLoaded = useAppSelector((state) => state.ui.logoLoaded);
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');

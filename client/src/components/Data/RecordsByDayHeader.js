@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const RecordsByDayHeader = ({ group }) => {
     const classes = useStyles();
 
-    const showCents = useAppSelector((state) => state.showCents);
+    const showCents = useAppSelector((state) => state.ui.showCents);
 
     const getDaySumColor = () => {
         if (group.sum < 0) return 'recordHeaderSumTextColorExpenses';

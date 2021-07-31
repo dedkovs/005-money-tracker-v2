@@ -3,7 +3,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Switch from '@material-ui/core/Switch';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { toggleTheme } from '../../redux/slices/darkTheme';
+import { toggleTheme } from '../../redux/slices/ui';
 
 const useStyles = makeStyles((theme: Theme) => ({
     switchBase: {
@@ -62,8 +62,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const DarkModeSwitcher = () => {
     const classes = useStyles();
 
-    const darkTheme = useAppSelector((state) => state.darkTheme);
-    const logoAnimated = useAppSelector((state) => state.logoAnimated);
+    const darkTheme = useAppSelector((state) => state.ui.darkTheme);
+    const logoAnimated = useAppSelector((state) => state.ui.logoAnimated);
     const dispatch = useAppDispatch();
 
     const handleToggleTheme = () => {

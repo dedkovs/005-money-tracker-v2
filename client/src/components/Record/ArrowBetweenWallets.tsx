@@ -1,6 +1,7 @@
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { makeStyles } from '@material-ui/core/styles';
-import { Transaction } from '../../redux/slices/transactions';
+import { Transaction } from '../../services/types';
+
 const useStyles = makeStyles((theme) => ({
     arrowDown: {
         position: 'absolute',

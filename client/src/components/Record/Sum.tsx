@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import NumberFormat from 'react-number-format';
-import { Transaction } from '../../redux/slices/transactions';
+import { Transaction } from '../../services/types';
 import { useAppSelector } from '../../redux/hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +41,7 @@ interface Props {
 const Sum = ({ record: { sum, wallet } }: Props) => {
     const classes = useStyles();
 
-    const showCents = useAppSelector((state) => state.showCents);
+    const showCents = useAppSelector((state) => state.ui.showCents);
 
     const getTextColor = () => {
         if (sum < 0) return classes.recordSumTextColorExpenses;
