@@ -10,8 +10,9 @@ export const anchors = createSlice({
 	initialState,
 	reducers: {
 		setRecordMenuButtonAnchor: (state, action: { payload: null | string }) => {
-			let recordMenuButtonAnchor = action.payload;
-			return { ...state, recordMenuButtonAnchor };
+			// let recordMenuButtonAnchor = action.payload;
+			// return { ...state, recordMenuButtonAnchor };
+			state.recordMenuButtonAnchor = action.payload;
 		},
 	},
 });
