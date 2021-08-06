@@ -9,87 +9,83 @@ import DrawerCentsCheckbox from './DrawerCentsCheckbox';
 import axios from 'axios';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import {
-    setAllTransactions,
-    setWallets,
-    setWalletsTopOrder,
-    setWalletsOrder,
+	setAllTransactions,
+	// setWallets,
+	// setWalletsTopOrder,
+	// setWalletsOrder,
 } from '../../redux/slices/user';
-import { setOpenDrawer } from '../../redux/slices/open';
-import { setIsAuth } from '../../redux/slices/user';
+import { setOpenDrawer } from '../../redux/slices/user';
+// import { setIsAuth } from '../../redux/slices/user';
 import {
-    setLogoAnimated,
-    setLogoLoaded,
-    setFormType,
-} from '../../redux/slices/ui';
-import { setPageNumber } from '../../redux/slices/user';
-import {
-    setExpensesSum,
-    setIncomeSum,
-} from '../../redux/slices/transactionForm';
-import { setRecordMenuButtonAnchor } from '../../redux/slices/anchors';
-import { setRecordToEdit } from '../../redux/slices/recordToEdit';
+	setLogoAnimated,
+	setLogoLoaded,
+	// setFormType,
+	// logOut,
+} from '../../redux/slices/user';
+// import { setPageNumber } from '../../redux/slices/user';
+// import { setExpensesSum, setIncomeSum } from '../../redux/slices/user';
+// import { setRecordMenuButtonAnchor } from '../../redux/slices/user';
+// import { setRecordToEdit } from '../../redux/slices/user';
 
 const useStyles = makeStyles((theme) => ({
-    toolbarMargin: {
-        ...theme.mixins.toolbar,
-    },
-    drawer: {
-        minWidth: 280,
-        backgroundColor: theme.palette.background.paper,
-        color: theme.palette.text2,
-        '& .MuiListItem-divider': {
-            borderBottomColor: theme.palette.dividerColor,
-        },
-    },
+	toolbarMargin: {
+		...theme.mixins.toolbar,
+	},
+	drawer: {
+		minWidth: 280,
+		backgroundColor: theme.palette.background.paper,
+		color: theme.palette.text2,
+		'& .MuiListItem-divider': {
+			borderBottomColor: theme.palette.dividerColor,
+		},
+	},
 }));
 
 const Drawer1 = () => {
-    const classes = useStyles();
+	const classes = useStyles();
 
-    const openDrawer = useAppSelector((state) => state.open.openDrawer);
-    const pageNumber = useAppSelector((state) => state.user.pageNumber);
-    const dispatch = useAppDispatch();
-    const local_pageNumber = pageNumber;
+	const openDrawer = useAppSelector((state) => state.user.openDrawer);
+	// const pageNumber = useAppSelector((state) => state.user.pageNumber);
+	const dispatch = useAppDispatch();
+	// const local_pageNumber = pageNumber;
 
-    const logOut = () => {
-        dispatch(setOpenDrawer(false));
-        dispatch(setLogoAnimated(true));
-        dispatch(setLogoLoaded(false));
-        axios
-            .get('/logout')
-            .then((res) => {
-                dispatch(setIsAuth(false));
-                dispatch(setAllTransactions([]));
-                dispatch(setWallets({}));
-                dispatch(setWalletsTopOrder([]));
-                dispatch(setWalletsOrder([]));
-                dispatch(setExpensesSum(''));
-                dispatch(setIncomeSum(''));
-                dispatch(setPageNumber(local_pageNumber));
-                dispatch(setFormType('expenses'));
-                dispatch(setRecordMenuButtonAnchor(null));
-                dispatch(setRecordToEdit(null));
-            })
-            .catch((err) => {
-                console.log(
-                    'Something went wrong. Try to reload the page.',
-                    err
-                );
-            });
-    };
+	const logOut = () => {
+		dispatch(setOpenDrawer(false));
+		dispatch(setLogoAnimated(true));
+		dispatch(setLogoLoaded(false));
+		axios
+			.get('/logout')
+			.then((res) => {
+				dispatch(logOut);
+				// dispatch(setIsAuth(false));
+				// dispatch(setAllTransactions([]));
+				// dispatch(setWallets({}));
+				// dispatch(setWalletsTopOrder([]));
+				// dispatch(setWalletsOrder([]));
+				// dispatch(setExpensesSum(''));
+				// dispatch(setIncomeSum(''));
+				// dispatch(setPageNumber(local_pageNumber));
+				// dispatch(setFormType('expenses'));
+				// dispatch(setRecordMenuButtonAnchor(false));
+				// dispatch(setRecordToEdit(null));
+			})
+			.catch((err) => {
+				console.log('Something went wrong. Try to reload the page.', err);
+			});
+	};
 
-    return (
-        <Drawer
-            open={openDrawer}
-            onClose={() => dispatch(setOpenDrawer(false))}
-            classes={{ paper: classes.drawer }}
-        >
-            <div className={classes.toolbarMargin} />
-            <List disablePadding>
-                <DrawerSwitchTheme />
-                <DrawerCommentsCheckbox />
-                <DrawerCentsCheckbox />
-                {/* <ListItem
+	return (
+		<Drawer
+			open={openDrawer}
+			onClose={() => dispatch(setOpenDrawer(false))}
+			classes={{ paper: classes.drawer }}
+		>
+			<div className={classes.toolbarMargin} />
+			<List disablePadding>
+				<DrawerSwitchTheme />
+				<DrawerCommentsCheckbox />
+				<DrawerCentsCheckbox />
+				{/* <ListItem
                     onClick={() => {
                         dispatch(setOpenDrawer(false));
                     }}
@@ -100,7 +96,7 @@ const Drawer1 = () => {
                 >
                     <ListItemText>Charts</ListItemText>
                 </ListItem> */}
-                {/* <ListItem
+				{/* <ListItem
                     onClick={() => {
                         // store.setOpenDialogRenameWallet(false);
                         dispatch(setOpenDrawer(false));
@@ -113,12 +109,12 @@ const Drawer1 = () => {
                 >
                     <ListItemText>Edit wallets</ListItemText>
                 </ListItem> */}
-                <ListItem onClick={logOut} divider button>
-                    <ListItemText>Log out</ListItemText>
-                </ListItem>
-            </List>
-        </Drawer>
-    );
+				<ListItem onClick={logOut} divider button>
+					<ListItemText>Log out</ListItemText>
+				</ListItem>
+			</List>
+		</Drawer>
+	);
 };
 
 export default Drawer1;

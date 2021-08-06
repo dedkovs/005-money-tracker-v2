@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import NumberFormat from 'react-number-format';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { setOpenDrawer } from '../../redux/slices/open';
+import { setOpenDrawer } from '../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({
 	topWalletsContainer: {
@@ -41,7 +41,7 @@ const TopWallets = () => {
 	const matches = useMediaQuery('(max-width: 360px)');
 
 	const dispatch = useAppDispatch();
-	const showCents = useAppSelector((state) => state.ui.showCents);
+	const showCents = useAppSelector((state) => state.user.showCents);
 	const walletsTopOrder = useAppSelector((state) => state.user.walletsTopOrder);
 	const wallets = useAppSelector((state) => state.user.wallets);
 

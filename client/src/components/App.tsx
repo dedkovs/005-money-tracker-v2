@@ -8,18 +8,16 @@ import { setIsAuth } from '../redux/slices/user';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
 	setAllTransactions,
-	setWallets,
-	setWalletsTopOrder,
-	setWalletsOrder,
+	// setWallets,
+	// setWalletsTopOrder,
+	// setWalletsOrder,
+	setUserData,
 } from '../redux/slices/user';
-import {
-	setExpensesWallet,
-	setIncomeWallet,
-} from '../redux/slices/transactionForm';
+// import { setExpensesWallet, setIncomeWallet } from '../redux/slices/user';
 
 const App = () => {
 	const isAuth = useAppSelector((state) => state.user.isAuth);
-	const darkTheme = useAppSelector((state) => state.ui.darkTheme);
+	const darkTheme = useAppSelector((state) => state.user.darkTheme);
 
 	const dispatch = useAppDispatch();
 
@@ -45,14 +43,13 @@ const App = () => {
 				// console.log('from App: ', res.data);
 				if (isAuth) {
 					axios.get(`/getdata/${res.data.userId}`).then((res) => {
-						// console.log(res.data);
-						dispatch(setAllTransactions(res.data.transactions));
-						dispatch(setWallets(res.data.wallets));
-						console.log(res.data.wallets);
-						dispatch(setWalletsTopOrder(res.data.wallets_top_order));
-						dispatch(setWalletsOrder(res.data.wallets_order));
-						dispatch(setExpensesWallet(res.data.wallets_order[0]));
-						dispatch(setIncomeWallet(res.data.wallets_order[0]));
+						// dispatch(setAllTransactions(res.data.transactions));
+						dispatch(setUserData(res.data));
+						// dispatch(setWallets(res.data.wallets));
+						// dispatch(setWalletsTopOrder(res.data.wallets_top_order));
+						// dispatch(setWalletsOrder(res.data.wallets_order));
+						// dispatch(setExpensesWallet(res.data.wallets_order[0]));
+						// dispatch(setIncomeWallet(res.data.wallets_order[0]));
 					});
 				}
 			})

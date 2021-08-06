@@ -1,5 +1,8 @@
 export interface Anchors {
-	recordMenuButtonAnchor: null | string;
+	recordMenuButtonAnchor: false | string;
+	openDialogRemoveRecord: boolean;
+	openDrawer: boolean;
+	openTransactionForm: boolean;
 }
 
 export interface Open {
@@ -39,6 +42,9 @@ export interface GroupByMonth {
 	records: GroupByDay[];
 }
 
+export type FormType = 'expenses' | 'income';
+
+export type RecordToEdit = Transaction | null;
 export interface User {
 	isAuth: boolean;
 	pageNumber: number;
@@ -47,10 +53,22 @@ export interface User {
 	wallets: Wallets;
 	walletsTopOrder: string[];
 	walletsOrder: string[];
+	expensesSum: number | '';
+	incomeSum: number | '';
+	expensesWallet: string;
+	incomeWallet: string;
+	darkTheme: boolean;
+	showComments: boolean;
+	showCents: boolean;
+	logoAnimated: boolean;
+	logoLoaded: boolean;
+	formType: FormType;
+	recordToEdit: RecordToEdit;
+	recordMenuButtonAnchor: false | string;
+	openDialogRemoveRecord: boolean;
+	openDrawer: boolean;
+	openTransactionForm: boolean;
 }
-
-export type FormType = 'expenses' | 'income';
-
 export interface UI {
 	darkTheme: boolean;
 	showComments: boolean;
@@ -59,5 +77,3 @@ export interface UI {
 	logoLoaded: boolean;
 	formType: FormType;
 }
-
-export type RecordToEdit = Transaction | null;

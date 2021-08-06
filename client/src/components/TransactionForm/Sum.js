@@ -7,10 +7,7 @@ import {
 	makeStyles,
 } from '@material-ui/core/styles';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {
-	setExpensesSum,
-	setIncomeSum,
-} from '../../redux/slices/transactionForm';
+import { setExpensesSum, setIncomeSum } from '../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -63,11 +60,9 @@ NumberFormatCustom.propTypes = {
 
 const Sum = () => {
 	const dispatch = useAppDispatch();
-	const formType = useAppSelector((state) => state.ui.formType);
-	const expensesSum = useAppSelector(
-		(state) => state.transactionForm.expensesSum
-	);
-	const incomeSum = useAppSelector((state) => state.transactionForm.incomeSum);
+	const formType = useAppSelector((state) => state.user.formType);
+	const expensesSum = useAppSelector((state) => state.user.expensesSum);
+	const incomeSum = useAppSelector((state) => state.user.incomeSum);
 	// const darkTheme = useAppSelector((state) => state.ui.darkTheme);
 	const classes = useStyles();
 

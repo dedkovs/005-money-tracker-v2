@@ -8,8 +8,8 @@ import CloseIcon from '@material-ui/icons/Close';
 // import { inject, observer } from 'mobx-react';
 // import { store } from '../../mobx/store';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setFormType } from '../../redux/slices/ui';
-import { setOpenTransactionForm } from '../../redux/slices/open';
+import { setFormType } from '../../redux/slices/user';
+import { setOpenTransactionForm } from '../../redux/slices/user';
 
 const useStyles = makeStyles((theme) => ({
 	tooltip: {
@@ -63,7 +63,7 @@ const Header = () => {
 	// const history = useHistory();
 	const dispatch = useAppDispatch();
 
-	const formType = useAppSelector((state) => state.ui.formType);
+	const formType = useAppSelector((state) => state.user.formType);
 
 	const getIncomeClassName = () => {
 		if (formType === 'expenses') {
