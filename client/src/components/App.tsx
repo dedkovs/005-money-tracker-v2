@@ -6,14 +6,7 @@ import axios from 'axios';
 import Routes from './Routes';
 import { setIsAuth } from '../redux/slices/user';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import {
-	setAllTransactions,
-	// setWallets,
-	// setWalletsTopOrder,
-	// setWalletsOrder,
-	setUserData,
-} from '../redux/slices/user';
-// import { setExpensesWallet, setIncomeWallet } from '../redux/slices/user';
+import { setUserData } from '../redux/slices/user';
 
 const App = () => {
 	const isAuth = useAppSelector((state) => state.user.isAuth);
@@ -40,16 +33,10 @@ const App = () => {
 			.then((res) => {
 				setLoading(false);
 				dispatch(setIsAuth(res.data.isAuth));
-				// console.log('from App: ', res.data);
 				if (isAuth) {
 					axios.get(`/getdata/${res.data.userId}`).then((res) => {
-						// dispatch(setAllTransactions(res.data.transactions));
 						dispatch(setUserData(res.data));
-						// dispatch(setWallets(res.data.wallets));
-						// dispatch(setWalletsTopOrder(res.data.wallets_top_order));
-						// dispatch(setWalletsOrder(res.data.wallets_order));
-						// dispatch(setExpensesWallet(res.data.wallets_order[0]));
-						// dispatch(setIncomeWallet(res.data.wallets_order[0]));
+						// console.log(res.data);
 					});
 				}
 			})

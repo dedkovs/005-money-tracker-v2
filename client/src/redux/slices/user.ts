@@ -85,6 +85,22 @@ export const initialState: User = {
 	openDialogRemoveRecord: false,
 	openDrawer: false,
 	openTransactionForm: false,
+	editRecordSum: '',
+	editRecordWallet: '',
+	editRecordWalletFrom: '',
+	editRecordWalletTo: '',
+	editRecordCategory: '',
+	editRecordSubcategory: '',
+	editRecordDate: '',
+	editRecordComment: '',
+	expensesCategory: '',
+	expensesSubcategory: '',
+	incomeCategory: '',
+	incomeSubcategory: '',
+	expensesDate: new Date().toString(),
+	incomeDate: new Date().toString(),
+	expensesComment: '',
+	incomeComment: '',
 };
 
 /// REDUCER
@@ -97,7 +113,10 @@ export const user = createSlice({
 			let isAuth = action.payload;
 			return { ...state, isAuth };
 		},
-		logOut: (state, action) => {
+		logOut: (state) => {
+			state.openDrawer = false;
+			state.logoAnimated = true;
+			state.logoLoaded = false;
 			state.isAuth = false;
 			state.transactions = [];
 			state.wallets = {};
@@ -110,19 +129,47 @@ export const user = createSlice({
 			state.recordToEdit = null;
 		},
 		setUserData: (state, action) => {
-			state.transactions = action.payload.transactions;
-			const groupsByMonth = getGroups(state.transactions);
-			// let pageNumber: number;
+			let transactions = action.payload.transactions;
+			const groupsByMonth = getGroups(transactions);
+			let pageNumber: number;
 			if (!groupsByMonth[state.pageNumber]) {
-				state.pageNumber = 0;
+				pageNumber = 0;
 				localStorage.setItem('pageNumber', '0');
+			} else {
+				pageNumber = state.pageNumber;
 			}
+
+			const wallets: Wallets = action.payload.wallets;
+			const walletsTopOrder: string[] = action.payload.wallets_top_order;
+			const walletsOrder: string[] = action.payload.wallets_order;
+			const expensesWallet = state.walletsOrder[0];
+			const incomeWallet = state.walletsOrder[0];
+
+			return {
+				...state,
+				pageNumber,
+				transactions,
+				groupsByMonth,
+				wallets,
+				walletsTopOrder,
+				walletsOrder,
+				expensesWallet,
+				incomeWallet,
+			};
+
 			// state.transactions = action.payload.transactions;
-			state.wallets = action.payload.wallets;
-			state.walletsTopOrder = action.payload.wallets_top_order;
-			state.walletsOrder = action.payload.wallets_order;
-			state.expensesWallet = action.payload.wallets_order[0];
-			state.incomeWallet = action.payload.wallets_order[0];
+			// const groupsByMonth = getGroups(state.transactions);
+			// // let pageNumber: number; //
+			// if (!groupsByMonth[state.pageNumber]) {
+			// 	state.pageNumber = 0;
+			// 	localStorage.setItem('pageNumber', '0');
+			// }
+			// // state.transactions = action.payload.transactions; //
+			// state.wallets = action.payload.wallets;
+			// state.walletsTopOrder = action.payload.wallets_top_order;
+			// state.walletsOrder = action.payload.wallets_order;
+			// state.expensesWallet = action.payload.wallets_order[0];
+			// state.incomeWallet = action.payload.wallets_order[0];
 		},
 		setPageNumber: (state, action: { payload: number }) => {
 			pageNumber = action.payload;
@@ -191,18 +238,18 @@ export const user = createSlice({
 			}
 			return { ...state, pageNumber, transactions, groupsByMonth };
 		},
-		setWallets: (state, action) => {
-			let wallets: Wallets = action.payload;
-			return { ...state, wallets };
-		},
-		setWalletsTopOrder: (state, action) => {
-			let walletsTopOrder: string[] = action.payload;
-			return { ...state, walletsTopOrder };
-		},
-		setWalletsOrder: (state, action) => {
-			let walletsOrder: string[] = action.payload;
-			return { ...state, walletsOrder };
-		},
+		// setWallets: (state, action) => {
+		// 	let wallets: Wallets = action.payload;
+		// 	return { ...state, wallets };
+		// },
+		// setWalletsTopOrder: (state, action) => {
+		// 	let walletsTopOrder: string[] = action.payload;
+		// 	return { ...state, walletsTopOrder };
+		// },
+		// setWalletsOrder: (state, action) => {
+		// 	let walletsOrder: string[] = action.payload;
+		// 	return { ...state, walletsOrder };
+		// },
 		deleteTransaction: (state, action) => {
 			let transactions = [...state.transactions];
 			transactions = state.transactions.filter(
@@ -317,9 +364,9 @@ export const {
 	setPageNumber,
 	addTransaction,
 	setAllTransactions,
-	setWallets,
-	setWalletsTopOrder,
-	setWalletsOrder,
+	// setWallets,
+	// setWalletsTopOrder,
+	// setWalletsOrder,
 	deleteTransaction,
 	setExpensesSum,
 	setIncomeSum,

@@ -68,6 +68,22 @@ export interface User {
 	openDialogRemoveRecord: boolean;
 	openDrawer: boolean;
 	openTransactionForm: boolean;
+	editRecordSum: number | '';
+	editRecordWallet: string;
+	editRecordWalletFrom: string;
+	editRecordWalletTo: string;
+	editRecordCategory: string;
+	editRecordSubcategory: string;
+	editRecordDate: Date | '';
+	editRecordComment: string;
+	expensesCategory: string;
+	expensesSubcategory: string;
+	incomeCategory: string;
+	incomeSubcategory: string;
+	expensesDate: string;
+	incomeDate: string;
+	expensesComment: string;
+	incomeComment: string;
 }
 export interface UI {
 	darkTheme: boolean;

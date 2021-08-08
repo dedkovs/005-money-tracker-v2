@@ -8,19 +8,11 @@ import DrawerCommentsCheckbox from './DrawerCommentsCheckbox';
 import DrawerCentsCheckbox from './DrawerCentsCheckbox';
 import axios from 'axios';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import {
-	setAllTransactions,
-	// setWallets,
-	// setWalletsTopOrder,
-	// setWalletsOrder,
-} from '../../redux/slices/user';
 import { setOpenDrawer } from '../../redux/slices/user';
-// import { setIsAuth } from '../../redux/slices/user';
 import {
-	setLogoAnimated,
-	setLogoLoaded,
-	// setFormType,
-	// logOut,
+	// setLogoAnimated,
+	// setLogoLoaded,
+	logOut,
 } from '../../redux/slices/user';
 // import { setPageNumber } from '../../redux/slices/user';
 // import { setExpensesSum, setIncomeSum } from '../../redux/slices/user';
@@ -49,14 +41,14 @@ const Drawer1 = () => {
 	const dispatch = useAppDispatch();
 	// const local_pageNumber = pageNumber;
 
-	const logOut = () => {
-		dispatch(setOpenDrawer(false));
-		dispatch(setLogoAnimated(true));
-		dispatch(setLogoLoaded(false));
+	const handleLogOut = () => {
+		// dispatch(setOpenDrawer(false));
+		// dispatch(setLogoAnimated(true));
+		// dispatch(setLogoLoaded(false));
 		axios
 			.get('/logout')
 			.then((res) => {
-				dispatch(logOut);
+				dispatch(logOut());
 				// dispatch(setIsAuth(false));
 				// dispatch(setAllTransactions([]));
 				// dispatch(setWallets({}));
@@ -109,7 +101,7 @@ const Drawer1 = () => {
                 >
                     <ListItemText>Edit wallets</ListItemText>
                 </ListItem> */}
-				<ListItem onClick={logOut} divider button>
+				<ListItem onClick={handleLogOut} divider button>
 					<ListItemText>Log out</ListItemText>
 				</ListItem>
 			</List>
