@@ -11,6 +11,7 @@ export const openTransactionForm = createSlice({
 			action: { payload: boolean; type: string }
 		) => {
 			state = action.payload;
+			return state;
 		},
 	},
 });

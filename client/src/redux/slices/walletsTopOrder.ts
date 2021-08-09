@@ -18,6 +18,7 @@ export const walletsTopOrder = createSlice({
 	reducers: {
 		setWalletsTopOrder: (state: string[], action: PayloadAction<string[]>) => {
 			state = action.payload;
+			return state;
 		},
 	},
 });

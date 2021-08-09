@@ -11,6 +11,7 @@ export const logoAnimated = createSlice({
 			action: { payload: boolean; type: string }
 		) => {
 			state = action.payload;
+			return state;
 		},
 	},
 });

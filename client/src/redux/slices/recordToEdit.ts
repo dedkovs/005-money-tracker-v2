@@ -20,6 +20,7 @@ export const recordToEdit = createSlice({
 	reducers: {
 		setRecordToEdit: (state, action: PayloadAction<Transaction>) => {
 			state = action.payload;
+			return state;
 		},
 	},
 });

@@ -14,6 +14,7 @@ export const showCents = createSlice({
 		toggleShowCents: (state: boolean) => {
 			state = !state;
 			localStorage.setItem('showCents', JSON.stringify(state));
+			return state;
 		},
 		setShowCents: (
 			state: boolean,
@@ -21,6 +22,7 @@ export const showCents = createSlice({
 		) => {
 			state = action.payload;
 			localStorage.setItem('showCents', JSON.stringify(action.payload));
+			return state;
 		},
 	},
 });

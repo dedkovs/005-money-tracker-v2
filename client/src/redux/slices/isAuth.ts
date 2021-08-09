@@ -8,6 +8,7 @@ export const isAuth = createSlice({
 	reducers: {
 		setIsAuth: (state: boolean, action: { payload: boolean; type: string }) => {
 			state = action.payload;
+			return state;
 		},
 	},
 });

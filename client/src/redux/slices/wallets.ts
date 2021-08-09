@@ -22,6 +22,7 @@ export const wallets = createSlice({
 	reducers: {
 		setWallets: (state: Wallets, action: PayloadAction<Wallets>) => {
 			state = action.payload;
+			return state;
 		},
 	},
 });

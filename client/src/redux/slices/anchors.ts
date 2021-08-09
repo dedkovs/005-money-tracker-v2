@@ -17,6 +17,7 @@ export const anchors = createSlice({
 			action: PayloadAction<null | string>
 		) => {
 			state.recordMenuButtonAnchor = action.payload;
+			return state;
 		},
 	},
 });

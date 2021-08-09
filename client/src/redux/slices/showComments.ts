@@ -14,6 +14,7 @@ export const showComments = createSlice({
 		toggleShowComments: (state: boolean) => {
 			state = !state;
 			localStorage.setItem('showComments', JSON.stringify(state));
+			return state;
 		},
 		setShowComments: (
 			state: boolean,
@@ -21,6 +22,7 @@ export const showComments = createSlice({
 		) => {
 			state = action.payload;
 			localStorage.setItem('showComments', JSON.stringify(action.payload));
+			return state;
 		},
 	},
 });

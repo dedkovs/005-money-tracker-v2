@@ -17,6 +17,7 @@ export const pageNumber = createSlice({
 		) => {
 			state = action.payload;
 			localStorage.setItem('pageNumber', JSON.stringify(action.payload));
+			return state;
 		},
 	},
 });

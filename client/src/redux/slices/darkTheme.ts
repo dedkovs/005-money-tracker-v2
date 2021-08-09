@@ -14,6 +14,7 @@ export const darkTheme = createSlice({
 		toggleTheme: (state: boolean) => {
 			state = !state;
 			localStorage.setItem('darkTheme', JSON.stringify(state));
+			return state;
 		},
 		setDarkTheme: (
 			state: boolean,
@@ -21,6 +22,7 @@ export const darkTheme = createSlice({
 		) => {
 			state = action.payload;
 			localStorage.setItem('darkTheme', JSON.stringify(action.payload));
+			return state;
 		},
 	},
 });

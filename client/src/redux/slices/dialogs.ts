@@ -17,6 +17,7 @@ export const dialogs = createSlice({
 	reducers: {
 		setOpenDialogRemoveRecord: (state, action) => {
 			state.openDialogRemoveRecord = action.payload;
+			return state;
 		},
 	},
 });
