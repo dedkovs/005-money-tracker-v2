@@ -84,6 +84,8 @@ export interface User {
 	incomeDate: string;
 	expensesComment: string;
 	incomeComment: string;
+	expensesCategoriesOrder: string[];
+	incomeCategoriesOrder: string[];
 }
 export interface UI {
 	darkTheme: boolean;

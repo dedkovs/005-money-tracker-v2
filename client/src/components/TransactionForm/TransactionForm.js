@@ -15,6 +15,8 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import Header from './Header';
 import Sum from './Sum';
 import Wallet from './Wallet';
+import Arrow from './Arrow';
+import Category from './Category';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -104,6 +106,8 @@ const TransactionForm = () => {
 					<Header />
 					<Sum />
 					<Wallet />
+					<Arrow />
+					<Category />
 				</DialogContent>
 			</Dialog>
 		</ThemeProvider>

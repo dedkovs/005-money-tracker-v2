@@ -101,6 +101,8 @@ export const initialState: User = {
 	incomeDate: new Date().toString(),
 	expensesComment: '',
 	incomeComment: '',
+	expensesCategoriesOrder: [''],
+	incomeCategoriesOrder: [''],
 };
 
 /// REDUCER
@@ -352,6 +354,12 @@ export const user = createSlice({
 			}
 			state.openTransactionForm = action.payload;
 		},
+		setExpensesCategory: (state, action: { payload: string }) => {
+			state.expensesCategory = action.payload;
+		},
+		setIncomeCategory: (state, action: { payload: string }) => {
+			state.incomeCategory = action.payload;
+		},
 	},
 });
 
@@ -383,5 +391,7 @@ export const {
 	setOpenDialogRemoveRecord,
 	setOpenDrawer,
 	setOpenTransactionForm,
+	setExpensesCategory,
+	setIncomeCategory,
 } = user.actions;
 export default user.reducer;
