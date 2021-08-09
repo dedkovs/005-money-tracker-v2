@@ -4,30 +4,25 @@ let initialState: boolean;
 
 let localStorage_showComments = localStorage.getItem('showComments');
 if (localStorage_showComments) {
-    initialState = JSON.parse(localStorage_showComments);
+	initialState = JSON.parse(localStorage_showComments);
 } else initialState = true;
 
 export const showComments = createSlice({
-    name: 'showComments',
-    initialState,
-    reducers: {
-        toggleShowComments: (state: boolean) => {
-            state = !state;
-            localStorage.setItem('showComments', JSON.stringify(state));
-            return state;
-        },
-        setShowComments: (
-            state: boolean,
-            action: { payload: boolean; type: string }
-        ) => {
-            state = action.payload;
-            localStorage.setItem(
-                'showComments',
-                JSON.stringify(action.payload)
-            );
-            return state;
-        },
-    },
+	name: 'showComments',
+	initialState,
+	reducers: {
+		toggleShowComments: (state: boolean) => {
+			state = !state;
+			localStorage.setItem('showComments', JSON.stringify(state));
+		},
+		setShowComments: (
+			state: boolean,
+			action: { payload: boolean; type: string }
+		) => {
+			state = action.payload;
+			localStorage.setItem('showComments', JSON.stringify(action.payload));
+		},
+	},
 });
 
 export const { toggleShowComments, setShowComments } = showComments.actions;

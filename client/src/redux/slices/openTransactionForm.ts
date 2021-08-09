@@ -3,17 +3,16 @@ import { createSlice } from '@reduxjs/toolkit';
 let initialState: boolean = false;
 
 export const openTransactionForm = createSlice({
-    name: 'openTransactionForm',
-    initialState,
-    reducers: {
-        setOpenTransactionForm: (
-            state: boolean,
-            action: { payload: boolean; type: string }
-        ) => {
-            state = action.payload;
-            return state;
-        },
-    },
+	name: 'openTransactionForm',
+	initialState,
+	reducers: {
+		setOpenTransactionForm: (
+			state: boolean,
+			action: { payload: boolean; type: string }
+		) => {
+			state = action.payload;
+		},
+	},
 });
 
 export const { setOpenTransactionForm } = openTransactionForm.actions;

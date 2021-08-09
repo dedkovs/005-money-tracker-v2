@@ -4,27 +4,25 @@ let initialState: boolean;
 
 let localStorage_darkTheme = localStorage.getItem('darkTheme');
 if (localStorage_darkTheme) {
-    initialState = JSON.parse(localStorage_darkTheme);
+	initialState = JSON.parse(localStorage_darkTheme);
 } else initialState = false;
 
 export const darkTheme = createSlice({
-    name: 'darkTheme',
-    initialState,
-    reducers: {
-        toggleTheme: (state: boolean) => {
-            state = !state;
-            localStorage.setItem('darkTheme', JSON.stringify(state));
-            return state;
-        },
-        setDarkTheme: (
-            state: boolean,
-            action: { payload: boolean; type: string }
-        ) => {
-            state = action.payload;
-            localStorage.setItem('darkTheme', JSON.stringify(action.payload));
-            return state;
-        },
-    },
+	name: 'darkTheme',
+	initialState,
+	reducers: {
+		toggleTheme: (state: boolean) => {
+			state = !state;
+			localStorage.setItem('darkTheme', JSON.stringify(state));
+		},
+		setDarkTheme: (
+			state: boolean,
+			action: { payload: boolean; type: string }
+		) => {
+			state = action.payload;
+			localStorage.setItem('darkTheme', JSON.stringify(action.payload));
+		},
+	},
 });
 
 export const { toggleTheme, setDarkTheme } = darkTheme.actions;

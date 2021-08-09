@@ -1,25 +1,24 @@
 import {
-    createSlice,
-    // PayloadAction
+	createSlice,
+	// PayloadAction
 } from '@reduxjs/toolkit';
 
 interface Dialogs {
-    openDialogRemoveRecord: boolean;
+	openDialogRemoveRecord: boolean;
 }
 
 let initialState: Dialogs = {
-    openDialogRemoveRecord: false,
+	openDialogRemoveRecord: false,
 };
 
 export const dialogs = createSlice({
-    name: 'dialogs',
-    initialState,
-    reducers: {
-        setOpenDialogRemoveRecord: (state, action) => {
-            state.openDialogRemoveRecord = action.payload;
-            return state;
-        },
-    },
+	name: 'dialogs',
+	initialState,
+	reducers: {
+		setOpenDialogRemoveRecord: (state, action) => {
+			state.openDialogRemoveRecord = action.payload;
+		},
+	},
 });
 
 export const { setOpenDialogRemoveRecord } = dialogs.actions;

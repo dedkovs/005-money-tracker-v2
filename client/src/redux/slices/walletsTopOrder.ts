@@ -1,30 +1,25 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const wallets = [
-    'Cash',
-    'Tinkoff',
-    'Sber',
-    'VTB',
-    'Gazprom',
-    'Alfa',
-    'Raiffeisen',
+	'Cash',
+	'Tinkoff',
+	'Sber',
+	'VTB',
+	'Gazprom',
+	'Alfa',
+	'Raiffeisen',
 ];
 
-// const initialState: string[] = [];
 const initialState: string[] = wallets;
 
 export const walletsTopOrder = createSlice({
-    name: 'walletsTopOrder',
-    initialState,
-    reducers: {
-        setWalletsTopOrder: (
-            state: string[],
-            action: PayloadAction<string[]>
-        ) => {
-            state = action.payload;
-            return state;
-        },
-    },
+	name: 'walletsTopOrder',
+	initialState,
+	reducers: {
+		setWalletsTopOrder: (state: string[], action: PayloadAction<string[]>) => {
+			state = action.payload;
+		},
+	},
 });
 
 export const { setWalletsTopOrder } = walletsTopOrder.actions;
