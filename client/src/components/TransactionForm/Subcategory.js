@@ -6,14 +6,15 @@ import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import {
-	setExpensesCategory,
-	setIncomeCategory,
+	setExpensesSubcategory,
+	setIncomeSubcategory,
 } from '../../redux/slices/user';
 
 const useStyles = makeStyles((theme) => ({
 	FormExpensesSelectWalletsContainer: {
 		display: 'flex',
 		paddingLeft: 20,
+		marginTop: 15,
 	},
 	FormExpensesEditIcon: {
 		position: 'relative',
@@ -31,25 +32,49 @@ const useStyles = makeStyles((theme) => ({
 	},
 	select01: {
 		'& select': {
-			fontWeight: 600,
+			padding: '5px 0px',
+			fontWeight: 400,
 		},
 	},
 }));
 
-const Category = () => {
+const Subcategory = () => {
 	const classes = useStyles();
 	const formType = useAppSelector((state) => state.user.formType);
+	const expensesCategories = useAppSelector(
+		(state) => state.user.expensesCategories
+	);
 	const expensesCategory = useAppSelector(
 		(state) => state.user.expensesCategory
 	);
-	const incomeCategory = useAppSelector((state) => state.user.incomeCategory);
-	const expensesCategoriesOrder = useAppSelector(
-		(state) => state.user.expensesCategoriesOrder
+	const expensesSubcategory = useAppSelector(
+		(state) => state.user.expensesSubcategory
 	);
-	const incomeCategoriesOrder = useAppSelector(
-		(state) => state.user.incomeCategoriesOrder
+	const incomeCategories = useAppSelector(
+		(state) => state.user.incomeCategories
+	);
+	const incomeCategory = useAppSelector((state) => state.user.incomeCategory);
+	const incomeSubcategory = useAppSelector(
+		(state) => state.user.incomeSubcategory
 	);
 	const dispatch = useAppDispatch();
+
+	const getSubcategories = () => {
+		if (formType === 'expenses' && expensesCategory === '') return [''];
+		if (formType === 'expenses' && expensesCategory !== '')
+			return expensesCategories[expensesCategory].map((item) => (
+				<option key={item} value={item}>
+					{item}
+				</option>
+			));
+		if (formType === 'income' && incomeCategory === '') return [''];
+		if (formType === 'income' && incomeCategory !== '')
+			return incomeCategories[incomeCategory].map((item) => (
+				<option key={item} value={item}>
+					{item}
+				</option>
+			));
+	};
 
 	return (
 		<div className={classes.FormExpensesSelectWalletsContainer}>
@@ -58,31 +83,23 @@ const Category = () => {
 					className={classes.label}
 					htmlFor="outlined-age-native-simple"
 				>
-					{'Category'}
+					{'Subcategory'}
 				</InputLabel>
 				<Select
 					className={classes.select01}
 					native
-					value={formType === 'expenses' ? expensesCategory : incomeCategory}
+					value={
+						formType === 'expenses' ? expensesSubcategory : incomeSubcategory
+					}
 					onChange={(event) =>
 						formType === 'expenses'
-							? dispatch(setExpensesCategory(event.target.value))
-							: dispatch(setIncomeCategory(event.target.value))
+							? dispatch(setExpensesSubcategory(event.target.value))
+							: dispatch(setIncomeSubcategory(event.target.value))
 					}
-					label={'Category'}
+					label={'Subcategory'}
 				>
 					<option aria-label="None" value="" />
-					{formType === 'expenses'
-						? expensesCategoriesOrder.map((item) => (
-								<option key={item} value={item}>
-									{item}
-								</option>
-						  ))
-						: incomeCategoriesOrder.map((item) => (
-								<option key={item} value={item}>
-									{item}
-								</option>
-						  ))}
+					{getSubcategories()}
 				</Select>
 			</FormControl>
 			<div>
@@ -97,4 +114,4 @@ const Category = () => {
 	);
 };
 
-export default Category;
+export default Subcategory;

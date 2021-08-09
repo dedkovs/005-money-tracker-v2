@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User, Transaction, Wallets, FormType } from '../../services/types';
 import getGroups from '../../components/Data/getGroups';
 import {
@@ -7,6 +7,7 @@ import {
 	income_categories,
 	wallets,
 } from '../../services/data';
+import axios from 'axios';
 
 let [category, subcategory] = ['', ''];
 
@@ -64,7 +65,9 @@ if (
 
 export const initialState: User = {
 	isAuth: false,
+	userId: null,
 	pageNumber,
+	loading: false,
 	transactions: [],
 	groupsByMonth: [],
 	wallets: {},
@@ -93,17 +96,27 @@ export const initialState: User = {
 	editRecordSubcategory: '',
 	editRecordDate: '',
 	editRecordComment: '',
+	expensesCategories: {},
 	expensesCategory: '',
 	expensesSubcategory: '',
+	incomeCategories: {},
 	incomeCategory: '',
 	incomeSubcategory: '',
-	expensesDate: new Date().toString(),
-	incomeDate: new Date().toString(),
+	expensesDate: new Date().toLocaleDateString(),
+	incomeDate: new Date().toLocaleDateString(),
 	expensesComment: '',
 	incomeComment: '',
 	expensesCategoriesOrder: [''],
 	incomeCategoriesOrder: [''],
 };
+
+const saveTrx = createAsyncThunk('saveTransaction', async (userId, trx) => {
+	const response = await axios.post('/add-transaction', {
+		userId,
+		trx,
+	});
+	return response.data;
+});
 
 /// REDUCER
 
@@ -114,6 +127,9 @@ export const user = createSlice({
 		setIsAuth: (state, action: { payload: boolean }) => {
 			let isAuth = action.payload;
 			return { ...state, isAuth };
+		},
+		setUserId: (state, action) => {
+			state.userId = action.payload;
 		},
 		logOut: (state) => {
 			state.openDrawer = false;
@@ -144,8 +160,10 @@ export const user = createSlice({
 			const wallets: Wallets = action.payload.wallets;
 			const walletsTopOrder: string[] = action.payload.wallets_top_order;
 			const walletsOrder: string[] = action.payload.wallets_order;
-			const expensesWallet = state.walletsOrder[0];
-			const incomeWallet = state.walletsOrder[0];
+			const expensesWallet = walletsOrder[0];
+			const incomeWallet = walletsOrder[0];
+			const expensesCategories = action.payload.expenses_categories;
+			const expensesCategoriesOrder = action.payload.expenses_categories_order;
 
 			return {
 				...state,
@@ -157,6 +175,8 @@ export const user = createSlice({
 				walletsOrder,
 				expensesWallet,
 				incomeWallet,
+				expensesCategories,
+				expensesCategoriesOrder,
 			};
 
 			// state.transactions = action.payload.transactions;
@@ -357,9 +377,33 @@ export const user = createSlice({
 		setExpensesCategory: (state, action: { payload: string }) => {
 			state.expensesCategory = action.payload;
 		},
+		setExpensesSubcategory: (state, action: { payload: string }) => {
+			state.expensesSubcategory = action.payload;
+		},
 		setIncomeCategory: (state, action: { payload: string }) => {
 			state.incomeCategory = action.payload;
 		},
+		setIncomeSubcategory: (state, action: { payload: string }) => {
+			state.incomeCategory = action.payload;
+		},
+		setExpensesDate: (state, action: { payload: string }) => {
+			state.expensesDate = action.payload;
+		},
+		setIncomeDate: (state, action: { payload: string }) => {
+			state.incomeDate = action.payload;
+		},
+		setExpensesComment: (state, action: { payload: string }) => {
+			state.expensesComment = action.payload;
+		},
+		setIncomeComment: (state, action: { payload: string }) => {
+			state.incomeComment = action.payload;
+		},
+		// saveTrx: (state, action) => {
+		// 	state.loading = true;
+		// 	try {
+
+		// 	}
+		// }
 	},
 });
 
@@ -367,6 +411,7 @@ export const user = createSlice({
 
 export const {
 	setIsAuth,
+	setUserId,
 	logOut,
 	setUserData,
 	setPageNumber,
@@ -392,6 +437,12 @@ export const {
 	setOpenDrawer,
 	setOpenTransactionForm,
 	setExpensesCategory,
+	setExpensesSubcategory,
 	setIncomeCategory,
+	setIncomeSubcategory,
+	setExpensesDate,
+	setIncomeDate,
+	setExpensesComment,
+	setIncomeComment,
 } = user.actions;
 export default user.reducer;

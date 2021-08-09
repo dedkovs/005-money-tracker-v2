@@ -31,6 +31,14 @@ export interface Wallets {
 	[key: string]: Wallet;
 }
 
+interface ExpensesCategories {
+	[key: string]: string[];
+}
+
+interface IncomeCategories {
+	[key: string]: string[];
+}
+
 export interface GroupByDay {
 	day: string;
 	sum: number;
@@ -47,7 +55,9 @@ export type FormType = 'expenses' | 'income';
 export type RecordToEdit = Transaction | null;
 export interface User {
 	isAuth: boolean;
+	userId: number | null;
 	pageNumber: number;
+	loading: boolean;
 	transactions: Transaction[];
 	groupsByMonth: GroupByMonth[];
 	wallets: Wallets;
@@ -76,8 +86,10 @@ export interface User {
 	editRecordSubcategory: string;
 	editRecordDate: Date | '';
 	editRecordComment: string;
+	expensesCategories: ExpensesCategories;
 	expensesCategory: string;
 	expensesSubcategory: string;
+	incomeCategories: IncomeCategories;
 	incomeCategory: string;
 	incomeSubcategory: string;
 	expensesDate: string;

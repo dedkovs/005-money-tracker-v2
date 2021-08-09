@@ -6,7 +6,7 @@ import axios from 'axios';
 import Routes from './Routes';
 import { setIsAuth } from '../redux/slices/user';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { setUserData } from '../redux/slices/user';
+import { setUserData, setUserId } from '../redux/slices/user';
 
 const App = () => {
 	const isAuth = useAppSelector((state) => state.user.isAuth);
@@ -33,10 +33,12 @@ const App = () => {
 			.then((res) => {
 				setLoading(false);
 				dispatch(setIsAuth(res.data.isAuth));
+				console.log(res.data);
+				dispatch(setUserId(res.data.userId));
 				if (isAuth) {
 					axios.get(`/getdata/${res.data.userId}`).then((res) => {
 						dispatch(setUserData(res.data));
-						// console.log(res.data);
+						console.log(res.data);
 					});
 				}
 			})

@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import { useAppDispatch } from '../../redux/hooks';
 import { setOpenDrawer } from '../../redux/slices/user';
-// import { addTransaction } from '../../redux/slices/transactions2';
 import { setOpenTransactionForm } from '../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({

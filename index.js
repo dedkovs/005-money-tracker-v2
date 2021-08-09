@@ -355,6 +355,20 @@ app.get(
 	}
 );
 
+// TRANSACTIONS
+
+app.post('/add-transaction', async (req, res) => {
+	const { userId, trx } = req.body;
+
+	await sequelize_transactions.query(
+		`INSERT INTO t_? (sum, wallet, expenses_category, expenses_subcategory, income_category, income_subcategory, wallet_from, wallet_to, date, comment) VALUES (${trx.sum}, ${trx.wallet}, ${expenses_category}, ${expenses_subcategory}, ${income_category}, ${income_subcategory}, ${wallet_from}, ${wallet_to}, ${date}, ${comment})`,
+		{
+			replacements: [userId],
+			type: QueryTypes.INSERT,
+		}
+	);
+});
+
 // REGISTER
 
 app.post('/register', async (req, res) => {
@@ -426,11 +440,29 @@ app.get('/getdata/:id', async (req, res) => {
 				}
 			);
 
+			const expenses_categories = await sequelize.query(
+				'SELECT data FROM expenses_categories WHERE user_id = ?',
+				{
+					replacements: [+req.params.id],
+					type: QueryTypes.SELECT,
+				}
+			);
+
+			const expenses_categories_order = await sequelize.query(
+				'SELECT data FROM expenses_categories_order WHERE user_id = ?',
+				{
+					replacements: [+req.params.id],
+					type: QueryTypes.SELECT,
+				}
+			);
+
 			const userData = {
 				transactions,
 				wallets: wallets[0].data,
 				wallets_top_order: wallets_top_order[0].data,
 				wallets_order: wallets_order[0].data,
+				expenses_categories: expenses_categories[0].data,
+				expenses_categories_order: expenses_categories_order[0].data,
 			};
 			res.send(userData);
 		} catch (err) {

@@ -17,6 +17,10 @@ import Sum from './Sum';
 import Wallet from './Wallet';
 import Arrow from './Arrow';
 import Category from './Category';
+import Subcategory from './Subcategory';
+import Date1 from './Date';
+import Comment from './Comment';
+import SaveButton from './SaveButton';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -108,6 +112,10 @@ const TransactionForm = () => {
 					<Wallet />
 					<Arrow />
 					<Category />
+					<Subcategory />
+					<Date1 />
+					<Comment />
+					<SaveButton />
 				</DialogContent>
 			</Dialog>
 		</ThemeProvider>
