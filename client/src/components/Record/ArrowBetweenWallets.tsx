@@ -1,29 +1,27 @@
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { makeStyles } from '@material-ui/core/styles';
-import { Transaction } from '../../redux/slices/transactions';
+import { Transaction } from '../../redux/slices/transactions2';
 const useStyles = makeStyles((theme) => ({
-    arrowDown: {
-        position: 'absolute',
-        left: 35,
-        top: 20,
-        color: theme.palette.recordArrowDownColor,
-    },
+	arrowDown: {
+		position: 'absolute',
+		left: 35,
+		top: 20,
+		color: theme.palette.recordArrowDownColor,
+	},
 }));
 
 interface Props {
-    record: Transaction;
+	record: Transaction;
 }
 
 const ArrowBetweenWallets = (props: Props) => {
-    const classes = useStyles();
+	const classes = useStyles();
 
-    const { wallet_from } = props.record;
+	const { wallet_from } = props.record;
 
-    return (
-        <>
-            {wallet_from && <ArrowDropDownIcon className={classes.arrowDown} />}
-        </>
-    );
+	return (
+		<>{wallet_from && <ArrowDropDownIcon className={classes.arrowDown} />}</>
+	);
 };
 
 export default ArrowBetweenWallets;

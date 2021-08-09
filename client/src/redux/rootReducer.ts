@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import transactions from './slices/transactions';
 import transactions2 from './slices/transactions2';
 import darkTheme from './slices/darkTheme';
 import openDrawer from './slices/openDrawer';
@@ -17,22 +16,21 @@ import recordToEdit from './slices/recordToEdit';
 import dialogs from './slices/dialogs';
 
 const rootReducer = combineReducers({
-    transactions,
-    transactions2,
-    darkTheme,
-    openDrawer,
-    isAuth,
-    showComments,
-    showCents,
-    logoAnimated,
-    logoLoaded,
-    walletsTopOrder,
-    wallets,
-    openTransactionForm,
-    pageNumber,
-    anchors,
-    recordToEdit,
-    dialogs,
+	transactions2,
+	darkTheme,
+	openDrawer,
+	isAuth,
+	showComments,
+	showCents,
+	logoAnimated,
+	logoLoaded,
+	walletsTopOrder,
+	wallets,
+	openTransactionForm,
+	pageNumber,
+	anchors,
+	recordToEdit,
+	dialogs,
 });
 
 export default rootReducer;

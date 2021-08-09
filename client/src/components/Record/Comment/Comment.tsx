@@ -1,7 +1,7 @@
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Transaction } from '../../../redux/slices/transactions';
+import { Transaction } from '../../../redux/slices/transactions2';
 
 const useStyles = makeStyles((theme) => ({
 	commentContainer: {

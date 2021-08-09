@@ -1,55 +1,52 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Transaction } from '../../redux/slices/transactions';
+import { Transaction } from '../../redux/slices/transactions2';
 
 const useStyles = makeStyles((theme) => ({
-    categoryContainer: {
-        fontFamily: 'Ubuntu, Roboto, sans-serif',
-        position: 'absolute',
-        top: 26,
-        left: 40,
-    },
-    expensesCategoryText: {
-        color: theme.palette.recordSumTextColorExpenses,
-    },
-    incomeCategoryText: {
-        color: theme.palette.recordSumTextColorIncome,
-    },
+	categoryContainer: {
+		fontFamily: 'Ubuntu, Roboto, sans-serif',
+		position: 'absolute',
+		top: 26,
+		left: 40,
+	},
+	expensesCategoryText: {
+		color: theme.palette.recordSumTextColorExpenses,
+	},
+	incomeCategoryText: {
+		color: theme.palette.recordSumTextColorIncome,
+	},
 }));
 
 interface Props {
-    record: Transaction;
+	record: Transaction;
 }
 
 const Category = ({
-    record: { expenses_category, income_category },
+	record: { expenses_category, income_category },
 }: Props) => {
-    const classes = useStyles();
-    return (
-        <>
-            {expenses_category && (
-                <div className={classes.categoryContainer}>
-                    <Typography
-                        className={classes.expensesCategoryText}
-                        variant={'body2'}
-                    >
-                        {expenses_category}
-                    </Typography>
-                </div>
-            )}
+	const classes = useStyles();
+	return (
+		<>
+			{expenses_category && (
+				<div className={classes.categoryContainer}>
+					<Typography
+						className={classes.expensesCategoryText}
+						variant={'body2'}
+					>
+						{expenses_category}
+					</Typography>
+				</div>
+			)}
 
-            {income_category && (
-                <div className={classes.categoryContainer}>
-                    <Typography
-                        className={classes.incomeCategoryText}
-                        variant={'body2'}
-                    >
-                        {income_category}
-                    </Typography>
-                </div>
-            )}
-        </>
-    );
+			{income_category && (
+				<div className={classes.categoryContainer}>
+					<Typography className={classes.incomeCategoryText} variant={'body2'}>
+						{income_category}
+					</Typography>
+				</div>
+			)}
+		</>
+	);
 };
 
 export default Category;
