@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -52,7 +52,7 @@ const Category = () => {
 	const dispatch = useAppDispatch();
 
 	return (
-		<div className={classes.FormExpensesSelectWalletsContainer}>
+        <div className={classes.FormExpensesSelectWalletsContainer}>
 			<FormControl variant="standard" className={classes.formControl}>
 				<InputLabel
 					className={classes.label}
@@ -61,16 +61,16 @@ const Category = () => {
 					{'Category'}
 				</InputLabel>
 				<Select
-					className={classes.select01}
-					native
-					value={formType === 'expenses' ? expensesCategory : incomeCategory}
-					onChange={(event) =>
+                    className={classes.select01}
+                    native
+                    value={formType === 'expenses' ? expensesCategory : incomeCategory}
+                    onChange={(event) =>
 						formType === 'expenses'
 							? dispatch(setExpensesCategory(event.target.value))
 							: dispatch(setIncomeCategory(event.target.value))
 					}
-					label={'Category'}
-				>
+                    label={'Category'}
+                    variant="standard">
 					<option aria-label="None" value="" />
 					{formType === 'expenses'
 						? expensesCategoriesOrder.map((item) => (
@@ -87,14 +87,14 @@ const Category = () => {
 			</FormControl>
 			<div>
 				<IconButton
-					onClick={() => {}}
-					className={classes.FormExpensesCreateIconRoot}
-				>
+                    onClick={() => {}}
+                    className={classes.FormExpensesCreateIconRoot}
+                    size="large">
 					<CreateIcon className={classes.FormExpensesEditIcon} />
 				</IconButton>
 			</div>
 		</div>
-	);
+    );
 };
 
 export default Category;

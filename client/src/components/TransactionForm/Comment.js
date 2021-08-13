@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import TextField from '@material-ui/core/TextField';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { setExpensesComment, setIncomeComment } from '../../redux/slices/user';
@@ -9,38 +9,8 @@ const useStyles = makeStyles((theme) => ({
 			width: 270,
 		},
 		'& .MuiInputBase-root': {
-			padding: 0,
+			// padding: 0,
 		},
-	},
-	FormExpensesSelectWalletsContainer: {
-		display: 'flex',
-		paddingLeft: 20,
-		marginTop: 5,
-	},
-	FormExpensesEditIcon: {
-		position: 'relative',
-	},
-	FormExpensesCreateIconRoot: {
-		position: 'relative',
-		padding: '10px !important',
-		top: '-7px !important',
-		left: '-2px !important',
-	},
-	formControl: {
-		width: 270,
-		marginRight: 10,
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(0),
-	},
-	select01: {
-		'& select': {
-			padding: '10px 0px 3px 13px',
-			fontWeight: 600,
-		},
-	},
-	label: {
-		transform: 'translate(14px, 8px) scale(1)',
 	},
 }));
 
@@ -73,12 +43,12 @@ const Comment = () => {
 				variant="standard"
 				maxRows={4}
 				style={{ padding: 0 }}
-				InputProps={{
-					style: {
-						width: 270,
-						fontSize: '0.9rem',
-					},
-				}}
+				// InputProps={{
+				// 	style: {
+				// 		width: 270,
+				// 		fontSize: '0.9rem',
+				// 	},
+				// }}
 				size={'medium'}
 			/>
 		</form>

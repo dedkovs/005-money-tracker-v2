@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,12 +14,13 @@ import {
 	// setLogoLoaded,
 	logOut,
 } from '../../redux/slices/user';
+import { Theme } from '@material-ui/core';
 // import { setPageNumber } from '../../redux/slices/user';
 // import { setExpensesSum, setIncomeSum } from '../../redux/slices/user';
 // import { setRecordMenuButtonAnchor } from '../../redux/slices/user';
 // import { setRecordToEdit } from '../../redux/slices/user';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
 	toolbarMargin: {
 		...theme.mixins.toolbar,
 	},

@@ -1,5 +1,6 @@
 import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core';
+import { Theme } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -70,7 +71,7 @@ const EmailInput = (props: Props) => {
             autoComplete={props.autoComplete}
             error={!!props.errorEmail}
             helperText={props.errorEmail}
-        />
+            variant="standard" />
     );
 };
 

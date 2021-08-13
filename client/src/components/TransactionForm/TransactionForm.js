@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {
 	ThemeProvider,
+	StyledEngineProvider,
 	createTheme,
-	makeStyles,
+	// adaptV4Theme,
 } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 // import {
 //     useHistory,
 //     BrowserRouter
@@ -35,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: 360,
 	},
 	dialogContent1: {
-		minHeight: 500,
+		// minHeight: 500,
 		padding: 0,
 		'&:first-child': {
 			paddingTop: 0,
@@ -67,6 +70,8 @@ const TransactionForm = () => {
 		(state) => state.user.openTransactionForm
 	);
 	const formType = useAppSelector((state) => state.user.formType);
+	const expensesDate = useAppSelector((state) => state.user.expensesDate);
+	const incomeDate = useAppSelector((state) => state.user.incomeDate);
 
 	const dispatch = useAppDispatch();
 
@@ -74,53 +79,56 @@ const TransactionForm = () => {
 
 	const theme = createTheme({
 		palette: {
-			type: darkTheme ? 'dark' : 'light',
+			mode: darkTheme ? 'dark' : 'light',
 			primary: {
 				main: formType === 'expenses' ? '#40a7e2' : '#59af35',
 			},
 		},
 	});
 
-	return (
-		// <BrowserRouter>
-		<ThemeProvider theme={theme}>
-			<Dialog
-				style={{ zIndex: 1302 }}
-				open={openTransactionForm}
-				onClose={() => {
-					dispatch(setOpenTransactionForm(false));
-					// history.push('/');
-				}}
-				classes={{
-					// root: classes.dialogRoot,
-					paperFullWidth: classes.paperFullWidth,
-					paperWidthSm: classes.paperWidthSm,
-					paper: `${matches ? classes.paper2 : classes.paper1} ${
-						classes.paper
-					}`,
-				}}
-				fullWidth
-				maxWidth="sm"
-			>
-				<DialogContent
-					className={`${
-						matches ? classes.dialogContent2 : classes.dialogContent1
-					}`}
-				>
-					<Header />
-					<Sum />
-					<Wallet />
-					<Arrow />
-					<Category />
-					<Subcategory />
-					<Date1 />
-					<Comment />
-					<SaveButton />
-				</DialogContent>
-			</Dialog>
-		</ThemeProvider>
+	const [date, setDate] = useState(
+		new Date(formType === 'expenses' ? expensesDate : incomeDate)
+	);
 
-		// </BrowserRouter>
+	return (
+		<StyledEngineProvider injectFirst>
+			<ThemeProvider theme={theme}>
+				<Dialog
+					style={{ zIndex: 1302 }}
+					open={openTransactionForm}
+					onClose={() => {
+						dispatch(setOpenTransactionForm(false));
+						// history.push('/');
+					}}
+					classes={{
+						// root: classes.dialogRoot,
+						paperFullWidth: classes.paperFullWidth,
+						paperWidthSm: classes.paperWidthSm,
+						paper: `${matches ? classes.paper2 : classes.paper1} ${
+							classes.paper
+						}`,
+					}}
+					fullWidth
+					maxWidth="sm"
+				>
+					<DialogContent
+						className={`${
+							matches ? classes.dialogContent2 : classes.dialogContent1
+						}`}
+					>
+						<Header setDate={setDate} />
+						<Sum />
+						<Wallet />
+						<Arrow />
+						<Category />
+						<Subcategory />
+						<Date1 date={date} setDate={setDate} />
+						<Comment />
+						<SaveButton />
+					</DialogContent>
+				</Dialog>
+			</ThemeProvider>
+		</StyledEngineProvider>
 	);
 };
 

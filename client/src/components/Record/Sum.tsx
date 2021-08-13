@@ -1,10 +1,11 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import NumberFormat from 'react-number-format';
 import { Transaction } from '../../services/types';
 import { useAppSelector } from '../../redux/hooks';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
 	sumContainer: {
 		display: 'flex',
 		height: '100%',

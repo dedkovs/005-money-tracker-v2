@@ -1,4 +1,5 @@
-import { makeStyles, Theme } from '@material-ui/core';
+import { Theme } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Switch from '@material-ui/core/Switch';

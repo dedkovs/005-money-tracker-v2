@@ -1,11 +1,12 @@
 import ListItem from '@material-ui/core/ListItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { toggleShowComments } from '../../redux/slices/user';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
 	showComments: {
 		marginLeft: -12,
 	},

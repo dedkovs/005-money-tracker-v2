@@ -1,9 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import NumberFormat from 'react-number-format';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+// import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { setOpenDrawer } from '../../redux/slices/user';
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
 
 const TopWallets = () => {
 	const classes = useStyles();
-	const matches = useMediaQuery('(max-width: 360px)');
+	// const matches = useMediaQuery('(max-width: 360px)');
 
 	const dispatch = useAppDispatch();
 	const showCents = useAppSelector((state) => state.user.showCents);
@@ -51,12 +51,13 @@ const TopWallets = () => {
 				value={false}
 				variant="scrollable"
 				scrollButtons="auto"
-				indicatorColor="primary"
-				classes={{
-					scrollButtonsDesktop: matches
-						? classes.scrollButtonsDesktop1
-						: classes.scrollButtonsDesktop2,
-				}}
+				textColor="inherit"
+				// indicatorColor="primary"
+				// classes={{
+				// 	scrollButtonsDesktop: matches
+				// 		? classes.scrollButtonsDesktop1
+				// 		: classes.scrollButtonsDesktop2,
+				// }}
 			>
 				{Object.keys(wallets).length > 0 &&
 					walletsTopOrder

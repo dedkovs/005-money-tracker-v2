@@ -79,49 +79,49 @@ const createNewTransactionsTable = async (userId) => {
 		`t_${userId}`,
 		{
 			id: {
-				type: DataTypes.INTEGER,
+				type: Sequelize.INTEGER,
 				autoIncrement: true,
 				allowNull: false,
 				primaryKey: true,
 			},
 			sum: {
-				type: DataTypes.INTEGER,
+				type: Sequelize.INTEGER,
 				allowNull: false,
 			},
 			wallet: {
-				type: DataTypes.STRING,
+				type: Sequelize.STRING,
 				allowNull: true,
 			},
 			expenses_category: {
-				type: DataTypes.STRING,
+				type: Sequelize.STRING,
 				allowNull: true,
 			},
 			expenses_subcategory: {
-				type: DataTypes.STRING,
+				type: Sequelize.STRING,
 				allowNull: true,
 			},
 			income_category: {
-				type: DataTypes.STRING,
+				type: Sequelize.STRING,
 				allowNull: true,
 			},
 			income_subcategory: {
-				type: DataTypes.STRING,
+				type: Sequelize.STRING,
 				allowNull: true,
 			},
 			wallet_from: {
-				type: DataTypes.STRING,
+				type: Sequelize.STRING,
 				allowNull: true,
 			},
 			wallet_to: {
-				type: DataTypes.STRING,
+				type: Sequelize.STRING,
 				allowNull: true,
 			},
 			date: {
-				type: DataTypes.DATEONLY,
+				type: Sequelize.STRING,
 				allowNull: false,
 			},
 			comment: {
-				type: DataTypes.STRING,
+				type: Sequelize.STRING,
 				allowNull: true,
 			},
 		},
@@ -287,9 +287,9 @@ const validateHuman = async (token) => {
 	return false;
 };
 
-// ******************* ROUTES *******************
+/// ******************* ROUTES *******************
 
-// INDEX
+/// INDEX
 
 app.get('/isauth', (req, res) => {
 	if (req.isAuthenticated()) {
@@ -299,25 +299,25 @@ app.get('/isauth', (req, res) => {
 	}
 });
 
-// DEMO
+/// DEMO
 
 app.get('/demo', (req, res) => {
 	res.sendFile(__dirname + '/demo/index.html');
 });
 
-// SYNTH
+/// SYNTH
 
 app.get('/synth', (req, res) => {
 	res.sendFile(__dirname + '/synth/index.html');
 });
 
-// CURRENCY CONVERTER
+/// CURRENCY CONVERTER
 
 app.get('/currency-converter', (req, res) => {
 	res.sendFile(__dirname + '/currency-converter/index.html');
 });
 
-// LOGIN
+/// LOGIN
 
 app.post(
 	'/login',
@@ -338,7 +338,7 @@ app.get('/success', (req, res) => {
 	res.send({ isAuth: true, userId: req.user.id });
 });
 
-// GOOGLE
+/// GOOGLE
 
 app.get(
 	'/auth/google',
@@ -355,21 +355,96 @@ app.get(
 	}
 );
 
-// TRANSACTIONS
+/// TRANSACTIONS
 
-app.post('/add-transaction', async (req, res) => {
-	const { userId, trx } = req.body;
+const Wallet = sequelize.define(
+	'wallets',
+	{
+		user_id: {
+			type: Sequelize.INTEGER,
+			allowNull: false,
+			primaryKey: true,
+		},
+		data: {
+			type: Sequelize.JSON,
+			allowNull: false,
+			defaultValue: {},
+		},
+	},
+	{
+		timestamps: false,
+	}
+);
 
-	await sequelize_transactions.query(
-		`INSERT INTO t_? (sum, wallet, expenses_category, expenses_subcategory, income_category, income_subcategory, wallet_from, wallet_to, date, comment) VALUES (${trx.sum}, ${trx.wallet}, ${expenses_category}, ${expenses_subcategory}, ${income_category}, ${income_subcategory}, ${wallet_from}, ${wallet_to}, ${date}, ${comment})`,
-		{
-			replacements: [userId],
-			type: QueryTypes.INSERT,
-		}
-	);
+app.post('/add-transaction', async (req, res, next) => {
+	const { userId, trx, updatedWallets } = req.body;
+	const t1 = await sequelize_transactions.transaction();
+	const t2 = await sequelize.transaction();
+	try {
+		const trxId = await sequelize_transactions.query(
+			`INSERT INTO t_? (sum, wallet, expenses_category, expenses_subcategory, income_category, income_subcategory, wallet_from, wallet_to, date, comment) VALUES (${
+				trx.sum
+			}, ${trx.wallet === null ? null : `'${trx.wallet}'`}, ${
+				trx.expenses_category === null || trx.expenses_category === ''
+					? null
+					: `'${trx.expenses_category}'`
+			}, ${
+				trx.expenses_subcategory === null || trx.expenses_subcategory === ''
+					? null
+					: `'${trx.expenses_subcategory}'`
+			}, ${
+				trx.income_category === null || trx.income_category === ''
+					? null
+					: `'${trx.income_category}'`
+			}, ${
+				trx.income_subcategory === null || trx.income_subcategory === ''
+					? null
+					: `'${trx.income_subcategory}'`
+			}, ${trx.wallet_from === null ? null : `'${trx.wallet_from}'`}, ${
+				trx.wallet_to === null ? null : `'${trx.wallet_to}'`
+			}, '${trx.date}', ${
+				trx.comment === null || trx.comment === '' ? null : `'${trx.comment}'`
+			});`,
+			{
+				replacements: [userId],
+				type: QueryTypes.INSERT,
+				transaction: t1,
+			}
+		);
+
+		console.log('WALLETS: ', updatedWallets);
+
+		await sequelize.query(
+			// `UPDATE wallets SET data = '{"Tinkoff": [100,true,0]}' WHERE user_id = 4`,
+			`UPDATE wallets SET data = '${JSON.stringify(
+				updatedWallets
+			)}' WHERE user_id = ${userId}`,
+			// `UPDATE wallets SET data = '{${...updatedWallets}}'`,
+			{
+				type: QueryTypes.UPDATE,
+				transaction: t2,
+			}
+		);
+
+		// await Wallet.update(
+		// 	{ 'data.Tinkoff': [800, true, 0] },
+		// 	{ where: { user_id: 4 } },
+		// 	{ type: QueryTypes.UPDATE, transaction: t2 }
+		// );
+
+		res.send(`${trxId[0]}`);
+		// res.send('OK - Wallets successfully updated');
+
+		await t1.commit();
+		await t2.commit();
+	} catch (err) {
+		await t1.rollback();
+		await t2.rollback();
+		next(err);
+	}
 });
 
-// REGISTER
+/// REGISTER
 
 app.post('/register', async (req, res) => {
 	const human = await validateHuman(req.body.token);
@@ -409,7 +484,7 @@ app.post('/register', async (req, res) => {
 	}
 });
 
-// GET DATA
+/// GET DATA
 
 app.get('/getdata/:id', async (req, res) => {
 	if (req.isAuthenticated) {
@@ -471,14 +546,14 @@ app.get('/getdata/:id', async (req, res) => {
 	}
 });
 
-// LOG OUT
+/// LOG OUT
 
 app.get('/logout', (req, res) => {
 	req.logout();
 	res.send({ isAuth: false });
 });
 
-// OTHERS
+/// OTHERS
 
 app.get('*', (req, res) => {
 	res.redirect('/');

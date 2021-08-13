@@ -1,31 +1,31 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User, Transaction, Wallets, FormType } from '../../services/types';
 import getGroups from '../../components/Data/getGroups';
-import {
-	comments,
-	expenses_categories,
-	income_categories,
-	wallets,
-} from '../../services/data';
+// import {
+// 	comments,
+// 	expenses_categories,
+// 	income_categories,
+// 	wallets,
+// } from '../../services/data';
 import axios from 'axios';
 
-let [category, subcategory] = ['', ''];
+// let [category, subcategory] = ['', ''];
 
-const getCategoryAndSubcategory = (obj: any) => {
-	const keys = Object.keys(obj);
-	let key;
-	category = keys[Math.floor(Math.random() * keys.length)];
-	key = obj[category];
-	subcategory = key[Math.floor(Math.random() * key.length)];
-};
+// const getRandomCategoryAndSubcategory = (obj: any) => {
+// 	const keys = Object.keys(obj);
+// 	let key;
+// 	category = keys[Math.floor(Math.random() * keys.length)];
+// 	key = obj[category];
+// 	subcategory = key[Math.floor(Math.random() * key.length)];
+// };
 
-const getDate = () => {
-	const year = 2020;
-	let month: number | string = Math.round(Math.random() * (12 - 1) + 1);
-	const day = Math.round(Math.random() * (30 - 1) + 1);
-	if (month < 10) month = `0${month}`;
-	return `${year}-${month}-${day}`;
-};
+// const getRandomDate = () => {
+// 	const year = 2020;
+// 	let month: number | string = Math.round(Math.random() * (12 - 1) + 1);
+// 	const day = Math.round(Math.random() * (30 - 1) + 1);
+// 	if (month < 10) month = `0${month}`;
+// 	return `${year}-${month}-${day}`;
+// };
 
 let pageNumber: number;
 let localStorage_pageNumber = localStorage.getItem('pageNumber');
@@ -110,13 +110,23 @@ export const initialState: User = {
 	incomeCategoriesOrder: [''],
 };
 
-const saveTrx = createAsyncThunk('saveTransaction', async (userId, trx) => {
-	const response = await axios.post('/add-transaction', {
-		userId,
-		trx,
-	});
-	return response.data;
-});
+/// THUNKS
+
+export const saveTrx = createAsyncThunk(
+	'user/saveTrx',
+	async (data, { dispatch }) => {
+		try {
+			let trxId = await axios.post('/add-transaction', data);
+			trxId = trxId.data;
+			// console.log('data: ', data);
+			dispatch(user.actions.addNewTransaction({ data, trxId }));
+			dispatch(user.actions.setOpenTransactionForm(false));
+			dispatch(user.actions.clearTransactionFormExpenses());
+		} catch (err) {
+			throw new Error(err);
+		}
+	}
+);
 
 /// REDUCER
 
@@ -198,56 +208,110 @@ export const user = createSlice({
 			localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
 			state.pageNumber = action.payload;
 		},
-		addTransaction: (state) => {
+		addNewTransaction: (state, action: { payload: any }) => {
 			let transactions = [...state.transactions];
 			const getNewPageNumber = (month: number) => {
 				let newPageNumber: number;
 				let monthsArray: number[] = [];
 				transactions.forEach((el) => {
-					monthsArray.push(+el.date.substr(5, 2));
+					// monthsArray.push(+el.date.substr(5, 2));
+					monthsArray.push(new Date(el.date).getMonth());
 				});
 				let uniqueMonthsArray: number[] = Array.from(new Set(monthsArray)).sort(
 					(a, b) => b - a
 				);
+				// console.log('uniqueMonthsArray: ', uniqueMonthsArray);
 				newPageNumber = uniqueMonthsArray.indexOf(month);
+				// console.log('newPageNumber: ', newPageNumber);
 				return newPageNumber;
 			};
-			let newTrx: Transaction = {
-				comment: comments[Math.floor(Math.random() * comments.length)],
-				date: getDate(),
-				id: Math.floor(Math.random() * 10 ** 10) + 1,
-				sum: 0,
-				wallet: wallets[Math.floor(Math.random() * wallets.length)],
-				wallet_from: null,
-				wallet_to: null,
-			};
-			getCategoryAndSubcategory(expenses_categories);
-			newTrx.expenses_category = category;
-			newTrx.expenses_subcategory = subcategory;
-			getCategoryAndSubcategory(income_categories);
-			newTrx.income_category = category;
-			newTrx.income_subcategory = subcategory;
-			newTrx.sum =
-				(Math.ceil(Math.random() * 1000000) + 1) *
-				(Math.round(Math.random()) ? 1 : -1);
-			if (newTrx.sum < 0) {
-				newTrx.income_category = null;
-				newTrx.income_subcategory = null;
-			}
-			if (newTrx.sum > 0) {
-				newTrx.expenses_category = null;
-				newTrx.expenses_subcategory = null;
-			}
+
+			let newTrx = { ...action.payload.data.trx, id: action.payload.trxId };
 
 			transactions.push(newTrx);
-			const monthFromNewTrx = +newTrx.date.substr(5, 2);
+
+			// const monthFromNewTrx = +newTrx.date.substr(5, 2);
+			const monthFromNewTrx = new Date(newTrx.date).getMonth();
+			// console.log('monthFromNewTrx: ', monthFromNewTrx);
 			let pageNumber = getNewPageNumber(monthFromNewTrx);
 			localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
 
 			const groupsByMonth = getGroups(transactions);
+			// console.log('groupsByMonth: ', groupsByMonth);
+			// console.log('pageNumber: ', pageNumber);
+			// console.log('transactions: ', transactions);
+			// console.log(
+			// 	'action.payload.data.updatedWallets: ',
+			// 	action.payload.data.updatedWallets
+			// );
 
-			return { ...state, groupsByMonth, transactions, pageNumber };
+			const updatedWallets = {
+				...state.wallets,
+				...action.payload.data.updatedWallets,
+			};
+			// console.log(
+			// 	'updatedWallets: ',
+			// 	JSON.parse(JSON.stringify(updatedWallets))
+			// );
+
+			return {
+				...state,
+				groupsByMonth,
+				transactions,
+				pageNumber,
+				wallets: updatedWallets,
+			};
 		},
+		// addNewTransaction: (state) => {
+		// 	let transactions = [...state.transactions];
+		// 	const getNewPageNumber = (month: number) => {
+		// 		let newPageNumber: number;
+		// 		let monthsArray: number[] = [];
+		// 		transactions.forEach((el) => {
+		// 			monthsArray.push(+el.date.substr(5, 2));
+		// 		});
+		// 		let uniqueMonthsArray: number[] = Array.from(new Set(monthsArray)).sort(
+		// 			(a, b) => b - a
+		// 		);
+		// 		newPageNumber = uniqueMonthsArray.indexOf(month);
+		// 		return newPageNumber;
+		// 	};
+		// 	let newTrx: Transaction = {
+		// 		comment: comments[Math.floor(Math.random() * comments.length)],
+		// 		date: getRandomDate(),
+		// 		id: Math.floor(Math.random() * 10 ** 10) + 1,
+		// 		sum: 0,
+		// 		wallet: wallets[Math.floor(Math.random() * wallets.length)],
+		// 		wallet_from: null,
+		// 		wallet_to: null,
+		// 	};
+		// 	getRandomCategoryAndSubcategory(expenses_categories);
+		// 	newTrx.expenses_category = category;
+		// 	newTrx.expenses_subcategory = subcategory;
+		// 	getRandomCategoryAndSubcategory(income_categories);
+		// 	newTrx.income_category = category;
+		// 	newTrx.income_subcategory = subcategory;
+		// 	newTrx.sum =
+		// 		(Math.ceil(Math.random() * 1000000) + 1) *
+		// 		(Math.round(Math.random()) ? 1 : -1);
+		// 	if (newTrx.sum < 0) {
+		// 		newTrx.income_category = null;
+		// 		newTrx.income_subcategory = null;
+		// 	}
+		// 	if (newTrx.sum > 0) {
+		// 		newTrx.expenses_category = null;
+		// 		newTrx.expenses_subcategory = null;
+		// 	}
+
+		// 	transactions.push(newTrx);
+		// 	const monthFromNewTrx = +newTrx.date.substr(5, 2);
+		// 	let pageNumber = getNewPageNumber(monthFromNewTrx);
+		// 	localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
+
+		// 	const groupsByMonth = getGroups(transactions);
+
+		// 	return { ...state, groupsByMonth, transactions, pageNumber };
+		// },
 		setAllTransactions: (state, action: { payload: Transaction[] }) => {
 			let transactions = action.payload;
 			const groupsByMonth = getGroups(transactions);
@@ -398,12 +462,24 @@ export const user = createSlice({
 		setIncomeComment: (state, action: { payload: string }) => {
 			state.incomeComment = action.payload;
 		},
-		// saveTrx: (state, action) => {
-		// 	state.loading = true;
-		// 	try {
-
-		// 	}
-		// }
+		clearTransactionFormExpenses: (state) => {
+			state.expensesSum = '';
+			state.expensesComment = '';
+		},
+	},
+	extraReducers: {
+		[`${saveTrx.pending}`]: (state) => {
+			// console.log('PENDING');
+			state.loading = true;
+		},
+		[`${saveTrx.fulfilled}`]: (state) => {
+			// console.log('FULFILLED');
+			state.loading = false;
+		},
+		[`${saveTrx.rejected}`]: (state) => {
+			// console.log('REJECTED');
+			state.loading = false;
+		},
 	},
 });
 
@@ -415,7 +491,7 @@ export const {
 	logOut,
 	setUserData,
 	setPageNumber,
-	addTransaction,
+	addNewTransaction,
 	setAllTransactions,
 	// setWallets,
 	// setWalletsTopOrder,

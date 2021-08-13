@@ -1,13 +1,9 @@
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
-import PropTypes from 'prop-types';
-import {
-	// ThemeProvider,
-	// createTheme,
-	makeStyles,
-} from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setExpensesSum, setIncomeSum } from '../../redux/slices/user';
+import { forwardRef } from 'react';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -25,63 +21,63 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-function NumberFormatCustom(props) {
-	const { inputRef, onChange, ...other } = props;
-
-	return (
-		<NumberFormat
-			{...other}
-			getInputRef={inputRef}
-			onValueChange={(values) => {
-				onChange({
-					target: {
-						// name: props.name,
-						value: values.floatValue,
-					},
-				});
-			}}
-			thousandSeparator={' '}
-			decimalSeparator={','}
-			decimalScale={2}
-			allowNegative={false}
-			allowLeadingZeros={false}
-			maxLength={12}
-			placeholder={'0'}
-			isNumericString
-		/>
-	);
+interface CustomProps {
+	onChange: (event: { target: { name: string; value: string } }) => void;
+	name: string;
 }
 
-NumberFormatCustom.propTypes = {
-	inputRef: PropTypes.func.isRequired,
-	name: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
-};
+const NumberFormatCustom = forwardRef<NumberFormat, CustomProps>(
+	function NumberFormatCustom(props, ref) {
+		const { onChange, ...other } = props;
+		return (
+			<NumberFormat
+				{...other}
+				getInputRef={ref}
+				onValueChange={(values) => {
+					onChange({
+						target: {
+							name: props.name,
+							value: values.value,
+						},
+					});
+				}}
+				thousandSeparator={' '}
+				decimalSeparator={','}
+				decimalScale={2}
+				allowNegative={false}
+				allowLeadingZeros={false}
+				maxLength={12}
+				placeholder={'0'}
+				isNumericString
+			/>
+		);
+	}
+);
 
 const Sum = () => {
 	const dispatch = useAppDispatch();
 	const formType = useAppSelector((state) => state.user.formType);
 	const expensesSum = useAppSelector((state) => state.user.expensesSum);
 	const incomeSum = useAppSelector((state) => state.user.incomeSum);
-	// const darkTheme = useAppSelector((state) => state.ui.darkTheme);
 	const classes = useStyles();
 
 	return (
-		<div className={classes.root} autoComplete="off">
+		<div className={classes.root}>
 			<TextField
+				autoComplete={'off'}
 				name="numberformat"
 				value={formType === 'expenses' ? expensesSum || '' : incomeSum || ''}
 				onChange={(event) => {
 					formType === 'expenses'
-						? dispatch(setExpensesSum(event.target.value * -1))
-						: dispatch(setIncomeSum(event.target.value));
+						? dispatch(setExpensesSum(Number(event.target.value) * -1))
+						: dispatch(setIncomeSum(Number(event.target.value) * 1));
 				}}
 				className={classes.textField01}
 				id="outlined-basic"
 				label={'Sum'}
 				variant="standard"
 				InputProps={{
-					inputComponent: NumberFormatCustom,
+					inputComponent: NumberFormatCustom as any,
 				}}
 				color="primary"
 				autoFocus

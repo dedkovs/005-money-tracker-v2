@@ -12,17 +12,17 @@ export interface Open {
 }
 
 export interface Transaction {
-	comment: string | null;
+	comment?: string | null;
 	date: string;
 	expenses_category?: string | null;
 	expenses_subcategory?: string | null;
-	id: number;
+	id?: number;
 	income_category?: string | null;
 	income_subcategory?: string | null;
 	sum: number;
-	wallet: string;
-	wallet_from: string | null;
-	wallet_to: string | null;
+	wallet?: string;
+	wallet_from?: string | null;
+	wallet_to?: string | null;
 }
 
 export type Wallet = [number, boolean, number];

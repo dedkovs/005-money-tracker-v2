@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -44,8 +44,8 @@ const Wallet = () => {
 	const dispatch = useAppDispatch();
 
 	return (
-		<div className={classes.FormExpensesSelectWalletsContainer}>
-			<FormControl className={classes.formControl}>
+        <div className={classes.FormExpensesSelectWalletsContainer}>
+			<FormControl className={classes.formControl} variant="standard">
 				<InputLabel
 					className={classes.label}
 					htmlFor="outlined-age-native-simple"
@@ -54,19 +54,19 @@ const Wallet = () => {
 					{'Wallet'}
 				</InputLabel>
 				<Select
-					className={classes.select01}
-					native
-					value={formType === 'expenses' ? expensesWallet : incomeWallet}
-					onChange={(event) =>
+                    className={classes.select01}
+                    native
+                    value={formType === 'expenses' ? expensesWallet : incomeWallet}
+                    onChange={(event) =>
 						formType === 'expenses'
 							? dispatch(setExpensesWallet(event.target.value))
 							: dispatch(setIncomeWallet(event.target.value))
 					}
-					label={'Wallet'}
-					inputProps={{
+                    label={'Wallet'}
+                    inputProps={{
 						name: 'wallet',
 					}}
-				>
+                    variant="standard">
 					{walletsOrder.map((item) => (
 						<option key={item} value={item}>
 							{item}
@@ -76,14 +76,14 @@ const Wallet = () => {
 			</FormControl>
 			<div>
 				<IconButton
-					onClick={() => {}}
-					className={classes.FormExpensesCreateIconRoot}
-				>
+                    onClick={() => {}}
+                    className={classes.FormExpensesCreateIconRoot}
+                    size="large">
 					<CreateIcon className={classes.FormExpensesEditIcon} />
 				</IconButton>
 			</div>
 		</div>
-	);
+    );
 };
 
 export default Wallet;

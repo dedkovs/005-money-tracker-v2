@@ -1,5 +1,5 @@
 // import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import { useAppSelector } from '../../redux/hooks';
 import ArrowUp from '../../images/arrow-up.svg';
 import ArrowDown from '../../images/arrow-down.svg';

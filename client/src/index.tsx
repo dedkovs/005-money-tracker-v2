@@ -9,13 +9,13 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            {/* <CssBaseline /> */}
-            <App />
-        </Provider>
-    </React.StrictMode>,
-    document.getElementById('root')
+	<React.StrictMode>
+		<Provider store={store}>
+			{/* <CssBaseline /> */}
+			<App />
+		</Provider>
+	</React.StrictMode>,
+	document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

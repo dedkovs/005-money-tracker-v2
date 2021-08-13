@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import NumberFormat from 'react-number-format';
 import transformDate from './transformDate';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import { useAppSelector } from '../../redux/hooks';
 
 const useStyles = makeStyles((theme) => ({

@@ -1,6 +1,6 @@
-import { withStyles } from '@material-ui/styles';
+import { withStyles, WithStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
-import { WithStyles, createStyles } from '@material-ui/core';
+import createStyles from '@material-ui/styles/createStyles';
 
 const styles = () =>
     createStyles({

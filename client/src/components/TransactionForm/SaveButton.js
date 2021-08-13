@@ -1,25 +1,35 @@
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+// import { adaptV4Theme } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 // import axios from 'axios';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import {
+	ThemeProvider,
+	StyledEngineProvider,
+	createTheme,
+} from '@material-ui/core/styles';
 import { amber } from '@material-ui/core/colors';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // import { useHistory } from 'react-router';
 // import getNewIncomeTrx from './getNewIncomeTrx';
 // import getNewExpensesTrx from './getNewExpensesTrx';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { saveTrx } from '../../redux/slices/user';
 // axios.defaults.baseURL =
 // 'https://europe-west2-keep-track-of-the-budget.cloudfunctions.net/api';
 
 // axios.defaults.baseURL =
 // 	'http://localhost:5000/keep-track-of-the-budget/europe-west2/api';
+// import { setUserData } from '../../redux/slices/user';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
 	saveButtonContainer: {
 		display: 'flex',
 		justifyContent: 'center',
 		marginTop: '2.5em',
 		marginBottom: '2.5em',
+	},
+	saveButton: {
+		color: 'white',
 	},
 	spinner2: {
 		position: 'absolute',
@@ -29,14 +39,17 @@ const useStyles = makeStyles(() => ({
 		marginRight: 'auto',
 		top: 3,
 	},
-}));
+});
 
 const SaveButton = () => {
 	const classes = useStyles();
+	const dispatch = useAppDispatch();
 
 	const darkTheme = useAppSelector((state) => state.user.darkTheme);
 	const loading = useAppSelector((state) => state.user.loading);
 	const formType = useAppSelector((state) => state.user.formType);
+
+	const userId = useAppSelector((state) => state.user.userId);
 
 	const incomeSum = useAppSelector((state) => state.user.incomeSum);
 	const expensesSum = useAppSelector((state) => state.user.expensesSum);
@@ -68,7 +81,7 @@ const SaveButton = () => {
 
 	const spinnerColor = createTheme({
 		palette: {
-			type: darkTheme ? 'dark' : 'light',
+			mode: darkTheme ? 'dark' : 'light',
 			primary: {
 				main: amber[500],
 			},
@@ -77,9 +90,13 @@ const SaveButton = () => {
 
 	const getNewExpensesTrx = () => {
 		let updWallet = wallets[expensesWallet];
-		updWallet = [updWallet[0] + expensesSum, updWallet[1], updWallet[2]];
-		return {
-			sum: expensesSum,
+		// console.log(updWallet);
+		updWallet = [updWallet[0] + expensesSum * 100, updWallet[1], updWallet[2]];
+		// console.log(updWallet);
+		const updatedWallet = { [expensesWallet]: updWallet };
+		// console.log('updatedWallet: ', updatedWallet);
+		const trx = {
+			sum: expensesSum * 100,
 			wallet: expensesWallet,
 			expenses_category: expensesCategory,
 			expenses_subcategory: expensesSubcategory,
@@ -87,19 +104,23 @@ const SaveButton = () => {
 			income_subcategory: null,
 			wallet_from: null,
 			wallet_to: null,
-			date: `${new Date(expensesDate).getFullYear()}-${new Date(
-				expensesDate
-			).getMonth()}-${new Date(expensesDate).getDate()}`,
+			date: expensesDate,
 			comment: expensesComment,
-			updatedWallet: updWallet,
+			// updatedWallet: updWallet,
 		};
+		const updatedWallets = {
+			...wallets,
+			...updatedWallet,
+		};
+
+		return { userId, trx, updatedWallets };
 	};
 
 	const getNewIncomeTrx = () => {
 		let updWallet = wallets[incomeWallet];
-		updWallet = [updWallet[0] + incomeSum, updWallet[1], updWallet[2]];
-		return {
-			sum: incomeSum,
+		updWallet = [updWallet[0] + incomeSum * 100, updWallet[1], updWallet[2]];
+		const trx = {
+			sum: incomeSum * 100,
 			wallet: incomeWallet,
 			expenses_category: null,
 			expenses_subcategory: null,
@@ -107,19 +128,18 @@ const SaveButton = () => {
 			income_subcategory: incomeSubcategory,
 			wallet_from: null,
 			wallet_to: null,
-			date: `${new Date(incomeDate).getFullYear()}-${new Date(
-				incomeDate
-			).getMonth()}-${new Date(incomeDate).getDate()}`,
+			date: incomeDate,
 			comment: incomeComment,
-			updatedWallet: updWallet,
+			// updatedWallet: updWallet,
 		};
+		return { userId, trx, updWallet };
 	};
 
-	const saveTrx = () => {
+	const handleSaveTransaction = () => {
 		if (formType === 'income') {
 			if (incomeSum !== '' && Math.abs(incomeSum) !== 0 && !isNaN(incomeSum)) {
-				// dispatch(saveTrx(getNewIncomeTrx()));
-				console.log(getNewIncomeTrx());
+				dispatch(saveTrx(getNewIncomeTrx()));
+				// console.log(getNewIncomeTrx());
 			}
 		}
 
@@ -129,8 +149,17 @@ const SaveButton = () => {
 				Math.abs(expensesSum) !== 0 &&
 				!isNaN(expensesSum)
 			) {
-				// dispatch(saveTrx(getNewExpensesTrx()));
-				console.log(getNewExpensesTrx());
+				dispatch(saveTrx(getNewExpensesTrx()));
+				// .then(() => {
+				// 	axios
+				// 		.get(`/getdata/${userId}`)
+				// 		.then((res) => {
+				// 			dispatch(setUserData(res.data));
+				// 		})
+				// 		.catch((err) => console.log(err));
+				// })
+				// .catch((err) => console.log(err));
+				// console.log(getNewExpensesTrx());
 			}
 		}
 	};
@@ -142,14 +171,17 @@ const SaveButton = () => {
 				variant="contained"
 				color="primary"
 				onClick={() => {
-					saveTrx();
+					handleSaveTransaction();
 				}}
+				className={classes.saveButton}
 			>
 				Save
 				{loading && (
-					<ThemeProvider theme={spinnerColor}>
-						<CircularProgress size={30} className={classes.spinner2} />
-					</ThemeProvider>
+					<StyledEngineProvider injectFirst>
+						<ThemeProvider theme={spinnerColor}>
+							<CircularProgress size={30} className={classes.spinner2} />
+						</ThemeProvider>
+					</StyledEngineProvider>
 				)}
 			</Button>
 		</div>

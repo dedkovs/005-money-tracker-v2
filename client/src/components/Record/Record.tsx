@@ -1,7 +1,15 @@
-import { useRef, useState, useEffect } from 'react';
+import {
+	useRef,
+	useState,
+	useEffect,
+	forwardRef,
+	ReactNode,
+	MutableRefObject,
+} from 'react';
 import Paper from '@material-ui/core/Paper';
 import { Transaction } from '../../services/types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import MenuButton from './MenuButton';
 import WalletContainer from './Wallet/WalletContainer';
 import Category from './Category';
@@ -16,7 +24,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import { setRecordMenuButtonAnchor } from '../../redux/slices/user';
 import { setRecordToEdit } from '../../redux/slices/user';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
 	paper: {
 		height: 65,
 		margin: '0px 0px 22px',
@@ -36,11 +44,49 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-interface Props {
+interface PaperRefProps {
+	children?: ReactNode;
+	ref: MutableRefObject<HTMLDivElement>;
+	elevation: number;
+	className: string;
+}
+
+interface RecordProps {
 	record: Transaction;
 }
 
-const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
+const PaperRef = forwardRef<HTMLDivElement, PaperRefProps>((props, ref) => {
+	// const classes = useStyles();
+	// const { backgroundExpenses, backgroundIncome, backgroundBetween } = classes;
+	// const { sum, wallet } = props;
+
+	// const getPaperColor = () => {
+	// 	if (sum < 0 && wallet) {
+	// 		return `${backgroundExpenses}`;
+	// 	}
+	// 	if (sum > 0 && wallet) {
+	// 		return `${backgroundIncome}`;
+	// 	}
+	// 	return `${backgroundBetween}`;
+	// };
+
+	return (
+		<Paper
+			{...props}
+			ref={ref}
+			component="div"
+			// elevation={0}
+			// className={`${classes.paper} ${getPaperColor()}`}
+		>
+			{props.children}
+		</Paper>
+	);
+});
+
+const Record = ({
+	record: { id, sum, wallet, comment },
+	record,
+}: RecordProps) => {
 	const classes = useStyles();
 	const dispatch = useAppDispatch();
 
@@ -48,7 +94,7 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
 	let showComments = useAppSelector((state) => state.user.showComments);
 	const [show, setShow] = useState(showComments);
 
-	const wrapperRef = useRef<HTMLAnchorElement>(null);
+	const wrapperRef = useRef<any>(null);
 	const recordMenuButtonRef = useRef<HTMLButtonElement>(null);
 	const { backgroundExpenses, backgroundIncome, backgroundBetween } = classes;
 
@@ -98,9 +144,10 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
 		}
 		return `${backgroundBetween}`;
 	};
+
 	return (
 		<>
-			<Paper
+			<PaperRef
 				ref={wrapperRef}
 				elevation={0}
 				className={`${classes.paper} ${getPaperColor()}`}
@@ -118,7 +165,7 @@ const Record = ({ record: { id, sum, wallet, comment }, record }: Props) => {
 				<Category record={record} />
 				<Subcategory record={record} />
 				<Sum record={record} />
-			</Paper>
+			</PaperRef>
 			<Comment record={record} show={show} />
 		</>
 	);

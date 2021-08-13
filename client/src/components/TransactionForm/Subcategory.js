@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -77,7 +77,7 @@ const Subcategory = () => {
 	};
 
 	return (
-		<div className={classes.FormExpensesSelectWalletsContainer}>
+        <div className={classes.FormExpensesSelectWalletsContainer}>
 			<FormControl variant="standard" className={classes.formControl}>
 				<InputLabel
 					className={classes.label}
@@ -86,32 +86,32 @@ const Subcategory = () => {
 					{'Subcategory'}
 				</InputLabel>
 				<Select
-					className={classes.select01}
-					native
-					value={
+                    className={classes.select01}
+                    native
+                    value={
 						formType === 'expenses' ? expensesSubcategory : incomeSubcategory
 					}
-					onChange={(event) =>
+                    onChange={(event) =>
 						formType === 'expenses'
 							? dispatch(setExpensesSubcategory(event.target.value))
 							: dispatch(setIncomeSubcategory(event.target.value))
 					}
-					label={'Subcategory'}
-				>
+                    label={'Subcategory'}
+                    variant="standard">
 					<option aria-label="None" value="" />
 					{getSubcategories()}
 				</Select>
 			</FormControl>
 			<div>
 				<IconButton
-					onClick={() => {}}
-					className={classes.FormExpensesCreateIconRoot}
-				>
+                    onClick={() => {}}
+                    className={classes.FormExpensesCreateIconRoot}
+                    size="large">
 					<CreateIcon className={classes.FormExpensesEditIcon} />
 				</IconButton>
 			</div>
 		</div>
-	);
+    );
 };
 
 export default Subcategory;

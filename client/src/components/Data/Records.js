@@ -3,7 +3,7 @@ import RecordsByDayHeader from './RecordsByDayHeader';
 import getRecordsBetween from './getRecordsBetween';
 import getRecordsIncome from './getRecordsIncome';
 import getRecordsExpenses from './getRecordsExpenses';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
     toolbarMargin: {

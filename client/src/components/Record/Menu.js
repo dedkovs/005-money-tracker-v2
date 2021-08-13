@@ -1,5 +1,5 @@
 import Menu from '@material-ui/core/Menu';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { setRecordMenuButtonAnchor } from '../../redux/slices/user';
@@ -37,7 +37,7 @@ const Menu1 = () => {
 			PaperProps={{
 				style: {
 					boxShadow: '0px 0px 10px rgba(0,0,0,0.2)',
-					transform: 'translate(30px, 0px)',
+					transform: 'translate(30px, -56px)',
 				},
 			}}
 			// MenuListProps={{ style: { paddingBottom: 0, paddingTop: 0 } }}

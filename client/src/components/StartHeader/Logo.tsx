@@ -1,4 +1,5 @@
-import { makeStyles, Theme } from '@material-ui/core';
+import { Theme } from '@material-ui/core';
+import makeStyles from '@material-ui/styles/makeStyles';
 import LogoSrc from '../../images/money-tracker-logo.svg';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { setLogoAnimated } from '../../redux/slices/user';
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		margin: '0 auto',
 		paddingTop: '2em',
 		width: 200,
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			width: 150,
 			paddingTop: '1em',
 		},
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		margin: '0 auto',
 		paddingTop: '2em',
 		width: 200,
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			width: 150,
 			paddingTop: '1em',
 		},
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		margin: '0 auto',
 		paddingTop: '2em',
 		width: 200,
-		[theme.breakpoints.down('sm')]: {
+		[theme.breakpoints.down('md')]: {
 			width: 150,
 			paddingTop: '1em',
 		},

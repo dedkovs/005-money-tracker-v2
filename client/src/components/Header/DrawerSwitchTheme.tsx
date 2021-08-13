@@ -2,11 +2,12 @@ import ListItem from '@material-ui/core/ListItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { toggleTheme } from '../../redux/slices/user';
+import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
 	switchBase: {
 		color: theme.palette.common.blueSwitch,
 		'&$checked': {

@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
 // import { dark } from '../../services/theme';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	FormIncomeLinkExpenses: {
 		color:
-			theme.palette.type === 'dark'
+			theme.palette.mode === 'dark'
 				? 'rgba(255,255,255,0.2)'
 				: 'rgba(0,0,0,0.2)',
 		paddingTop: 8,
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	FormExpensesLinkIncome: {
 		color:
-			theme.palette.type === 'dark'
+			theme.palette.mode === 'dark'
 				? 'rgba(255,255,255,0.2)'
 				: 'rgba(0,0,0,0.2)',
 		paddingTop: 8,
@@ -58,12 +58,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Header = () => {
+const Header = (props) => {
 	const classes = useStyles();
 	// const history = useHistory();
 	const dispatch = useAppDispatch();
 
 	const formType = useAppSelector((state) => state.user.formType);
+	const expensesDate = useAppSelector((state) => state.user.expensesDate);
+	const incomeDate = useAppSelector((state) => state.user.incomeDate);
 
 	const getIncomeClassName = () => {
 		if (formType === 'expenses') {
@@ -89,7 +91,10 @@ const Header = () => {
 				className={`${getExpensesClassName()}`}
 				variant={'h5'}
 				onClick={() => {
-					if (formType !== 'expenses') dispatch(setFormType('expenses'));
+					if (formType !== 'expenses') {
+						dispatch(setFormType('expenses'));
+						props.setDate(expensesDate);
+					}
 				}}
 			>
 				Expense
@@ -99,7 +104,10 @@ const Header = () => {
 				className={`${getIncomeClassName()}`}
 				variant={'h5'}
 				onClick={() => {
-					if (formType !== 'income') dispatch(setFormType('income'));
+					if (formType !== 'income') {
+						dispatch(setFormType('income'));
+						props.setDate(incomeDate);
+					}
 				}}
 			>
 				Income
@@ -117,6 +125,7 @@ const Header = () => {
 						dispatch(setOpenTransactionForm(false));
 					}}
 					className={classes.closeIcon}
+					size="large"
 				>
 					<CloseIcon />
 				</IconButton>

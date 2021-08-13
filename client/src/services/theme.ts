@@ -1,5 +1,9 @@
-import { Theme } from '@material-ui/core/styles';
-import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core';
+// import { Theme, adaptV4Theme } from '@material-ui/core/styles';
+import {
+	Theme,
+	unstable_createMuiStrictModeTheme as createMuiTheme,
+} from '@material-ui/core/styles';
+
 const WHITE = '#ffffff';
 const BLACK = '#000000';
 
@@ -49,128 +53,128 @@ const GREEN_8 = 'rgb(37,77,22)';
 const GREEN_9 = '#172e0d';
 
 export const light: Theme = createMuiTheme({
-    palette: {
-        type: 'light',
+	palette: {
+		mode: 'light',
 
-        common: {
-            white: WHITE,
-            yellow1: YELLOW_1,
-            yellow2: YELLOW_2,
-            yellow3: YELLOW_3,
-            green5: GREEN_5,
-            blueSwitch: BLUE_5,
-            blueSwitchHover: BLUE_10,
-        },
+		common: {
+			white: WHITE,
+			yellow1: YELLOW_1,
+			yellow2: YELLOW_2,
+			yellow3: YELLOW_3,
+			green5: GREEN_5,
+			blueSwitch: BLUE_5,
+			blueSwitchHover: BLUE_10,
+		},
 
-        text1: GREY_11,
-        text2: GREY_5,
-        text3: BLACK,
+		text1: GREY_11,
+		text2: GREY_5,
+		text3: BLACK,
 
-        background: {
-            paper: WHITE,
-        },
-        recordArrowDownColor: GREY_8,
+		background: {
+			paper: WHITE,
+		},
+		recordArrowDownColor: GREY_8,
 
-        recordWalletTextColorExpenses: BLUE_8,
-        recordWalletTextColorIncome: GREEN_8,
-        recordWalletTextColorBetween: GREY_8,
+		recordWalletTextColorExpenses: BLUE_8,
+		recordWalletTextColorIncome: GREEN_8,
+		recordWalletTextColorBetween: GREY_8,
 
-        recordWalletBackgroundColor: GREY_3,
+		recordWalletBackgroundColor: GREY_3,
 
-        recordBackgroundColorExpenses: BLUE_4,
-        recordBackgroundColorIncome: GREEN_4,
-        recordBackgroundColorBetween: GREY_4,
+		recordBackgroundColorExpenses: BLUE_4,
+		recordBackgroundColorIncome: GREEN_4,
+		recordBackgroundColorBetween: GREY_4,
 
-        recordSumTextColorExpenses: BLUE_8,
-        recordSumTextColorIncome: GREEN_8,
-        recordSumTextColorBetween: GREY_8,
+		recordSumTextColorExpenses: BLUE_8,
+		recordSumTextColorIncome: GREEN_8,
+		recordSumTextColorBetween: GREY_8,
 
-        recordSubcategoryTextColorExpenses: BLUE_7,
-        recordSubcategoryTextColorIncome: GREEN_7,
+		recordSubcategoryTextColorExpenses: BLUE_7,
+		recordSubcategoryTextColorIncome: GREEN_7,
 
-        recordCommentBackgroundColorExpenses: BLUE_1,
-        recordCommentBackgroundColorIncome: GREEN_1,
-        recordCommentBackgroundColorBetween: GREY_1,
+		recordCommentBackgroundColorExpenses: BLUE_1,
+		recordCommentBackgroundColorIncome: GREEN_1,
+		recordCommentBackgroundColorBetween: GREY_1,
 
-        inputUnderlineBeforeColor: GREY_10,
-        inputUnderlineBeforeHoveredColor: GREY_10,
+		inputUnderlineBeforeColor: GREY_10,
+		inputUnderlineBeforeHoveredColor: GREY_10,
 
-        inputLabelColor: GREY_7,
+		inputLabelColor: GREY_7,
 
-        appBarBackgroundColor: BLUE_11,
+		appBarBackgroundColor: BLUE_11,
 
-        dividerColor: TRANSPARENT_BLACK_1,
+		dividerColor: TRANSPARENT_BLACK_1,
 
-        recordHeaderSumTextColorExpenses: BLUE_8,
-        recordHeaderSumTextColorIncome: GREEN_8,
-        recordHeaderSumTextColorBetween: GREY_8,
+		recordHeaderSumTextColorExpenses: BLUE_8,
+		recordHeaderSumTextColorIncome: GREEN_8,
+		recordHeaderSumTextColorBetween: GREY_8,
 
-        tabsIndicatorColor: BLUE_11,
+		tabsIndicatorColor: BLUE_11,
 
-        transactionFormColor: GREY_11,
-    },
+		transactionFormColor: GREY_11,
+	},
 });
 
 export const dark: Theme = createMuiTheme({
-    palette: {
-        type: 'dark',
+	palette: {
+		mode: 'dark',
 
-        common: {
-            white: WHITE,
-            yellow1: YELLOW_1,
-            yellow2: YELLOW_2,
-            yellow3: YELLOW_3,
-            green5: GREEN_5,
-            blueSwitch: BLUE_5,
-            blueSwitchHover: BLUE_10,
-        },
+		common: {
+			white: WHITE,
+			yellow1: YELLOW_1,
+			yellow2: YELLOW_2,
+			yellow3: YELLOW_3,
+			green5: GREEN_5,
+			blueSwitch: BLUE_4,
+			blueSwitchHover: BLUE_10,
+		},
 
-        text1: GREY_13,
-        text2: WHITE,
-        text3: WHITE,
+		text1: GREY_13,
+		text2: WHITE,
+		text3: WHITE,
 
-        background: {
-            paper: GREY_5,
-        },
+		background: {
+			paper: GREY_5,
+		},
 
-        recordArrowDownColor: WHITE,
+		recordArrowDownColor: WHITE,
 
-        recordWalletTextColorExpenses: BLUE_9,
-        recordWalletTextColorIncome: GREEN_9,
-        recordWalletTextColorBetween: GREY_9,
+		recordWalletTextColorExpenses: BLUE_9,
+		recordWalletTextColorIncome: GREEN_9,
+		recordWalletTextColorBetween: GREY_9,
 
-        recordWalletBackgroundColor: GREY_12,
+		recordWalletBackgroundColor: GREY_12,
 
-        recordBackgroundColorExpenses: BLUE_6,
-        recordBackgroundColorIncome: GREEN_6,
-        recordBackgroundColorBetween: GREY_6,
+		recordBackgroundColorExpenses: BLUE_6,
+		recordBackgroundColorIncome: GREEN_6,
+		recordBackgroundColorBetween: GREY_6,
 
-        recordSumTextColorExpenses: BLUE_4,
-        recordSumTextColorIncome: GREEN_4,
-        recordSumTextColorBetween: GREY_4,
+		recordSumTextColorExpenses: BLUE_4,
+		recordSumTextColorIncome: GREEN_4,
+		recordSumTextColorBetween: GREY_4,
 
-        recordSubcategoryTextColorExpenses: BLUE_3,
-        recordSubcategoryTextColorIncome: GREEN_3,
+		recordSubcategoryTextColorExpenses: BLUE_3,
+		recordSubcategoryTextColorIncome: GREEN_3,
 
-        recordCommentBackgroundColorExpenses: BLUE_2,
-        recordCommentBackgroundColorIncome: GREEN_2,
-        recordCommentBackgroundColorBetween: GREY_2,
+		recordCommentBackgroundColorExpenses: BLUE_2,
+		recordCommentBackgroundColorIncome: GREEN_2,
+		recordCommentBackgroundColorBetween: GREY_2,
 
-        inputUnderlineBeforeColor: GREY_13,
-        inputUnderlineBeforeHoveredColor: GREY_13,
+		inputUnderlineBeforeColor: GREY_13,
+		inputUnderlineBeforeHoveredColor: GREY_13,
 
-        inputLabelColor: GREY_3,
+		inputLabelColor: GREY_3,
 
-        appBarBackgroundColor: BLUE_6,
+		appBarBackgroundColor: BLUE_6,
 
-        dividerColor: TRANSPARENT_WHITE_1,
+		dividerColor: TRANSPARENT_WHITE_1,
 
-        recordHeaderSumTextColorExpenses: BLUE_1,
-        recordHeaderSumTextColorIncome: GREEN_1,
-        recordHeaderSumTextColorBetween: GREY_1,
+		recordHeaderSumTextColorExpenses: BLUE_1,
+		recordHeaderSumTextColorIncome: GREEN_1,
+		recordHeaderSumTextColorBetween: GREY_1,
 
-        tabsIndicatorColor: GREY_13,
+		tabsIndicatorColor: GREY_13,
 
-        transactionFormColor: WHITE,
-    },
+		transactionFormColor: WHITE,
+	},
 });
