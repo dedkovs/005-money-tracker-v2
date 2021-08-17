@@ -7,8 +7,11 @@ import {
 } from '@material-ui/core';
 import makeStyles from '@material-ui/styles/makeStyles';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { setOpenDialogRemoveRecord } from '../../../redux/slices/user';
-import { deleteTransaction } from '../../../redux/slices/user';
+import {
+	setOpenDialogRemoveRecord,
+	setScrollButtons,
+} from '../../../redux/slices/user';
+import { deleteTrx } from '../../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({
 	dialog: {
@@ -31,10 +34,30 @@ const DialogRemoveRecord = () => {
 	const openDialogRemoveRecord = useAppSelector(
 		(state) => state.user.openDialogRemoveRecord
 	);
-
+	const userId = useAppSelector((state) => state.user.userId);
+	const wallets = useAppSelector((state) => state.user.wallets);
 	const recordToEdit = useAppSelector((state) => state.user.recordToEdit);
 
 	const dispatch = useAppDispatch();
+
+	const handleDeleteTransaction = () => {
+		dispatch(setScrollButtons('standard'));
+		const { wallet, id: trxId, sum } = recordToEdit;
+		let updWallet = wallets[wallet];
+		updWallet = [updWallet[0] - sum, updWallet[1], updWallet[2]];
+		const updatedWallets = {
+			...wallets,
+			[wallet]: updWallet,
+		};
+
+		dispatch(
+			deleteTrx({
+				userId,
+				trxId,
+				updatedWallets,
+			})
+		);
+	};
 
 	return (
 		<Dialog
@@ -45,6 +68,7 @@ const DialogRemoveRecord = () => {
 			onClose={() => dispatch(setOpenDialogRemoveRecord(false))}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
+			disableScrollLock
 		>
 			<DialogContent>
 				<DialogContentText align={'center'} id="alert-dialog-description">
@@ -63,10 +87,7 @@ const DialogRemoveRecord = () => {
 				<Button
 					className={classes.button}
 					variant={'outlined'}
-					onClick={() => {
-						dispatch(deleteTransaction(recordToEdit.id));
-						dispatch(setOpenDialogRemoveRecord(false));
-					}}
+					onClick={handleDeleteTransaction}
 				>
 					Yes
 				</Button>

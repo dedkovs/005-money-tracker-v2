@@ -40,7 +40,7 @@ const Menu1 = () => {
 					transform: 'translate(30px, -56px)',
 				},
 			}}
-			// MenuListProps={{ style: { paddingBottom: 0, paddingTop: 0 } }}
+			disableScrollLock
 		>
 			<MenuItem
 				classes={{ root: classes.menuItem }}

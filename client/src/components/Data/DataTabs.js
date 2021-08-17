@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
 	tabLabel: {
 		textTransform: 'none',
 		fontWeight: 400,
-		whiteSpace: 'pre-line',
 		// whiteSpace: 'pre-wrap',
+		// whiteSpace: 'pre-line',
 		color: theme.palette.text1,
 		lineHeight: '1.3rem',
 	},
@@ -70,6 +70,7 @@ const DataTabs = () => {
 	const transactions = useAppSelector((state) => state.user.transactions);
 	const pageNumber = useAppSelector((state) => state.user.pageNumber);
 	const groupsByMonth = useAppSelector((state) => state.user.groupsByMonth);
+	const scrollButtons = useAppSelector((state) => state.user.scrollButtons);
 
 	const matches = useMediaQuery('(max-width:360px)');
 	const matches2 = useMediaQuery('(min-width:500px)');
@@ -93,14 +94,12 @@ const DataTabs = () => {
 			>
 				{transactions.length > 0 ? (
 					<Tabs
-						// indicatorColor="inherit"
 						textColor="inherit"
 						classes={{
 							indicator: classes.tabsIndicator,
 						}}
 						value={groupsByMonth[pageNumber].month}
-						variant="scrollable"
-						// scrollButtons={matches ? false : true}
+						variant={scrollButtons}
 						scrollButtons={'auto'}
 						onChange={(e, p) => {
 							dispatch(setPageNumber(getPageNumberFromMonth(p)));
@@ -115,8 +114,6 @@ const DataTabs = () => {
 								key={group.month}
 								label={`${group.month.slice(0, 3)} ${group.month.slice(-4)}`}
 								value={group.month}
-								// component={Link}
-								// to={`/${group.month.replace(/\s+/g, '')}`}
 							/>
 						))}
 					</Tabs>

@@ -9,6 +9,124 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const MySQLStore = require('express-mysql-session')(session);
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+// import * as data from './client/src/services/data';
+
+const expenses_categories = {
+	Auto: [
+		'Auto parts',
+		'Gas',
+		'Parking',
+		'Toll road',
+		'Repairs',
+		'Tax',
+		'Insurance',
+		'Fine',
+	],
+	Entertainment: ['Restaurant', 'Cinema', 'Concert', 'Bar', 'Club'],
+	'Online stores': [
+		'Amazon',
+		'Aliexpress',
+		'ASOS',
+		'eBay',
+		'Adidas',
+		'New Balance',
+		'Nike',
+		'iHerb',
+	],
+	'Communal payments': [
+		'Phone',
+		'Internet',
+		'TV',
+		'Electricity',
+		'Heating',
+		'Cold water',
+		'Hot water',
+		'Garbage removal',
+	],
+	Education: [
+		'Udemi',
+		'Coursera',
+		'Codecademy',
+		'Udacity',
+		'Javarush',
+		'Learn.Javascript',
+	],
+	Sport: ['Pool', 'Gym', 'Yoga'],
+	Subscriptions: [
+		'Apple Music',
+		'Google',
+		'iCloud',
+		'Youtube',
+		'Netflix',
+		'Spotify',
+		'Yandex',
+	],
+	Food: [
+		'Auchan',
+		'Tesco',
+		'Walmart',
+		'Spar',
+		'Carrefour',
+		'7-Eleven',
+		'Costco',
+		'Metro',
+		'Lidl',
+	],
+	Others: [''],
+	Travels: [
+		'UK',
+		'USA',
+		'France',
+		'Spain',
+		'Italy',
+		'Turkey',
+		'Thailand',
+		'Indonesia',
+		'Cyprus',
+		'Greece',
+		'Egypt',
+		'Cuba',
+		'Brazil',
+		'Mexico',
+	],
+	Services: ['Haircut', 'Dry cleaning', 'Dentist', 'Plumber'],
+};
+
+const expenses_categories_order = Object.keys(expenses_categories);
+
+const projects = [
+	'Project #1',
+	'Project #2',
+	'Project #3',
+	'Project #4',
+	'Project #5',
+];
+
+const income_categories = {
+	Design: projects,
+	'Video filming': projects,
+	Photography: projects,
+	DJ: projects,
+	Programming: projects,
+};
+
+const income_categories_order = Object.keys(income_categories);
+
+const wallets_order = [
+	'Cash',
+	'Tinkoff',
+	'Sber',
+	// 'VTB',
+	// 'Gazprom',
+	// 'Alfa',
+	// 'Raiffeisen',
+];
+
+const wallets = {
+	[wallets_order[0]]: [1000000, true, 0],
+	[wallets_order[1]]: [2000000, true, 0],
+	[wallets_order[2]]: [3000000, true, 0],
+};
 
 const mode = process.env.MODE;
 const public = mode === 'DEV' ? '/client/public' : '/static';
@@ -53,11 +171,6 @@ const User = sequelize.define(
 			type: DataTypes.STRING,
 			allowNull: true,
 		},
-		// config: {
-		//     type: DataTypes.JSON,
-		//     allowNull: false,
-		//     defaultValue: { cents: true, theme: true, comments: true },
-		// },
 	},
 	{
 		timestamps: true,
@@ -133,17 +246,59 @@ const createNewTransactionsTable = async (userId) => {
 
 	await Transactions.sync();
 	await sequelize.query(
-		`INSERT INTO wallets_top_order VALUES (${userId}, '[]')`,
+		`INSERT INTO wallets_top_order VALUES (${userId}, '${JSON.stringify(
+			wallets_order
+		)}')`,
 		{
 			type: QueryTypes.INSERT,
 		}
 	);
-	await sequelize.query(`INSERT INTO wallets_order VALUES (${userId}, '[]')`, {
-		type: QueryTypes.INSERT,
-	});
-	await sequelize.query(`INSERT INTO wallets VALUES (${userId}, '{}')`, {
-		type: QueryTypes.INSERT,
-	});
+	await sequelize.query(
+		`INSERT INTO wallets_order VALUES (${userId}, '${JSON.stringify(
+			wallets_order
+		)}')`,
+		{
+			type: QueryTypes.INSERT,
+		}
+	);
+	await sequelize.query(
+		`INSERT INTO wallets VALUES (${userId}, '${JSON.stringify(wallets)}')`,
+		{
+			type: QueryTypes.INSERT,
+		}
+	);
+	await sequelize.query(
+		`INSERT INTO expenses_categories VALUES (${userId}, '${JSON.stringify(
+			expenses_categories
+		)}')`,
+		{
+			type: QueryTypes.INSERT,
+		}
+	);
+	await sequelize.query(
+		`INSERT INTO expenses_categories_order VALUES (${userId}, '${JSON.stringify(
+			expenses_categories_order
+		)}')`,
+		{
+			type: QueryTypes.INSERT,
+		}
+	);
+	await sequelize.query(
+		`INSERT INTO income_categories VALUES (${userId}, '${JSON.stringify(
+			income_categories
+		)}')`,
+		{
+			type: QueryTypes.INSERT,
+		}
+	);
+	await sequelize.query(
+		`INSERT INTO income_categories_order VALUES (${userId}, '${JSON.stringify(
+			income_categories_order
+		)}')`,
+		{
+			type: QueryTypes.INSERT,
+		}
+	);
 };
 
 let localStrategy = new LocalStrategy(
@@ -355,26 +510,26 @@ app.get(
 	}
 );
 
-/// TRANSACTIONS
+/// ADD TRANSACTION
 
-const Wallet = sequelize.define(
-	'wallets',
-	{
-		user_id: {
-			type: Sequelize.INTEGER,
-			allowNull: false,
-			primaryKey: true,
-		},
-		data: {
-			type: Sequelize.JSON,
-			allowNull: false,
-			defaultValue: {},
-		},
-	},
-	{
-		timestamps: false,
-	}
-);
+// const Wallet = sequelize.define(
+// 	'wallets',
+// 	{
+// 		user_id: {
+// 			type: Sequelize.INTEGER,
+// 			allowNull: false,
+// 			primaryKey: true,
+// 		},
+// 		data: {
+// 			type: Sequelize.JSON,
+// 			allowNull: false,
+// 			defaultValue: {},
+// 		},
+// 	},
+// 	{
+// 		timestamps: false,
+// 	}
+// );
 
 app.post('/add-transaction', async (req, res, next) => {
 	const { userId, trx, updatedWallets } = req.body;
@@ -412,28 +567,54 @@ app.post('/add-transaction', async (req, res, next) => {
 			}
 		);
 
-		console.log('WALLETS: ', updatedWallets);
+		// console.log('WALLETS: ', updatedWallets);
 
 		await sequelize.query(
-			// `UPDATE wallets SET data = '{"Tinkoff": [100,true,0]}' WHERE user_id = 4`,
 			`UPDATE wallets SET data = '${JSON.stringify(
 				updatedWallets
 			)}' WHERE user_id = ${userId}`,
-			// `UPDATE wallets SET data = '{${...updatedWallets}}'`,
 			{
 				type: QueryTypes.UPDATE,
 				transaction: t2,
 			}
 		);
 
-		// await Wallet.update(
-		// 	{ 'data.Tinkoff': [800, true, 0] },
-		// 	{ where: { user_id: 4 } },
-		// 	{ type: QueryTypes.UPDATE, transaction: t2 }
-		// );
-
 		res.send(`${trxId[0]}`);
-		// res.send('OK - Wallets successfully updated');
+
+		await t1.commit();
+		await t2.commit();
+	} catch (err) {
+		await t1.rollback();
+		await t2.rollback();
+		next(err);
+	}
+});
+
+/// DELETE TRANSACTION
+
+app.post('/delete-transaction', async (req, res, next) => {
+	const { userId, trxId, updatedWallets } = req.body;
+	const t1 = await sequelize_transactions.transaction();
+	const t2 = await sequelize.transaction();
+	try {
+		await sequelize_transactions.query(`DELETE FROM t_? WHERE (id = ?);`, {
+			replacements: [userId, trxId],
+			type: QueryTypes.DELETE,
+			transaction: t1,
+		});
+
+		await sequelize.query(
+			`UPDATE wallets SET data = '${JSON.stringify(
+				updatedWallets
+			)}' WHERE user_id = ${userId}`,
+			{
+				type: QueryTypes.UPDATE,
+				transaction: t2,
+			}
+		);
+
+		// res.send('OK - Record successfully deleted from database.');
+		res.status(200).send('OK - Record successfully deleted from database.');
 
 		await t1.commit();
 		await t2.commit();
@@ -531,6 +712,22 @@ app.get('/getdata/:id', async (req, res) => {
 				}
 			);
 
+			const income_categories = await sequelize.query(
+				'SELECT data FROM income_categories WHERE user_id = ?',
+				{
+					replacements: [+req.params.id],
+					type: QueryTypes.SELECT,
+				}
+			);
+
+			const income_categories_order = await sequelize.query(
+				'SELECT data FROM income_categories_order WHERE user_id = ?',
+				{
+					replacements: [+req.params.id],
+					type: QueryTypes.SELECT,
+				}
+			);
+
 			const userData = {
 				transactions,
 				wallets: wallets[0].data,
@@ -538,6 +735,8 @@ app.get('/getdata/:id', async (req, res) => {
 				wallets_order: wallets_order[0].data,
 				expenses_categories: expenses_categories[0].data,
 				expenses_categories_order: expenses_categories_order[0].data,
+				income_categories: income_categories[0].data,
+				income_categories_order: income_categories_order[0].data,
 			};
 			res.send(userData);
 		} catch (err) {

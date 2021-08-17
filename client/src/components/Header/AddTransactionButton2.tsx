@@ -2,8 +2,7 @@ import makeStyles from '@material-ui/styles/makeStyles';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import { useAppDispatch } from '../../redux/hooks';
-import { setOpenDrawer } from '../../redux/slices/user';
-// import { addTransaction } from '../../redux/slices/user';
+import { setOpenTransactionForm } from '../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({
 	tooltip: {
@@ -21,17 +20,12 @@ const useStyles = makeStyles(() => ({
 
 const AddTransactionButton2 = () => {
 	const classes = useStyles();
-
 	const dispatch = useAppDispatch();
 
 	return (
 		<IconButton
-			// component={Link}
-			// to="/data/add-transaction"
 			onClick={() => {
-				dispatch(setOpenDrawer(false));
-				// dispatch(addTransaction());
-				// dispatch(setOpenTransactionForm(true));
+				dispatch(setOpenTransactionForm(true));
 			}}
 			size="large"
 		>

@@ -1,7 +1,5 @@
 import Button from '@material-ui/core/Button';
-// import { adaptV4Theme } from '@material-ui/core/styles';
 import makeStyles from '@material-ui/styles/makeStyles';
-// import axios from 'axios';
 import {
 	ThemeProvider,
 	StyledEngineProvider,
@@ -9,17 +7,8 @@ import {
 } from '@material-ui/core/styles';
 import { amber } from '@material-ui/core/colors';
 import CircularProgress from '@material-ui/core/CircularProgress';
-// import { useHistory } from 'react-router';
-// import getNewIncomeTrx from './getNewIncomeTrx';
-// import getNewExpensesTrx from './getNewExpensesTrx';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { saveTrx } from '../../redux/slices/user';
-// axios.defaults.baseURL =
-// 'https://europe-west2-keep-track-of-the-budget.cloudfunctions.net/api';
-
-// axios.defaults.baseURL =
-// 	'http://localhost:5000/keep-track-of-the-budget/europe-west2/api';
-// import { setUserData } from '../../redux/slices/user';
 
 const useStyles = makeStyles({
 	saveButtonContainer: {
@@ -77,8 +66,6 @@ const SaveButton = () => {
 	const expensesComment = useAppSelector((state) => state.user.expensesComment);
 	const incomeComment = useAppSelector((state) => state.user.incomeComment);
 
-	// const history = useHistory();
-
 	const spinnerColor = createTheme({
 		palette: {
 			mode: darkTheme ? 'dark' : 'light',
@@ -90,23 +77,19 @@ const SaveButton = () => {
 
 	const getNewExpensesTrx = () => {
 		let updWallet = wallets[expensesWallet];
-		// console.log(updWallet);
 		updWallet = [updWallet[0] + expensesSum * 100, updWallet[1], updWallet[2]];
-		// console.log(updWallet);
 		const updatedWallet = { [expensesWallet]: updWallet };
-		// console.log('updatedWallet: ', updatedWallet);
 		const trx = {
-			sum: expensesSum * 100,
-			wallet: expensesWallet,
+			comment: expensesComment,
+			date: expensesDate,
 			expenses_category: expensesCategory,
 			expenses_subcategory: expensesSubcategory,
 			income_category: null,
 			income_subcategory: null,
+			sum: expensesSum * 100,
+			wallet: expensesWallet,
 			wallet_from: null,
 			wallet_to: null,
-			date: expensesDate,
-			comment: expensesComment,
-			// updatedWallet: updWallet,
 		};
 		const updatedWallets = {
 			...wallets,
@@ -119,27 +102,31 @@ const SaveButton = () => {
 	const getNewIncomeTrx = () => {
 		let updWallet = wallets[incomeWallet];
 		updWallet = [updWallet[0] + incomeSum * 100, updWallet[1], updWallet[2]];
+		const updatedWallet = { [incomeWallet]: updWallet };
 		const trx = {
-			sum: incomeSum * 100,
-			wallet: incomeWallet,
+			comment: incomeComment,
+			date: incomeDate,
 			expenses_category: null,
 			expenses_subcategory: null,
 			income_category: incomeCategory,
 			income_subcategory: incomeSubcategory,
+			sum: incomeSum * 100,
+			wallet: incomeWallet,
 			wallet_from: null,
 			wallet_to: null,
-			date: incomeDate,
-			comment: incomeComment,
-			// updatedWallet: updWallet,
 		};
-		return { userId, trx, updWallet };
+		const updatedWallets = {
+			...wallets,
+			...updatedWallet,
+		};
+
+		return { userId, trx, updatedWallets };
 	};
 
 	const handleSaveTransaction = () => {
 		if (formType === 'income') {
 			if (incomeSum !== '' && Math.abs(incomeSum) !== 0 && !isNaN(incomeSum)) {
 				dispatch(saveTrx(getNewIncomeTrx()));
-				// console.log(getNewIncomeTrx());
 			}
 		}
 
@@ -150,16 +137,6 @@ const SaveButton = () => {
 				!isNaN(expensesSum)
 			) {
 				dispatch(saveTrx(getNewExpensesTrx()));
-				// .then(() => {
-				// 	axios
-				// 		.get(`/getdata/${userId}`)
-				// 		.then((res) => {
-				// 			dispatch(setUserData(res.data));
-				// 		})
-				// 		.catch((err) => console.log(err));
-				// })
-				// .catch((err) => console.log(err));
-				// console.log(getNewExpensesTrx());
 			}
 		}
 	};

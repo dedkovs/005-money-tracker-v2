@@ -1,12 +1,8 @@
 import makeStyles from '@material-ui/styles/makeStyles';
-// import { dark } from '../../services/theme';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-// import { useHistory } from 'react-router-dom';
-// import { inject, observer } from 'mobx-react';
-// import { store } from '../../mobx/store';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setFormType } from '../../redux/slices/user';
 import { setOpenTransactionForm } from '../../redux/slices/user';
@@ -60,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = (props) => {
 	const classes = useStyles();
-	// const history = useHistory();
 	const dispatch = useAppDispatch();
 
 	const formType = useAppSelector((state) => state.user.formType);
@@ -121,7 +116,6 @@ const Header = (props) => {
 			>
 				<IconButton
 					onClick={() => {
-						// history.push('/data');
 						dispatch(setOpenTransactionForm(false));
 					}}
 					className={classes.closeIcon}

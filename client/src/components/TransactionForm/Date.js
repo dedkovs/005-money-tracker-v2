@@ -25,11 +25,6 @@ const localeMap = {
 	ru: ruLocale,
 };
 
-// const maskMap = {
-// 	en: '__/__/____',
-// 	ru: '__.__.____',
-// };
-
 const Date1 = (props) => {
 	const theme = useTheme();
 	const [locale] = useState('ru');
@@ -129,11 +124,7 @@ const Date1 = (props) => {
 					locale={localeMap[locale]}
 				>
 					<MobileDatePicker
-						// mask={maskMap[locale]}
-						// views={['year', 'month', 'day']}
-						// inputFormat={'MM/dd/yyyy'}
 						renderInput={(params) => {
-							// console.log(params);
 							return <TextField {...params} variant="standard" />;
 						}}
 						label="Date"

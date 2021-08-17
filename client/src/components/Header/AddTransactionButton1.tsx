@@ -3,7 +3,6 @@ import makeStyles from '@material-ui/styles/makeStyles';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import { useAppDispatch } from '../../redux/hooks';
-// import { setOpenDrawer } from '../../redux/slices/user';
 import { setOpenTransactionForm } from '../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({
@@ -35,12 +34,8 @@ const AddTransactionButton1 = () => {
 			<Button
 				className={classes.button}
 				onClick={() => {
-					// dispatch(setOpenDrawer(false));
-					// dispatch(addTransaction());
 					dispatch(setOpenTransactionForm(true));
 				}}
-				// component={Link}
-				// to="/data/add-transaction"
 			>
 				<AddIcon className={classes.addIcon} />
 			</Button>

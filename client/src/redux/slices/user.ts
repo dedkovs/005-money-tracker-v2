@@ -1,31 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { User, Transaction, Wallets, FormType } from '../../services/types';
+import {
+	User,
+	Transaction,
+	Wallets,
+	FormType,
+	SaveTrx,
+	DeleteTrx,
+} from '../../services/types';
 import getGroups from '../../components/Data/getGroups';
-// import {
-// 	comments,
-// 	expenses_categories,
-// 	income_categories,
-// 	wallets,
-// } from '../../services/data';
 import axios from 'axios';
-
-// let [category, subcategory] = ['', ''];
-
-// const getRandomCategoryAndSubcategory = (obj: any) => {
-// 	const keys = Object.keys(obj);
-// 	let key;
-// 	category = keys[Math.floor(Math.random() * keys.length)];
-// 	key = obj[category];
-// 	subcategory = key[Math.floor(Math.random() * key.length)];
-// };
-
-// const getRandomDate = () => {
-// 	const year = 2020;
-// 	let month: number | string = Math.round(Math.random() * (12 - 1) + 1);
-// 	const day = Math.round(Math.random() * (30 - 1) + 1);
-// 	if (month < 10) month = `0${month}`;
-// 	return `${year}-${month}-${day}`;
-// };
 
 let pageNumber: number;
 let localStorage_pageNumber = localStorage.getItem('pageNumber');
@@ -108,20 +91,46 @@ export const initialState: User = {
 	incomeComment: '',
 	expensesCategoriesOrder: [''],
 	incomeCategoriesOrder: [''],
+	scrollButtons: 'scrollable',
 };
 
 /// THUNKS
 
 export const saveTrx = createAsyncThunk(
 	'user/saveTrx',
-	async (data, { dispatch }) => {
+	async (data: SaveTrx, { dispatch }) => {
 		try {
 			let trxId = await axios.post('/add-transaction', data);
 			trxId = trxId.data;
-			// console.log('data: ', data);
 			dispatch(user.actions.addNewTransaction({ data, trxId }));
 			dispatch(user.actions.setOpenTransactionForm(false));
-			dispatch(user.actions.clearTransactionFormExpenses());
+			if (data.trx.sum < 0) {
+				dispatch(user.actions.clearTransactionFormExpenses());
+			}
+			if (data.trx.sum > 0) {
+				dispatch(user.actions.clearTransactionFormIncome());
+			}
+		} catch (err) {
+			throw new Error(err);
+		}
+	}
+);
+
+export const deleteTrx = createAsyncThunk(
+	'user/deleteTrx',
+	async (data: DeleteTrx, { dispatch }) => {
+		const { trxId, updatedWallets } = data;
+		try {
+			await axios.post('/delete-transaction', data);
+			dispatch(
+				user.actions.deleteTransaction({
+					trxId,
+					updatedWallets,
+				})
+			);
+			setTimeout(() => {
+				dispatch(user.actions.setScrollButtons('scrollable'));
+			}, 1000);
 		} catch (err) {
 			throw new Error(err);
 		}
@@ -174,6 +183,8 @@ export const user = createSlice({
 			const incomeWallet = walletsOrder[0];
 			const expensesCategories = action.payload.expenses_categories;
 			const expensesCategoriesOrder = action.payload.expenses_categories_order;
+			const incomeCategories = action.payload.income_categories;
+			const incomeCategoriesOrder = action.payload.income_categories_order;
 
 			return {
 				...state,
@@ -187,21 +198,9 @@ export const user = createSlice({
 				incomeWallet,
 				expensesCategories,
 				expensesCategoriesOrder,
+				incomeCategories,
+				incomeCategoriesOrder,
 			};
-
-			// state.transactions = action.payload.transactions;
-			// const groupsByMonth = getGroups(state.transactions);
-			// // let pageNumber: number; //
-			// if (!groupsByMonth[state.pageNumber]) {
-			// 	state.pageNumber = 0;
-			// 	localStorage.setItem('pageNumber', '0');
-			// }
-			// // state.transactions = action.payload.transactions; //
-			// state.wallets = action.payload.wallets;
-			// state.walletsTopOrder = action.payload.wallets_top_order;
-			// state.walletsOrder = action.payload.wallets_order;
-			// state.expensesWallet = action.payload.wallets_order[0];
-			// state.incomeWallet = action.payload.wallets_order[0];
 		},
 		setPageNumber: (state, action: { payload: number }) => {
 			pageNumber = action.payload;
@@ -214,15 +213,12 @@ export const user = createSlice({
 				let newPageNumber: number;
 				let monthsArray: number[] = [];
 				transactions.forEach((el) => {
-					// monthsArray.push(+el.date.substr(5, 2));
 					monthsArray.push(new Date(el.date).getMonth());
 				});
 				let uniqueMonthsArray: number[] = Array.from(new Set(monthsArray)).sort(
 					(a, b) => b - a
 				);
-				// console.log('uniqueMonthsArray: ', uniqueMonthsArray);
 				newPageNumber = uniqueMonthsArray.indexOf(month);
-				// console.log('newPageNumber: ', newPageNumber);
 				return newPageNumber;
 			};
 
@@ -230,29 +226,16 @@ export const user = createSlice({
 
 			transactions.push(newTrx);
 
-			// const monthFromNewTrx = +newTrx.date.substr(5, 2);
 			const monthFromNewTrx = new Date(newTrx.date).getMonth();
-			// console.log('monthFromNewTrx: ', monthFromNewTrx);
 			let pageNumber = getNewPageNumber(monthFromNewTrx);
 			localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
 
 			const groupsByMonth = getGroups(transactions);
-			// console.log('groupsByMonth: ', groupsByMonth);
-			// console.log('pageNumber: ', pageNumber);
-			// console.log('transactions: ', transactions);
-			// console.log(
-			// 	'action.payload.data.updatedWallets: ',
-			// 	action.payload.data.updatedWallets
-			// );
 
 			const updatedWallets = {
 				...state.wallets,
 				...action.payload.data.updatedWallets,
 			};
-			// console.log(
-			// 	'updatedWallets: ',
-			// 	JSON.parse(JSON.stringify(updatedWallets))
-			// );
 
 			return {
 				...state,
@@ -262,56 +245,6 @@ export const user = createSlice({
 				wallets: updatedWallets,
 			};
 		},
-		// addNewTransaction: (state) => {
-		// 	let transactions = [...state.transactions];
-		// 	const getNewPageNumber = (month: number) => {
-		// 		let newPageNumber: number;
-		// 		let monthsArray: number[] = [];
-		// 		transactions.forEach((el) => {
-		// 			monthsArray.push(+el.date.substr(5, 2));
-		// 		});
-		// 		let uniqueMonthsArray: number[] = Array.from(new Set(monthsArray)).sort(
-		// 			(a, b) => b - a
-		// 		);
-		// 		newPageNumber = uniqueMonthsArray.indexOf(month);
-		// 		return newPageNumber;
-		// 	};
-		// 	let newTrx: Transaction = {
-		// 		comment: comments[Math.floor(Math.random() * comments.length)],
-		// 		date: getRandomDate(),
-		// 		id: Math.floor(Math.random() * 10 ** 10) + 1,
-		// 		sum: 0,
-		// 		wallet: wallets[Math.floor(Math.random() * wallets.length)],
-		// 		wallet_from: null,
-		// 		wallet_to: null,
-		// 	};
-		// 	getRandomCategoryAndSubcategory(expenses_categories);
-		// 	newTrx.expenses_category = category;
-		// 	newTrx.expenses_subcategory = subcategory;
-		// 	getRandomCategoryAndSubcategory(income_categories);
-		// 	newTrx.income_category = category;
-		// 	newTrx.income_subcategory = subcategory;
-		// 	newTrx.sum =
-		// 		(Math.ceil(Math.random() * 1000000) + 1) *
-		// 		(Math.round(Math.random()) ? 1 : -1);
-		// 	if (newTrx.sum < 0) {
-		// 		newTrx.income_category = null;
-		// 		newTrx.income_subcategory = null;
-		// 	}
-		// 	if (newTrx.sum > 0) {
-		// 		newTrx.expenses_category = null;
-		// 		newTrx.expenses_subcategory = null;
-		// 	}
-
-		// 	transactions.push(newTrx);
-		// 	const monthFromNewTrx = +newTrx.date.substr(5, 2);
-		// 	let pageNumber = getNewPageNumber(monthFromNewTrx);
-		// 	localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
-
-		// 	const groupsByMonth = getGroups(transactions);
-
-		// 	return { ...state, groupsByMonth, transactions, pageNumber };
-		// },
 		setAllTransactions: (state, action: { payload: Transaction[] }) => {
 			let transactions = action.payload;
 			const groupsByMonth = getGroups(transactions);
@@ -324,26 +257,19 @@ export const user = createSlice({
 			}
 			return { ...state, pageNumber, transactions, groupsByMonth };
 		},
-		// setWallets: (state, action) => {
-		// 	let wallets: Wallets = action.payload;
-		// 	return { ...state, wallets };
-		// },
-		// setWalletsTopOrder: (state, action) => {
-		// 	let walletsTopOrder: string[] = action.payload;
-		// 	return { ...state, walletsTopOrder };
-		// },
-		// setWalletsOrder: (state, action) => {
-		// 	let walletsOrder: string[] = action.payload;
-		// 	return { ...state, walletsOrder };
-		// },
+		setScrollButtons: (state, action) => {
+			state.scrollButtons = action.payload;
+		},
 		deleteTransaction: (state, action) => {
+			state.openDialogRemoveRecord = false;
 			let transactions = [...state.transactions];
 			transactions = state.transactions.filter(
-				(trx) => trx.id !== action.payload
+				(trx) => trx.id !== action.payload.trxId
 			);
-			const groupsByMonth = getGroups(transactions);
+			state.transactions = transactions;
+			state.groupsByMonth = getGroups(transactions);
 			let pageNumber: number;
-			if (groupsByMonth[state.pageNumber]) {
+			if (state.groupsByMonth[state.pageNumber]) {
 				pageNumber = state.pageNumber;
 			} else {
 				if (state.pageNumber > 0) {
@@ -352,7 +278,13 @@ export const user = createSlice({
 					pageNumber = 0;
 				}
 			}
-			return { ...state, pageNumber, transactions, groupsByMonth };
+			state.pageNumber = pageNumber;
+			localStorage.setItem('pageNumber', JSON.stringify(pageNumber));
+			const updatedWallets = {
+				...state.wallets,
+				...action.payload.updatedWallets,
+			};
+			state.wallets = updatedWallets;
 		},
 		setExpensesSum: (state, action) => {
 			let expensesSum =
@@ -440,15 +372,17 @@ export const user = createSlice({
 		},
 		setExpensesCategory: (state, action: { payload: string }) => {
 			state.expensesCategory = action.payload;
+			if (action.payload === '') state.expensesSubcategory = '';
 		},
 		setExpensesSubcategory: (state, action: { payload: string }) => {
 			state.expensesSubcategory = action.payload;
 		},
 		setIncomeCategory: (state, action: { payload: string }) => {
 			state.incomeCategory = action.payload;
+			if (action.payload === '') state.incomeSubcategory = '';
 		},
 		setIncomeSubcategory: (state, action: { payload: string }) => {
-			state.incomeCategory = action.payload;
+			state.incomeSubcategory = action.payload;
 		},
 		setExpensesDate: (state, action: { payload: string }) => {
 			state.expensesDate = action.payload;
@@ -466,18 +400,28 @@ export const user = createSlice({
 			state.expensesSum = '';
 			state.expensesComment = '';
 		},
+		clearTransactionFormIncome: (state) => {
+			state.incomeSum = '';
+			state.incomeComment = '';
+		},
 	},
 	extraReducers: {
 		[`${saveTrx.pending}`]: (state) => {
-			// console.log('PENDING');
 			state.loading = true;
 		},
 		[`${saveTrx.fulfilled}`]: (state) => {
-			// console.log('FULFILLED');
 			state.loading = false;
 		},
 		[`${saveTrx.rejected}`]: (state) => {
-			// console.log('REJECTED');
+			state.loading = false;
+		},
+		[`${deleteTrx.pending}`]: (state) => {
+			state.loading = true;
+		},
+		[`${deleteTrx.fulfilled}`]: (state) => {
+			state.loading = false;
+		},
+		[`${deleteTrx.rejected}`]: (state) => {
 			state.loading = false;
 		},
 	},
@@ -496,6 +440,7 @@ export const {
 	// setWallets,
 	// setWalletsTopOrder,
 	// setWalletsOrder,
+	setScrollButtons,
 	deleteTransaction,
 	setExpensesSum,
 	setIncomeSum,

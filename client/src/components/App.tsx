@@ -1,3 +1,13 @@
+/// TO DO:
+/// 1 тема на всю TransactionForm?
+/// ререндерить тулбар при показе/убирании центов
+
+/// DONE:
+/// значения по умолчанию при регистрации
+/// демо вниз
+/// прыгающий интерфейс (скроллинг) - избавился
+/// удалить транзакцию и обновить кошельки
+
 import { useState, useEffect } from 'react';
 import { ThemeProvider, StyledEngineProvider } from '@material-ui/core/styles';
 import { light, dark } from '../services/theme';
@@ -7,11 +17,7 @@ import Routes from './Routes';
 import { setIsAuth } from '../redux/slices/user';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { setUserData, setUserId } from '../redux/slices/user';
-
-// declare module '@material-ui/styles/defaultTheme' {
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-// interface DefaultTheme extends Theme {}
-// }
+import Typography from '@material-ui/core/Typography';
 
 const App = () => {
 	const isAuth = useAppSelector((state) => state.user.isAuth);
@@ -20,17 +26,8 @@ const App = () => {
 	const dispatch = useAppDispatch();
 
 	const [loading, setLoading] = useState(false);
-	// const [error, setError] = useState(false);
-
-	// const onError = (err: Error) => {
-	// 	setError(true);
-	// 	setLoading(false);
-	// 	console.log(err);
-	// 	console.log('error: ', error);
-	// };
 
 	const [errorRegister, setErrorRegister] = useState('');
-	// console.log(light);
 
 	useEffect(() => {
 		setLoading(true);
@@ -39,37 +36,54 @@ const App = () => {
 			.then((res) => {
 				setLoading(false);
 				dispatch(setIsAuth(res.data.isAuth));
-				// console.log(res.data);
 				dispatch(setUserId(res.data.userId));
 				if (isAuth) {
-					// console.log('IS AUTH!!!');
 					axios.get(`/getdata/${res.data.userId}`).then((res) => {
 						dispatch(setUserData(res.data));
-						// console.log(res.data);
 					});
 				}
 			})
 			.catch((err) => {
 				setLoading(false);
 				console.log(err);
-				// onError(err);
 			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isAuth]);
 
+	const demo = (
+		<div
+			style={{
+				position: 'fixed',
+				textAlign: 'center',
+				left: '50%',
+				transform: 'translateX(-50%)',
+				opacity: 0.7,
+				bottom: 10,
+				zIndex: 2,
+			}}
+		>
+			<Typography variant="body1" fontSize="small">
+				* DEMO *
+			</Typography>
+		</div>
+	);
+
 	return (
-		<StyledEngineProvider injectFirst>
-			<ThemeProvider theme={darkTheme ? dark : light}>
-				<Layout>
-					<Routes
-						loading={loading}
-						setLoading={setLoading}
-						errorRegister={errorRegister}
-						setErrorRegister={setErrorRegister}
-					/>
-				</Layout>
-			</ThemeProvider>
-		</StyledEngineProvider>
+		<>
+			<StyledEngineProvider injectFirst>
+				<ThemeProvider theme={darkTheme ? dark : light}>
+					<Layout>
+						<Routes
+							loading={loading}
+							setLoading={setLoading}
+							errorRegister={errorRegister}
+							setErrorRegister={setErrorRegister}
+						/>
+					</Layout>
+				</ThemeProvider>
+			</StyledEngineProvider>
+			{demo}
+		</>
 	);
 };
 

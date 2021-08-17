@@ -8,9 +8,7 @@ const useStyles = makeStyles((theme) => ({
 		'& .MuiTextField-root': {
 			width: 270,
 		},
-		'& .MuiInputBase-root': {
-			// padding: 0,
-		},
+		'& .MuiInputBase-root': {},
 	},
 }));
 
@@ -43,12 +41,6 @@ const Comment = () => {
 				variant="standard"
 				maxRows={4}
 				style={{ padding: 0 }}
-				// InputProps={{
-				// 	style: {
-				// 		width: 270,
-				// 		fontSize: '0.9rem',
-				// 	},
-				// }}
 				size={'medium'}
 			/>
 		</form>

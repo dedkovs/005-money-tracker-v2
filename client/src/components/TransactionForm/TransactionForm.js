@@ -6,13 +6,8 @@ import {
 	ThemeProvider,
 	StyledEngineProvider,
 	createTheme,
-	// adaptV4Theme,
 } from '@material-ui/core/styles';
 import makeStyles from '@material-ui/styles/makeStyles';
-// import {
-//     useHistory,
-//     BrowserRouter
-// } from 'react-router-dom';
 import { setOpenTransactionForm } from '../../redux/slices/user';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import Header from './Header';
@@ -38,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: 360,
 	},
 	dialogContent1: {
-		// minHeight: 500,
 		padding: 0,
 		'&:first-child': {
 			paddingTop: 0,
@@ -65,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
 const TransactionForm = () => {
 	const classes = useStyles();
 	const matches = useMediaQuery('(max-width:360px)');
-	// const history = useHistory();
 	const openTransactionForm = useAppSelector(
 		(state) => state.user.openTransactionForm
 	);
@@ -98,10 +91,8 @@ const TransactionForm = () => {
 					open={openTransactionForm}
 					onClose={() => {
 						dispatch(setOpenTransactionForm(false));
-						// history.push('/');
 					}}
 					classes={{
-						// root: classes.dialogRoot,
 						paperFullWidth: classes.paperFullWidth,
 						paperWidthSm: classes.paperWidthSm,
 						paper: `${matches ? classes.paper2 : classes.paper1} ${

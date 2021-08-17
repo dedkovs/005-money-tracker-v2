@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 	appbar: {
 		zIndex: theme.zIndex.modal + 1,
 		backgroundColor: theme.palette.appBarBackgroundColor,
+		width: '100vw',
+		right: 'auto',
 	},
 	toolbar1: {
 		display: 'flex',
@@ -28,8 +30,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		// paddingLeft: 8,
-		// paddingRight: 8,
 	},
 	tabs1: {
 		width: '100%',
@@ -59,7 +59,6 @@ const Header = () => {
 
 	return (
 		<AppBar elevation={trigger ? 4 : 0} className={classes.appbar}>
-			{/* <div className={matches ? classes.tabs1 : classes.tabs2}> */}
 			<div className={`${matches2 ? classes.tabs1 : null}`}>
 				<Toolbar className={matches ? classes.toolbar1 : classes.toolbar2}>
 					<MenuButton />

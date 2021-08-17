@@ -56,28 +56,8 @@ interface RecordProps {
 }
 
 const PaperRef = forwardRef<HTMLDivElement, PaperRefProps>((props, ref) => {
-	// const classes = useStyles();
-	// const { backgroundExpenses, backgroundIncome, backgroundBetween } = classes;
-	// const { sum, wallet } = props;
-
-	// const getPaperColor = () => {
-	// 	if (sum < 0 && wallet) {
-	// 		return `${backgroundExpenses}`;
-	// 	}
-	// 	if (sum > 0 && wallet) {
-	// 		return `${backgroundIncome}`;
-	// 	}
-	// 	return `${backgroundBetween}`;
-	// };
-
 	return (
-		<Paper
-			{...props}
-			ref={ref}
-			component="div"
-			// elevation={0}
-			// className={`${classes.paper} ${getPaperColor()}`}
-		>
+		<Paper {...props} ref={ref} component="div">
 			{props.children}
 		</Paper>
 	);

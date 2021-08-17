@@ -1,4 +1,3 @@
-// import { Theme, adaptV4Theme } from '@material-ui/core/styles';
 import {
 	Theme,
 	unstable_createMuiStrictModeTheme as createMuiTheme,

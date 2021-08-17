@@ -5,7 +5,6 @@ import { Theme } from '@material-ui/core';
 const useStyles = makeStyles((theme: Theme) => ({
 	spinnerContainer: {
 		position: 'relative',
-		// top: theme.spacing(3),
 		top: 24,
 		maxHeight: '40vh',
 	},

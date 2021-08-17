@@ -98,6 +98,7 @@ export interface User {
 	incomeComment: string;
 	expensesCategoriesOrder: string[];
 	incomeCategoriesOrder: string[];
+	scrollButtons: 'standard' | 'scrollable';
 }
 export interface UI {
 	darkTheme: boolean;
@@ -106,4 +107,16 @@ export interface UI {
 	logoAnimated: boolean;
 	logoLoaded: boolean;
 	formType: FormType;
+}
+
+export interface SaveTrx {
+	userId: number;
+	trx: Transaction;
+	updatedWallets: Wallets;
+}
+
+export interface DeleteTrx {
+	userId: number;
+	trxId: number;
+	updatedWallets: Wallets;
 }

@@ -12,9 +12,8 @@ import StartHeader from './StartHeader/StartHeader';
 import Spinner from './Spinner';
 import TransactionForm from './TransactionForm/TransactionForm';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { setOpenDrawer } from '../redux/slices/user';
+// import { setOpenDrawer } from '../redux/slices/user';
 import { setOpenTransactionForm } from '../redux/slices/user';
-import Data from './Data/Data';
 import DataTabs from './Data/DataTabs';
 import Records from './Data/Records';
 interface Props {
@@ -85,22 +84,6 @@ const Routes = (props: Props) => {
 								<StartHeader />
 								<Register />
 							</>
-						);
-					}}
-				/>
-				<Route
-					exact
-					path="/data/add-transaction"
-					render={() => {
-						dispatch(setOpenDrawer(false));
-						dispatch(setOpenTransactionForm(true));
-						return isAuth ? (
-							<>
-								<Data />
-								<TransactionForm />
-							</>
-						) : (
-							<Redirect to="/" />
 						);
 					}}
 				/>
