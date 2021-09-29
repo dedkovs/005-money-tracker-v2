@@ -99,6 +99,8 @@ export interface User {
 	expensesCategoriesOrder: string[];
 	incomeCategoriesOrder: string[];
 	scrollButtons: 'standard' | 'scrollable';
+	trxFormSaveButtonDisabled: boolean;
+	dialogRemoveRecordYesButtonDisabled: boolean;
 }
 export interface UI {
 	darkTheme: boolean;

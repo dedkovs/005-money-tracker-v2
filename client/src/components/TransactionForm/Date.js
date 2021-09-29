@@ -5,6 +5,7 @@ import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import TextField from '@material-ui/core/TextField';
 import MobileDatePicker from '@material-ui/lab/MobileDatePicker';
+import DatePicker from '@material-ui/lab/DatePicker';
 import { setExpensesDate, setIncomeDate } from '../../redux/slices/user';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import ruLocale from 'date-fns/locale/ru';
@@ -27,7 +28,7 @@ const localeMap = {
 
 const Date1 = (props) => {
 	const theme = useTheme();
-	const [locale] = useState('ru');
+	const [locale] = useState('en');
 	const formType = useAppSelector((state) => state.user.formType);
 	const expensesDate = useAppSelector((state) => state.user.expensesDate);
 	const incomeDate = useAppSelector((state) => state.user.incomeDate);
@@ -37,8 +38,8 @@ const Date1 = (props) => {
 	const handleDateChange = (date) => {
 		props.setDate(date);
 		formType === 'expenses'
-			? dispatch(setExpensesDate(new Date(date).toLocaleDateString()))
-			: dispatch(setIncomeDate(new Date(date).toLocaleDateString()));
+			? dispatch(setExpensesDate(new Date(date).toLocaleDateString('en-EN')))
+			: dispatch(setIncomeDate(new Date(date).toLocaleDateString('en-EN')));
 	};
 
 	const classes = useStyles();
@@ -142,6 +143,7 @@ const Date1 = (props) => {
 								formType === 'expenses' ? expensesDate : incomeDate
 							);
 						}}
+						inputFormat="MMMM dd, yyyy"
 					/>
 				</LocalizationProvider>
 			</ThemeProvider>

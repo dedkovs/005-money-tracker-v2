@@ -92,7 +92,17 @@ const expenses_categories = {
 	Services: ['Haircut', 'Dry cleaning', 'Dentist', 'Plumber'],
 };
 
-const expenses_categories_order = Object.keys(expenses_categories);
+const expenses_categories_order = Object.keys(expenses_categories).sort(
+	(a, b) => {
+		if (a < b) {
+			return -1;
+		}
+		if (a > b) {
+			return 1;
+		}
+		return 0;
+	}
+);
 
 const projects = [
 	'Project #1',
@@ -110,7 +120,15 @@ const income_categories = {
 	Programming: projects,
 };
 
-const income_categories_order = Object.keys(income_categories);
+const income_categories_order = Object.keys(income_categories).sort((a, b) => {
+	if (a < b) {
+		return -1;
+	}
+	if (a > b) {
+		return 1;
+	}
+	return 0;
+});
 
 const wallets_order = [
 	'Cash',
@@ -512,25 +530,6 @@ app.get(
 
 /// ADD TRANSACTION
 
-// const Wallet = sequelize.define(
-// 	'wallets',
-// 	{
-// 		user_id: {
-// 			type: Sequelize.INTEGER,
-// 			allowNull: false,
-// 			primaryKey: true,
-// 		},
-// 		data: {
-// 			type: Sequelize.JSON,
-// 			allowNull: false,
-// 			defaultValue: {},
-// 		},
-// 	},
-// 	{
-// 		timestamps: false,
-// 	}
-// );
-
 app.post('/add-transaction', async (req, res, next) => {
 	const { userId, trx, updatedWallets } = req.body;
 	const t1 = await sequelize_transactions.transaction();
@@ -566,8 +565,6 @@ app.post('/add-transaction', async (req, res, next) => {
 				transaction: t1,
 			}
 		);
-
-		// console.log('WALLETS: ', updatedWallets);
 
 		await sequelize.query(
 			`UPDATE wallets SET data = '${JSON.stringify(
@@ -613,7 +610,6 @@ app.post('/delete-transaction', async (req, res, next) => {
 			}
 		);
 
-		// res.send('OK - Record successfully deleted from database.');
 		res.status(200).send('OK - Record successfully deleted from database.');
 
 		await t1.commit();

@@ -12,10 +12,11 @@
 	src: local('Circe Light'), url('./fonts/CRC35.woff') format('woff');
 }
 
-html {
+/* прыгающий скроллинг */
+/* html {
 	width: 100vw;
 	overflow-x: hidden;
-}
+} */
 
 body {
 	margin: 0;

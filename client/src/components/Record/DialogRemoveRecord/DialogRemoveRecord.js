@@ -11,7 +11,10 @@ import {
 	setOpenDialogRemoveRecord,
 	setScrollButtons,
 } from '../../../redux/slices/user';
-import { deleteTrx } from '../../../redux/slices/user';
+import {
+	deleteTrx,
+	setDialogRemoveRecordYesButtonDisabled,
+} from '../../../redux/slices/user';
 
 const useStyles = makeStyles(() => ({
 	dialog: {
@@ -37,26 +40,36 @@ const DialogRemoveRecord = () => {
 	const userId = useAppSelector((state) => state.user.userId);
 	const wallets = useAppSelector((state) => state.user.wallets);
 	const recordToEdit = useAppSelector((state) => state.user.recordToEdit);
+	const dialogRemoveRecordYesButtonDisabled = useAppSelector(
+		(state) => state.user.dialogRemoveRecordYesButtonDisabled
+	);
 
 	const dispatch = useAppDispatch();
 
 	const handleDeleteTransaction = () => {
-		dispatch(setScrollButtons('standard'));
-		const { wallet, id: trxId, sum } = recordToEdit;
-		let updWallet = wallets[wallet];
-		updWallet = [updWallet[0] - sum, updWallet[1], updWallet[2]];
-		const updatedWallets = {
-			...wallets,
-			[wallet]: updWallet,
+		dispatch(setOpenDialogRemoveRecord(false));
+		dispatch(setDialogRemoveRecordYesButtonDisabled(true));
+
+		const func = () => {
+			dispatch(setScrollButtons('standard'));
+			const { wallet, id: trxId, sum } = recordToEdit;
+			let updWallet = wallets[wallet];
+			updWallet = [updWallet[0] - sum, updWallet[1], updWallet[2]];
+			const updatedWallets = {
+				...wallets,
+				[wallet]: updWallet,
+			};
+
+			dispatch(
+				deleteTrx({
+					userId,
+					trxId,
+					updatedWallets,
+				})
+			);
 		};
 
-		dispatch(
-			deleteTrx({
-				userId,
-				trxId,
-				updatedWallets,
-			})
-		);
+		setTimeout(func, 0);
 	};
 
 	return (
@@ -88,6 +101,7 @@ const DialogRemoveRecord = () => {
 					className={classes.button}
 					variant={'outlined'}
 					onClick={handleDeleteTransaction}
+					disabled={dialogRemoveRecordYesButtonDisabled}
 				>
 					Yes
 				</Button>

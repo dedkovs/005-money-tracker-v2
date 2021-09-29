@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TransactionForm = () => {
+	// alert(new Date().toLocaleDateString());
 	const classes = useStyles();
 	const matches = useMediaQuery('(max-width:360px)');
 	const openTransactionForm = useAppSelector(

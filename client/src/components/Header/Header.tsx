@@ -16,8 +16,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 	appbar: {
 		zIndex: theme.zIndex.modal + 1,
 		backgroundColor: theme.palette.appBarBackgroundColor,
-		width: '100vw',
-		right: 'auto',
+		// прыгающий скроллинг
+		// width: '100vw',
+		// right: 'auto',
 	},
 	toolbar1: {
 		display: 'flex',

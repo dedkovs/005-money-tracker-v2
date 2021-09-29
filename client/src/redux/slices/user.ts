@@ -85,13 +85,17 @@ export const initialState: User = {
 	incomeCategories: {},
 	incomeCategory: '',
 	incomeSubcategory: '',
-	expensesDate: new Date().toLocaleDateString(),
-	incomeDate: new Date().toLocaleDateString(),
+	expensesDate: new Date().toLocaleDateString('en-EN'),
+	// expensesDate: new Date().toDateString(),
+	incomeDate: new Date().toLocaleDateString('en-EN'),
+	// incomeDate: new Date().toDateString(),
 	expensesComment: '',
 	incomeComment: '',
 	expensesCategoriesOrder: [''],
 	incomeCategoriesOrder: [''],
 	scrollButtons: 'scrollable',
+	trxFormSaveButtonDisabled: false,
+	dialogRemoveRecordYesButtonDisabled: false,
 };
 
 /// THUNKS
@@ -102,16 +106,18 @@ export const saveTrx = createAsyncThunk(
 		try {
 			let trxId = await axios.post('/add-transaction', data);
 			trxId = trxId.data;
-			dispatch(user.actions.addNewTransaction({ data, trxId }));
-			dispatch(user.actions.setOpenTransactionForm(false));
+			dispatch(addNewTransaction({ data, trxId }));
+			dispatch(setOpenTransactionForm(false));
 			if (data.trx.sum < 0) {
-				dispatch(user.actions.clearTransactionFormExpenses());
+				dispatch(clearTransactionFormExpenses());
 			}
 			if (data.trx.sum > 0) {
-				dispatch(user.actions.clearTransactionFormIncome());
+				dispatch(clearTransactionFormIncome());
 			}
 		} catch (err) {
-			throw new Error(err);
+			throw new Error('Error - record was not saved to the database.');
+		} finally {
+			dispatch(setTrxFormSaveButtonDisabled(false));
 		}
 	}
 );
@@ -123,16 +129,17 @@ export const deleteTrx = createAsyncThunk(
 		try {
 			await axios.post('/delete-transaction', data);
 			dispatch(
-				user.actions.deleteTransaction({
+				deleteTransaction({
 					trxId,
 					updatedWallets,
 				})
 			);
 			setTimeout(() => {
-				dispatch(user.actions.setScrollButtons('scrollable'));
+				dispatch(setScrollButtons('scrollable'));
 			}, 1000);
+			dispatch(setDialogRemoveRecordYesButtonDisabled(false));
 		} catch (err) {
-			throw new Error(err);
+			throw new Error('Error - record was not removed from the database.');
 		}
 	}
 );
@@ -404,6 +411,16 @@ export const user = createSlice({
 			state.incomeSum = '';
 			state.incomeComment = '';
 		},
+		setTrxFormSaveButtonDisabled: (state, action: { payload: boolean }) => {
+			let trxFormSaveButtonDisabled = action.payload;
+			return { ...state, trxFormSaveButtonDisabled };
+		},
+		setDialogRemoveRecordYesButtonDisabled: (
+			state,
+			action: { payload: boolean }
+		) => {
+			state.dialogRemoveRecordYesButtonDisabled = action.payload;
+		},
 	},
 	extraReducers: {
 		[`${saveTrx.pending}`]: (state) => {
@@ -465,5 +482,9 @@ export const {
 	setIncomeDate,
 	setExpensesComment,
 	setIncomeComment,
+	setTrxFormSaveButtonDisabled,
+	setDialogRemoveRecordYesButtonDisabled,
+	clearTransactionFormExpenses,
+	clearTransactionFormIncome,
 } = user.actions;
 export default user.reducer;

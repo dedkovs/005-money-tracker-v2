@@ -8,7 +8,7 @@ import {
 import { amber } from '@material-ui/core/colors';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { saveTrx } from '../../redux/slices/user';
+import { saveTrx, setTrxFormSaveButtonDisabled } from '../../redux/slices/user';
 
 const useStyles = makeStyles({
 	saveButtonContainer: {
@@ -65,6 +65,10 @@ const SaveButton = () => {
 
 	const expensesComment = useAppSelector((state) => state.user.expensesComment);
 	const incomeComment = useAppSelector((state) => state.user.incomeComment);
+
+	const trxFormSaveButtonDisabled = useAppSelector(
+		(state) => state.user.trxFormSaveButtonDisabled
+	);
 
 	const spinnerColor = createTheme({
 		palette: {
@@ -124,6 +128,7 @@ const SaveButton = () => {
 	};
 
 	const handleSaveTransaction = () => {
+		dispatch(setTrxFormSaveButtonDisabled(true));
 		if (formType === 'income') {
 			if (incomeSum !== '' && Math.abs(incomeSum) !== 0 && !isNaN(incomeSum)) {
 				dispatch(saveTrx(getNewIncomeTrx()));
@@ -151,6 +156,7 @@ const SaveButton = () => {
 					handleSaveTransaction();
 				}}
 				className={classes.saveButton}
+				disabled={trxFormSaveButtonDisabled}
 			>
 				Save
 				{loading && (
